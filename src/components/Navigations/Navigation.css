@@ -1,0 +1,201 @@
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  padding: 0px;
+  margin: 0px;
+}
+.headerNavBar{
+    background-color: rgba(242, 242, 242, 1);
+}
+.userDropdown {
+  border-left: 2px solid rgb(199, 199, 199);
+}
+.navNameLogo {
+  font-family: Lora;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 39.2px;
+  color: rgba(0, 0, 0, 1);
+}
+.navNameLogoMobile {
+  margin: 0px;
+  padding: 0px;
+  font-family: Open Sans;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 22.4px;
+  color: rgba(0, 0, 0, 1);
+}
+.seachSideBar {
+  width: 228px;
+  height: 58px;
+  margin-left: 10px;
+  margin-top: 20px;
+}
+.sideNavSearchBarContainer {
+  border-radius: 16px;
+  background-color: rgba(224, 224, 224, 1);
+  display: flex;
+  gap: 10px;
+  padding-left: 10px;
+  align-items: center;
+}
+.sideNavSearchBarContainer:hover {
+  border: 2px solid rgba(160, 160, 160, 1);
+}
+
+.sideNavSearchIcon {
+  margin: 10px;
+}
+
+.sideNavSearchBar[type="text"] {
+  width: 170px;
+  height: 58px;
+  outline: none;
+  border: none;
+  background: transparent;
+}
+.sideNavButtonAchorTag {
+  border-bottom: 2px solid rgba(0, 76, 46, 1);
+}
+
+.sideNavButtonContainer {
+  width: 228px;
+  height: 58px;
+  gap: 10px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+}
+.sideNavButtonContainer:hover:not(
+    .sideNavDarkModeButton,
+    .sideNavLogoutButton
+  ) {
+  border: 2px solid rgba(52, 164, 116, 1);
+  border-radius: 16px;
+}
+.active
+  > .sideNavButtonContainer:not(.sideNavDarkModeButton, .sideNavLogoutButton) {
+  border: 2px solid rgba(52, 164, 116, 1);
+  border-radius: 16px;
+  background-color: rgba(160, 214, 194, 1);
+}
+
+.sideNavDarkModeButton {
+  color: rgba(0, 0, 0, 1);
+  border: 2px solid rgba(224, 224, 224, 1);
+  border-radius: 16px;
+}
+
+.sideNavLogoutButton {
+  background-color: rgba(247, 142, 142, 1);
+  color: rgba(0, 0, 0, 1);
+  border: 2px solid rgba(239, 68, 68, 1);
+  border-radius: 16px;
+  margin-bottom: 50px;
+}
+.sideNavButtonIcon {
+  margin: 10px;
+}
+.sideNavButtonText {
+  font-family: Open Sans;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 25.6px;
+  text-align: left;
+}
+.sideNavButtonToggle {
+  margin-left: 10px;
+}
+
+.sideNavDownloadAppContainer {
+  width: 228px;
+  height: 160px;
+  padding: 24px 26px 24px 26px;
+  gap: 42px;
+  border-radius: 16px;
+  background-color: rgba(106, 90, 44, 1);
+  justify-content: center;
+  text-align: center;
+  margin: 10px;
+}
+
+.sideNavDownloadAppContainer:hover {
+  background-color: rgba(74, 60, 32, 1);
+}
+
+.sideNavDownloadApp {
+  width: 184px;
+  height: 48px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.sideNavDownloadAppText {
+  font-family: Open Sans;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22.4px;
+  color: rgba(242, 242, 242, 1);
+}
+
+.sidebar {
+  width: 276px;
+  height: 100vh;
+  padding: 1rem;
+  margin-top: 60px;
+  background-color: rgba(242, 242, 242, 1);
+  transition: transform 0.3s ease-in-out;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll ;
+}
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+  position: fixed;
+}
+
+.sideNavButtonToggle .form-check-input:checked {
+  background-color: rgba(0, 0, 0, 1);
+  border: none;
+}
+
+.sideNavButtonToggle .form-check-input:checked::before {
+  transform: translateX(25px);
+}
+
+@media (max-width: 992px) {
+  .sidebar {
+    transform: translateX(-100%);
+    position: absolute;
+    z-index: 1000;
+  }
+  .reportContainer {
+    margin-left: auto;
+  }
+}
+
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  color: rgba(0, 0, 0, 1);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 25.6px;
+}
+
+.sidebar .nav-link.active {
+  color: green;
+}

@@ -1,0 +1,21 @@
+.UserListRow {
+  height: auto;
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
+}
+.UserViewButton {
+  width: 67px;
+  height: 42px;
+  border-radius: 16px;
+  color: rgba(106, 90, 44, 1);
+  border: 1px solid rgba(106, 90, 44, 1);
+  background-color: transparent;
+}
+.UserDeactivateButton {
+  width: 176px;
+  height: auto;
+  border-radius: 16px;
+  border: none;
+  background-color: rgba(217, 55, 55, 1);
+}

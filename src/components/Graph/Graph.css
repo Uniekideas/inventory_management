@@ -1,0 +1,30 @@
+.CardBody {
+    height: 306px;
+    width: auto;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 1);
+    border: none;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
+  }
+  .CardTiTle {
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 25.6px;
+    color: rgba(41, 41, 41, 1);
+  }
+  .CardText {
+    font-family: Lora;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 56px;
+    text-align: left;
+    color: rgba(0, 76, 46, 1);
+  }
+  .CardText2 {
+    font-family: Open Sans;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 19.2px;
+    text-align: left;
+  }
