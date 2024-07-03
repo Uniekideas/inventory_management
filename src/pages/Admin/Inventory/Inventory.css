@@ -1,0 +1,40 @@
+.itemHeaderText {
+  font-family: Open Sans;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 25.6px;
+  text-align: left;
+  color: rgba(77, 77, 77, 1);
+}
+.itemDetailText {
+  font-family: Open Sans;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 25.6px;
+  text-align: left;
+  color: rgba(51, 51, 51, 1);
+}
+.itemDetailMainRow {
+  border-bottom: 2px solid rgba(0, 76, 46, 1);
+}
+.itemDetailEditButton,
+.itemDetailEditButton:hover {
+  background-color: rgb(106, 90, 44);
+  border: none;
+  font-family: Open Sans;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 25.6px;
+  color: antiquewhite;
+}
+
+.itemDetailPrintButton,
+.itemDetailPrintButton:hover {
+    border: 2px solid rgb(106, 90, 44);
+    color: rgb(106, 90, 44);
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 25.6px;
+    background-color: transparent;
+}

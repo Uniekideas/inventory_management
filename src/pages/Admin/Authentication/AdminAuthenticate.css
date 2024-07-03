@@ -1,0 +1,40 @@
+/* Custom styles for the login page */
+body {
+  background-color: #f8f9fa;
+}
+
+a {
+  color: #28a745;
+}
+
+a:hover {
+  text-decoration: none;
+}
+.inputField[type="email"],
+.inputField[type="password"],
+.inputField[type="text"] {
+  height: 55px;
+  padding: 8px 16px 8px 16px;
+  gap: 0px;
+  border-radius: 16px;
+  border: 1px solid rgba(51, 51, 51, 1);
+  background: transparent;
+}
+.inputSeleteField {
+  height: 55px;
+  padding: 8px 16px 8px 16px;
+  gap: 0px;
+  border-radius: 16px;
+  border: 1px solid rgba(51, 51, 51, 1);
+}
+
+.inputField > div > input {
+  border: 1px solid rgba(51, 51, 51, 1);
+}
+.linkText {
+  color: rgba(115, 115, 115, 1);
+}
+.button {
+  background-color: rgba(0, 110, 74, 1);
+  height: 55px;
+}

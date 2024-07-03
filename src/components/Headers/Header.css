@@ -1,0 +1,20 @@
+.authHeaderImage {
+  max-width: 100%;
+  width: "150px";
+  height: "150px";
+}
+
+.welcomeText {
+  font-family: Lora;
+  font-size: 38px;
+  font-weight: 400;
+  line-height: 67.2px;
+}
+.titleHeaderText {
+font-family: Lora;
+font-weight: 400;
+line-height: 67.2px;
+text-align: left;
+color: rgba(0, 76, 46, 1);
+margin-bottom: 20px;
+}

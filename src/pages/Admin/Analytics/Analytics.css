@@ -1,0 +1,251 @@
+.seachContentBar {
+  height: 48px;
+}
+.reportContainer {
+  padding: 30px;
+  margin-top: 100px;
+  margin-left: 300px;
+  background-color: rgba(242, 242, 242, 1);
+}
+.reportContentAppear {
+  height: 652px;
+  margin-top: 15px;
+  background-color: rgba(224, 224, 224, 1);
+  border: 2px solid rgba(160, 160, 160, 1);
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.reportContentAppearText {
+  width: 180px;
+  height: 78px;
+  font-family: Open Sans;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 25.6px;
+  text-align: left;
+  color: rgba(160, 160, 160, 1);
+}
+.boxCol {
+  height: auto;
+  border-radius: 16px;
+  margin-bottom: "10px";
+  margin: 5px;
+  align-content: center;
+  transition: transform 0.3s ease;
+}
+.boxCol:hover {
+  transform: scale(1.05);
+}
+.boxCheckBox {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  display: none;
+  transition: transform 0.9s ease, opacity 0.9s ease;
+}
+
+.boxCheckBox:checked {
+  background-color: transparent;
+}
+
+.boxCheckBox:checked::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.inventoryBox {
+  background-color: rgba(146, 216, 200, 1);
+  border: 2px solid rgba(8, 142, 74, 1);
+}
+.inventoryBox > div > p {
+  color: rgba(8, 142, 74, 1);
+}
+
+.inventoryBox > input {
+  border: 2px solid rgba(0, 76, 46, 1);
+}
+.inventoryBox > input:checked::before {
+  background-color: rgba(0, 76, 46, 1);
+}
+.userBox1 {
+  background-color: rgba(160, 214, 194, 1);
+  border: 2px solid rgba(52, 164, 116, 1);
+}
+.userBox1 > div > p {
+  color: rgba(52, 164, 116, 1);
+}
+.userBox1 > input {
+  border: 2px solid rgba(52, 164, 116, 1);
+}
+.userBox1 > input:checked::before {
+  background-color: rgba(52, 164, 116, 1);
+}
+
+.userBox2 {
+  background-color: rgba(224, 201, 178, 1);
+  border: 2px solid rgba(148, 129, 56, 1);
+}
+.userBox2 > div > p {
+  color: rgba(148, 129, 56, 1);
+}
+.userBox2 > input {
+  border: 2px solid rgba(148, 129, 56, 1);
+}
+.userBox2 > input:checked::before {
+  background-color: rgba(148, 129, 56, 1);
+}
+.systemBox {
+  background-color: rgba(141, 230, 122, 1);
+  border: 2px solid rgba(75, 181, 67, 1);
+}
+.systemBox > div > p {
+  color: rgba(75, 181, 67, 1);
+}
+.systemBox > input {
+  border: 2px solid rgba(75, 181, 67, 1);
+}
+.systemBox > input:checked::before {
+  background-color: rgba(75, 181, 67, 1);
+}
+.expiryBox {
+  background-color: rgba(247, 142, 142, 1);
+  border: 2px solid rgba(239, 68, 68, 1);
+}
+.expiryBox > div > p {
+  color: rgba(239, 68, 68, 1);
+}
+.expiryBox > input {
+  border: 2px solid rgba(239, 68, 68, 1);
+}
+.expiryBox > input:checked::before {
+  background-color: rgba(239, 68, 68, 1);
+}
+.emptyBox {
+  background-color: rgba(224, 224, 224, 1);
+  border: 2px solid rgba(160, 160, 160, 1);
+}
+
+.boxImage {
+  width: 74.17px;
+  height: 74.19px;
+  margin-top: 30px;
+  transition: transform 0.9s ease, opacity 0.9s ease;
+}
+.boxtext {
+  padding: 0px;
+  margin: 0px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 25.6px;
+  color: rgba(0, 0, 0, 1);
+  transition: transform 0.9s ease, opacity 0.9s ease;
+}
+.boxParagraph {
+  padding: 0px;
+  margin: 0px;
+  font-family: Open Sans;
+  font-size: 8px;
+  font-weight: 400;
+  line-height: 12.8px;
+  display: none;
+  transition: transform 0.9s ease, opacity 0.9s ease;
+}
+.boxMobileParagraph {
+  padding: 0px;
+  margin: 0px;
+  font-family: Open Sans;
+  font-size: 8px;
+  font-weight: 400;
+  line-height: 12.8px;
+}
+
+.boxCol:hover .boxImage {
+  transform: scale(0.7);
+}
+.boxCol:hover .boxtext {
+  transform: scale(0.9);
+}
+
+.boxCol:hover .boxParagraph,
+.boxCol:hover .boxCheckBox {
+  transform: scale(0.9);
+  opacity: 1;
+  display: block;
+}
+.desktopBoxTextWarper {
+  margin-bottom: 30px;
+  padding: 0px;
+}
+.mobileBoxTextWarper > h5 {
+  font-family: Open Sans;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 22.4px;
+  text-align: left;
+}
+.mobileBoxTextWarper {
+  display: none;
+}
+
+@media (max-width: 767.98px) {
+  .grid-container {
+    justify-content: center;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 59px;
+    overflow: scroll;
+  }
+  .desktopBoxTextWarper {
+    display: none;
+  }
+  .mobileBoxTextWarper {
+    display: block;
+  }
+  .rowContainer {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 1px;
+    flex: 50%;
+  }
+
+  .boxCol {
+    display: grid;
+    grid-template-columns: 20px, 20px;
+    max-width: 96px;
+    height: auto;
+    margin-left: 2px;
+  }
+  .boxImage {
+    margin-top: 10px;
+    width: 48px;
+    height: 48px;
+  }
+  .boxtext {
+    font-family: Open Sans;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 22.4px;
+    text-align: left;
+    color: rgba(0, 0, 0, 1);
+  }
+}
+@media (max-width: 992px) {
+  .reportContainer {
+    margin-left: auto;
+  }
+}

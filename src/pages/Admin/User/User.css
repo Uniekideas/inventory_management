@@ -1,0 +1,28 @@
+.UserCreateInput {
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(160, 160, 160, 1);
+    border-radius: 16px;
+    height: 55px;
+}
+.UserCreateInput::placeholder {
+    color: rgba(160, 160, 160, 1);
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 25.6px;
+    text-align: left;  
+}
+.UserCreateTextArea {
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(160, 160, 160, 1);
+    border-radius: 16px;
+    height: 411px;
+  }
+  .UserCreateTextArea::placeholder {
+    color: rgba(160, 160, 160, 1);
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 25.6px;
+    text-align: left;
+  }

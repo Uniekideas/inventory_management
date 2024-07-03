@@ -1,0 +1,18 @@
+.AdminRecentUserCardBody {
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 1);
+    border: none;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
+  }
+.AdminRecentUser {
+    background-color: rgb(242, 242, 242);
+}
+.AdminRecentUserActivtyScroll {
+    height: 350px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    overflow-y: scroll ;
+}
+.AdminRecentUserActivtyScroll::-webkit-scrollbar {
+    display: none;
+}

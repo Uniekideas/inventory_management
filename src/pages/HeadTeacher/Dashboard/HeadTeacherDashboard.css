@@ -1,0 +1,5 @@
+.DashboardExportData > button,
+.DashboardExportData > button:hover,
+.DashboardExportData > button:focus {
+  background-color: rgba(0, 110, 74, 1);
+}

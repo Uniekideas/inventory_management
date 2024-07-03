@@ -1,0 +1,62 @@
+.UserManagementCreateButton,
+.UserManagementCreateButton:hover {
+  width: 190px;
+  height: 48px;
+  padding: 8px 16px 8px 16px;
+  border-radius: 16px;
+  background-color: rgba(0, 110, 74, 1);
+  color: rgba(255, 255, 255, 1);
+  border: none;
+  margin: 0px 0px 5px 0px;
+}
+.UserListRow {
+  height: auto;
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
+}
+.UserViewButton {
+  width: 67px;
+  height: 42px;
+  border-radius: 16px;
+  color: rgba(106, 90, 44, 1);
+  border: 1px solid rgba(106, 90, 44, 1);
+  background-color: transparent;
+}
+.UserDeactivateButton,
+.UserDeactivateButton:hover {
+  width: 176px;
+  height: auto;
+  border-radius: 16px;
+  border: none;
+  background-color: rgba(217, 55, 55, 1);
+}
+.schoolViewButton,
+.schoolViewButton:hover {
+  width: 121px;
+  height: auto;
+  border-radius: 16px;
+  border: none;
+  background-color: rgba(106, 90, 44, 1);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
+}
+.InventoryReportButton {
+  border: none;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
+  color: rgba(41, 41, 41, 1);
+  font-family: Open Sans;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 25.6px;
+}
+.InventoryCategoryText {
+  font-family: Open Sans;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 19.2px;
+  text-align: left;
+  }

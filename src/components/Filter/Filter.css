@@ -1,0 +1,50 @@
+.dropdown-menu {
+  min-width: auto;
+}
+
+.dropdown-toggle {
+  padding: 0.5rem 1rem;
+}
+
+.dropdown-toggle::after {
+  margin-left: 0.5rem;
+}
+.dropdown-toggle:hover,
+.dropdown-toggle:focus {
+  background-color: rgba(255, 255, 255, 1);
+  color: inherit;
+  border: none;
+}
+.filterContainer  {
+  box-shadow: none !important;
+}
+.filterContainer > button {
+  height: 48px;
+  padding: 8px 16px 8px 16px;
+  gap: 8px;
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 1);
+}
+.filterContainer > button > span {
+  font-family: Open Sans;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 25.6px;
+  text-align: left;
+  color: rgba(160, 160, 160, 1);
+}
+.filterContainer > button > span > span {
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 25.6px;
+    text-align: left;
+  color: rgba(41, 41, 41, 1);
+}
+
+/* @media (max-width: 1298px) {
+    .dropdownTitle {
+
+    }
+
+} */
