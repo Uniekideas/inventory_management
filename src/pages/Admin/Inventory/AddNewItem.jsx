@@ -74,7 +74,7 @@ function AddNewItem() {
     formData.append('bar_code', bar_code);
 
     try {
-      const res = await axios.post('http://localhost:8000/api/item/', formData);
+      const res = await axios.post('https://195d-102-89-34-7.ngrok-free.app/api/item/', formData);
       console.log(res.data)
       navigate('/InventoryManagement');
     } catch (error) {

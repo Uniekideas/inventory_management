@@ -29,7 +29,7 @@ function InventoryManagement() {
     },
   ];
 const getItems = async()=>{
-  const res = await axios.get('http://localhost:8000/api/item/')
+  const res = await axios.get('https://195d-102-89-34-7.ngrok-free.app/api/item/')
   console.log(res.data);
   setItems(res.data.items)
 }
