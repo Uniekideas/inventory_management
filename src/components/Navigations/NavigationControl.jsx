@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ReportAnalytics from "../../pages/Admin/Analytics/ReportAnalytics";
 import Login from "../../pages/Admin/Authentication/Login";
 import SignUp from "../../pages/Admin/Authentication/SignUp";
@@ -14,7 +14,7 @@ import CreateNewUser from "../../pages/Admin/User/CreateNewUser";
 import AddSchool from "../../pages/Admin/School/AddSchool";
 import AddNewItem from "../../pages/Admin/Inventory/AddNewItem";
 import GenerateInventory from "../../pages/Admin/Inventory/GenerateInventory";
-import ItemDetail from "../../pages/Admin/Inventory/ItemDetail"; 
+import ItemDetail from "../../pages/Admin/Inventory/ItemDetail";
 import ItemDetails from "../../pages/WareHouseStaff/ScanMaterial/ItemDetails";
 import SchoolDetail from "../../pages/Admin/School/SchoolDetail";
 import UserDetail from "../../pages/Admin/User/UserDetail";
@@ -22,7 +22,7 @@ import WareHouseDashboard from "../../pages/WareHouseStaff/Dashboard/WareHouseDa
 import WareHouseInventory from "../../pages/WareHouseStaff/Inventory/WareHouseInventory";
 import WareHouseTrack from "../../pages/WareHouseStaff/TrackMaterial/WareHouseTrack";
 import ReportDiscrepancy from "../../pages/WareHouseStaff/ReportDiscrepancy/ReportDiscrepancy";
-import ChangePassword from '../../pages/Admin/Authentication/ChangePassword';
+import ChangePassword from "../../pages/Admin/Authentication/ChangePassword";
 import ScanMaterial from "../../pages/WareHouseStaff/ScanMaterial/ScanMaterial";
 import WareHousePushNotification from "../../pages/WareHouseStaff/PushNotification/WareHousePushNotification";
 import WareHouseGenerateReport from "../../pages/WareHouseStaff/Inventory/WareHouseGenerateReport";
@@ -30,7 +30,7 @@ import WareHouseAddItem from "../../pages/WareHouseStaff/Inventory/WareHouseAddI
 import WareHouseViewItem from "../../pages/WareHouseStaff/Inventory/WareHouseViewItem";
 import WareHouseAddMovement from "../../pages/WareHouseStaff/TrackMaterial/WareHouseAddMovement";
 import HeadTeacherDashboard from "../../pages/HeadTeacher/Dashboard/HeadTeacherDashboard";
-import ForgotPassword from '../../pages/Admin/Authentication/Forgot-Password';
+import ForgotPassword from "../../pages/Admin/Authentication/Forgot-Password";
 import HeaderTeacherInventory from "../../pages/HeadTeacher/Inventory/HeaderTeacherInventory";
 import HeaderTeacherGenerateReport from "../../pages/HeadTeacher/Inventory/HeaderTeacherGenerateReport";
 import HeadTeacherRequestMaterial from "../../pages/HeadTeacher/RequestMaterial/HeadTeacherRequestMaterial";
@@ -65,13 +65,12 @@ import Searchresulting from "../Search/TeachersSearch/SearchResulting";
 import SearchResulted from "../Search/WarehouseSearch/SearchResulted";
 import MovementLog from "../../pages/WareHouseStaff/Inventory/MovementLog";
 
-
 function NavigationControl() {
   return (
     <Router>
       <Routes>
         <Route
-          path="/Login"
+          path="/"
           element={
             <PrivatteAuthentactionRoute>
               <Login />
@@ -86,23 +85,22 @@ function NavigationControl() {
             </PrivatteAuthentactionRoute>
           }
         />
-         <Route
+        <Route
           path="/forgot-password"
           element={
             <PrivatteAuthentactionRoute>
-              <ForgotPassword/>
+              <ForgotPassword />
             </PrivatteAuthentactionRoute>
           }
         />
-         <Route
+        <Route
           path="/change-password"
           element={
             <PrivatteAuthentactionRoute>
-              <ChangePassword/>
+              <ChangePassword />
             </PrivatteAuthentactionRoute>
           }
         />
-
 
         <Route element={<PrivateRoute />}>
           <Route path="/Logout" element={<Logout />} />
@@ -114,7 +112,6 @@ function NavigationControl() {
           <Route path="/ItemDetail/:pk" element={<ItemDetail />} />
           <Route path="/AddNewItem" element={<AddNewItem />} />
           <Route path="/EditItem/:pk" element={<EditItem />} />
-          
 
           <Route element={<PrivatteAdminRoute />}>
             <Route path="/AdminDashboard" element={<AdminDashboard />} />
@@ -159,58 +156,74 @@ function NavigationControl() {
             element={<WareHouseAddMovement />}
           />
               */}
-         
-
           </Route>
-
 
           <Route element={<PrivatteWareHouseRoute />}>
-          <Route path="/WareHouseDashboard" element={<WareHouseDashboard />} />
-          <Route path="/WareHouseInventory" element={<WareHouseInventory />} />
-          <Route path="/WareHouseTrack" element={<WareHouseTrack />} />
-          <Route path="/TrackMovementLog" element={<MovementLog />} />
-          <Route path="/WareHouseGenerateInventory" element={<GenerateInventory />} />
-          <Route path="/ScanMaterial" element={<ScanMaterial />} />
-          <Route path="/ItemDetails/:pk" element={<ItemDetails />} />
-           <Route path="/WareHouseGenerateInventory" element={<GenerateInventory />} />
-          <Route 
-            path="/WareHousePushNotification"
-            element={<WareHousePushNotification />}
-          />
-          <Route
-            path="/WareHouseAddMovement"
-            element={<WareHouseAddMovement />}
-          />
-             
-           <Route path="/warehouseSearch/:query" element={<SearchResulted />} />
-           <Route
-            path="/WareHouseScheduler"
-            element={<WareHouseAddMovement />}
-          />
+            <Route
+              path="/WareHouseDashboard"
+              element={<WareHouseDashboard />}
+            />
+            <Route
+              path="/WareHouseInventory"
+              element={<WareHouseInventory />}
+            />
+            <Route path="/WareHouseTrack" element={<WareHouseTrack />} />
+            <Route path="/TrackMovementLog" element={<MovementLog />} />
+            <Route
+              path="/WareHouseGenerateInventory"
+              element={<GenerateInventory />}
+            />
+            <Route path="/ScanMaterial" element={<ScanMaterial />} />
+            <Route path="/ItemDetails/:pk" element={<ItemDetails />} />
+            <Route
+              path="/WareHouseGenerateInventory"
+              element={<GenerateInventory />}
+            />
+            <Route
+              path="/WareHousePushNotification"
+              element={<WareHousePushNotification />}
+            />
+            <Route
+              path="/WareHouseAddMovement"
+              element={<WareHouseAddMovement />}
+            />
+
+            <Route
+              path="/warehouseSearch/:query"
+              element={<SearchResulted />}
+            />
+            <Route
+              path="/WareHouseScheduler"
+              element={<WareHouseAddMovement />}
+            />
           </Route>
 
-
-
           <Route element={<PrivatteHeadTeacherRoute />}>
-          <Route path="/HeadTeacherDashboard" element={<HeadTeacherDashboard />} />
-          <Route
-            path="/HeaderTeacherInventory"
-            element={<HeaderTeacherInventory />}
-          />
-           <Route path="/GenerateInventory" element={<GenerateInventory />} />
-          <Route
-            path="/HeadTeacherRequestMaterial"
-            element={<HeadTeacherRequestMaterial />}
-          />
-           <Route path="/HeadTeacherGenerateInventory" element={<GenerateInventory />} />
-          <Route
-            path="/HeadTeacherPushNotification"
-            element={<HeadTeacherPushNotification />}
-          />
-          <Route
-            path="/HeadTeacherTrackMaterial"
-            element={<HeadTeacherTrackMaterial />}
-          />
+            <Route
+              path="/HeadTeacherDashboard"
+              element={<HeadTeacherDashboard />}
+            />
+            <Route
+              path="/HeaderTeacherInventory"
+              element={<HeaderTeacherInventory />}
+            />
+            <Route path="/GenerateInventory" element={<GenerateInventory />} />
+            <Route
+              path="/HeadTeacherRequestMaterial"
+              element={<HeadTeacherRequestMaterial />}
+            />
+            <Route
+              path="/HeadTeacherGenerateInventory"
+              element={<GenerateInventory />}
+            />
+            <Route
+              path="/HeadTeacherPushNotification"
+              element={<HeadTeacherPushNotification />}
+            />
+            <Route
+              path="/HeadTeacherTrackMaterial"
+              element={<HeadTeacherTrackMaterial />}
+            />
           </Route>
 
           <Route element={<PrivatteQARoute />}>

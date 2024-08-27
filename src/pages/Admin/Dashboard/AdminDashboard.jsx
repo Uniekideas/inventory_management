@@ -666,7 +666,7 @@ function AdminDashboard() {
           className="pushNotificationTitle"
           style={{ width: 150 }}
         />
-        <div className="d-none d-lg-flex" style={{gap:3}}>
+        <div className="d-none d-lg-flex" style={{gap:20}}>
         <Filter
           optionTitle={"School Type"}
           options={filterOptionForType}
