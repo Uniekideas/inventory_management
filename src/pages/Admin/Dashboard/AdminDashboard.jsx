@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useMemo, useRef} from "react";
+import React, { useContext, useEffect, useState, useMemo, useRef } from "react";
 import axios from "axios";
 import {
   Chart as ChartJS,
@@ -34,13 +34,13 @@ import SchoolContext from "../../../context/School/SchoolContext";
 import AnalysisContext from "../../../context/Analysis/AnalysisContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import jsPDF from 'jspdf'
-import autoTable from "jspdf-autotable"
-import * as XLSX from 'xlsx'
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import * as XLSX from "xlsx";
 
 import { UserBox } from "../ViewLowstock/UserBox";
 import { getLCP } from "web-vitals";
- 
+
 // Register the components
 ChartJS.register(
   CategoryScale,
@@ -60,48 +60,51 @@ function AdminDashboard() {
   const navigate = useNavigate();
   const [count, setCount] = useState(0);
   const [schools, setSchools] = useState([]);
-  const [originalSchools, setOriginalSchools] = useState([])
+  const [originalSchools, setOriginalSchools] = useState([]);
   const [exportType, setExportType] = useState("");
-  
 
   const {
-    getInventoryItems, getItemsData, getItemsIsLoading,setGetItemsData
+    getInventoryItems,
+    getItemsData,
+    getItemsIsLoading,
+    setGetItemsData,
   } = useContext(InventoryItemContext);
 
-  const exportAccordingToType = ()=>{
-    if(exportType ===''){
+  const exportAccordingToType = () => {
+    if (exportType === "") {
       return;
     }
-    if(exportType ==='pdf'){
+    if (exportType === "pdf") {
       let doc = new jsPDF();
-      autoTable(doc,{
-        head: [['Id','Name', 'Brand', 'Category','Quantity','Supplier' ]],
-        body: getItemsData.map(item=>[item.id, item.item_name, item.brand, item.subject_category, item.quantity, item.distribution]),
-      })
-      doc.save('edo-inventory.pdf');
-     
-   
-    }
-    else{
-      var wb = XLSX.utils.book_new()
-    var ws = XLSX.utils.json_to_sheet(getItemsData);
+      autoTable(doc, {
+        head: [["Id", "Name", "Brand", "Category", "Quantity", "Supplier"]],
+        body: getItemsData.map((item) => [
+          item.id,
+          item.item_name,
+          item.brand,
+          item.subject_category,
+          item.quantity,
+          item.distribution,
+        ]),
+      });
+      doc.save("edo-inventory.pdf");
+    } else {
+      var wb = XLSX.utils.book_new();
+      var ws = XLSX.utils.json_to_sheet(getItemsData);
 
-    XLSX.utils.book_append_sheet(wb, ws, 'edo_iventory_report');
-    XLSX.writeFile(wb, 'edo_inventory_report.xlsx');
-   
+      XLSX.utils.book_append_sheet(wb, ws, "edo_iventory_report");
+      XLSX.writeFile(wb, "edo_inventory_report.xlsx");
     }
-  }
-  useEffect(()=>{
+  };
+  useEffect(() => {
     exportAccordingToType();
-  }, [exportType])
-  
-  const {
-    getSchoolsData, getSchools, getSchoolsIsLoading
-  } = useContext(SchoolContext);
+  }, [exportType]);
 
-  
-  const { ProcessAnalysis, itemDataAnalysis, schoolDataAnalysis} =
-  useContext(AnalysisContext);
+  const { getSchoolsData, getSchools, getSchoolsIsLoading } =
+    useContext(SchoolContext);
+
+  const { ProcessAnalysis, itemDataAnalysis, schoolDataAnalysis } =
+    useContext(AnalysisContext);
 
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 5;
@@ -118,119 +121,115 @@ function AdminDashboard() {
   const [message, setmessage] = useState("");
   const [messageColor, setmessageColor] = useState("");
   const [filter, setFilter] = useState();
-  const [originalItems, setOriginalItems] = useState([])
-  const [lowItems, setLowItems] = useState([])
+  const [originalItems, setOriginalItems] = useState([]);
+  const [lowItems, setLowItems] = useState([]);
   const [logs, setLogs] = useState([]);
   useEffect(() => {
     getInventoryItems();
     getSchools();
     setOriginalItems(getItemsData);
-    
-   
-  }, [ ])
+  }, []);
 
-  const getLogs = async()=>{
+  const getLogs = async () => {
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
     try {
       const response = await axios.get(`${baseUrl}/api/get-logs`);
-      
-      setLogs(response.data)
+
+      setLogs(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-   
-  }
+  };
 
-  useEffect(()=>{
-    getLogs()
-  }, [])
-  const getLowStockItems = ()=>{
-    const low = originalItems.filter(item=>item.quantity < 20);
+  useEffect(() => {
+    getLogs();
+  }, []);
+  const getLowStockItems = () => {
+    const low = originalItems.filter((item) => item.quantity < 20);
     setLowItems(low);
-    
-  }
-  
-
+  };
 
   useEffect(() => {
     ProcessAnalysis(getSchoolsData);
     ProcessAnalysis(getItemsData);
     getLowStockItems();
 
-    if(filter ==='All'){
-      
-       setGetItemsData(originalItems);
+    if (filter === "All") {
+      setGetItemsData(originalItems);
 
-       return setSchools(originalSchools);
-    
+      return setSchools(originalSchools);
     }
-    
-    if(filter && schools){
-      let schoolsMatch = schools.filter(item=>item.
-        LGA === filter
-        );
-        
-        if(schoolsMatch.length ===0){
-          
-          let schoolType = schools.filter(item=>item.SCHOOL_TYPE===filter);
-          setCount(schoolType.length);
-        }else{
-          setCount(schoolsMatch.length);
-        }
-        
-        
-        
+
+    if (filter && schools) {
+      let schoolsMatch = schools.filter((item) => item.LGA === filter);
+
+      if (schoolsMatch.length === 0) {
+        let schoolType = schools.filter((item) => item.SCHOOL_TYPE === filter);
+        setCount(schoolType.length);
+      } else {
+        setCount(schoolsMatch.length);
+      }
     }
-    if(filter && filter === 'All'){
+    if (filter && filter === "All") {
       setGetItemsData(originalItems); // Show all items
       setCount(schools.length); // Update count based on all schools
-  
+    } else if (filter === "AKOKO EDO") {
+      setGetItemsData(
+        originalItems.filter(
+          (item) =>
+            item.item_name === "New Concept Mathematics" ||
+            item.item_name === "New English Concept" ||
+            item.item_name === "Wabp Social Studies Book 1"
+        )
+      );
+    } else if (filter === "EGOR") {
+      setGetItemsData(
+        originalItems.filter(
+          (item) =>
+            item.item_name === "Basic Science: An Integrated Science Course" ||
+            item.item_name === "Junior Secondary Business Studies Textbook"
+        )
+      );
+    } else if (filter === "ESAN CENTRAL") {
+      setGetItemsData(
+        originalItems.filter(
+          (item) =>
+            item.item_name === "New Concept Mathematics" ||
+            item.item_name === "New English Concept" ||
+            item.item_name === "Wabp Social Studies Book 1"
+        )
+      );
+    } else if (filter && filter === "JSS") {
+      setGetItemsData(
+        originalItems.filter(
+          (item) =>
+            item.item_name === "Basic Science: An Integrated Science Course" ||
+            item.item_name === "Junior Secondary Business Studies Textbook"
+        )
+      );
+    } else if (filter && filter === "Primary") {
+      setGetItemsData(
+        originalItems.filter(
+          (item) =>
+            item.item_name === "New Concept Mathematics" ||
+            item.item_name === "New English Concept" ||
+            item.item_name === "Wabp Social Studies Book 1"
+        )
+      );
+    } else if (filter && filter === "Progressive") {
+      setGetItemsData(
+        originalItems.filter(
+          (item) =>
+            item.item_name === "New Concept Mathematics" ||
+            item.item_name === "New English Concept" ||
+            item.item_name === "Wabp Social Studies Book 1"
+        )
+      );
     }
-   else if(filter==='AKOKO EDO'){
-     
-      setGetItemsData(originalItems.filter(item =>
-        item.item_name === 'New Concept Mathematics' ||
-        item.item_name === 'New English Concept' ||
-        item.item_name === 'Wabp Social Studies Book 1'
-      ));
-    
-    } else if(filter ==='EGOR'){
-      setGetItemsData(originalItems.filter(item =>
-        item.item_name === 'Basic Science: An Integrated Science Course' ||
-        item.item_name === 'Junior Secondary Business Studies Textbook' 
-      ))
-    }
-    else if(filter ==='ESAN CENTRAL'){
-      
-      setGetItemsData(originalItems.filter(item =>
-        item.item_name === 'New Concept Mathematics' ||
-        item.item_name === 'New English Concept' ||
-        item.item_name === 'Wabp Social Studies Book 1'
-      ));
-    } else if(filter && filter==='JSS'){
-      setGetItemsData(originalItems.filter(item =>
-       item.item_name === 'Basic Science: An Integrated Science Course' ||
-        item.item_name === 'Junior Secondary Business Studies Textbook' 
-      ))
-    }
-    else if(filter &&filter==='Primary'){
-      setGetItemsData(originalItems.filter(item =>
-       item.item_name === 'New Concept Mathematics' ||
-        item.item_name === 'New English Concept' ||
-        item.item_name === 'Wabp Social Studies Book 1'
-      ))
-    }
-    else if(filter && filter==='Progressive'){
-      setGetItemsData(originalItems.filter(item =>
-       item.item_name === 'New Concept Mathematics' ||
-        item.item_name === 'New English Concept' ||
-        item.item_name === 'Wabp Social Studies Book 1'
-      ))
-    }
-  }, [getItemsIsLoading, getSchoolsIsLoading,filter ])
+  }, [getItemsIsLoading, getSchoolsIsLoading, filter]);
 
-  const {value: InvetoryDifference, trend: InvetoryTrend} = itemDataAnalysis
-  const {value: SchoolDifference, trend: SchoolTrend} = schoolDataAnalysis
+  const { value: InvetoryDifference, trend: InvetoryTrend } = itemDataAnalysis;
+  const { value: SchoolDifference, trend: SchoolTrend } = schoolDataAnalysis;
 
   useEffect(() => {
     if (location.state?.message) {
@@ -241,149 +240,143 @@ function AdminDashboard() {
   }, []);
 
   const getSchoolsNew = async () => {
-     
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
     try {
       const response = await axios.get(`${baseUrl}/api/school`);
-      
+
       setSchools(response.data.schools);
-      
+
       setCount(response.data.count);
       setOriginalSchools(response.data.schools);
     } catch (error) {
-      console.log(error)
-    } 
+      console.log(error);
+    }
   };
 
-  useEffect(()=>{
-    getSchoolsNew()
-  },[])
+  useEffect(() => {
+    getSchoolsNew();
+  }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const filterUserRole = useMemo(()=>[
+  const filterUserRole = useMemo(() => [
     {
-    pk:1,
-    type: 'Admin',
-
+      pk: 1,
+      type: "Admin",
     },
     {
-      pk:2,
-      type: 'Warehouse Staff',
-  
+      pk: 2,
+      type: "Warehouse Staff",
+    },
+    {
+      pk: 3,
+      type: "Head Teacher",
+    },
+  ]);
+  const filterOptionforLGA = useMemo(
+    () => [
+      {
+        pk: 1,
+        type: "All",
+      },
+
+      {
+        pk: 2,
+        type: "AKOKO EDO",
       },
       {
-        pk:3,
-        type: 'Head Teacher',
-    
-        },
-])
-  const filterOptionforLGA = useMemo(() => [
-    {
+        pk: 3,
+        type: "EGOR",
+      },
+      {
+        pk: 4,
+        type: "ESAN CENTRAL",
+      },
+      {
+        pk: 5,
+        type: "ESAN NORTH EAST",
+      },
+      {
+        pk: 6,
+        type: "ESAN SOUTH EAST",
+      },
+      {
+        pk: 7,
+        type: "ESAN WEST",
+      },
+      {
+        pk: 8,
+        type: "ETSAKO CENTRAL",
+      },
+      {
+        pk: 9,
+        type: "ETSAKO EAST",
+      },
+      {
+        pk: 10,
+        type: "ETSAKO WEST",
+      },
+      {
+        pk: 11,
+        type: "IGUEBEN",
+      },
+      {
+        pk: 12,
+        type: "IKPOBA OKHA",
+      },
+      {
+        pk: 13,
+        type: "OREDO",
+      },
+      {
+        pk: 14,
+        type: "ORHIONMWON",
+      },
+      {
+        pk: 15,
+        type: "OVIA NORTH EAST",
+      },
+      {
+        pk: 16,
+        type: "OVIA SOUTH WEST",
+      },
+      {
+        pk: 17,
+        type: "OWAN EAST",
+      },
+      {
+        pk: 18,
+        type: "OWAN WEST",
+      },
+      {
+        pk: 19,
+        type: "UHUNMWODE",
+      },
+    ],
+    []
+  );
 
+  const filterOptionForType = useMemo(() => [
+    {
       pk: 1,
       type: "All",
     },
 
-   
     {
       pk: 2,
-      type: "AKOKO EDO",
+      type: "JSS",
     },
     {
       pk: 3,
-      type: "EGOR",
+      type: "Primary",
     },
     {
       pk: 4,
-      type: "ESAN CENTRAL",
+      type: "Progressive",
     },
-    {
-      pk: 5,
-      type: "ESAN NORTH EAST",
-    },
-    {
-      pk: 6,
-      type: "ESAN SOUTH EAST",
-    },
-    {
-      pk: 7,
-      type: "ESAN WEST",
-    },
-    {
-      pk: 8,
-      type: "ETSAKO CENTRAL",
-    },
-    {
-      pk: 9,
-      type: "ETSAKO EAST",
-    },
-    {
-      pk: 10,
-      type: "ETSAKO WEST",
-    },
-    {
-      pk: 11,
-      type: "IGUEBEN",
-    },
-    {
-      pk: 12,
-      type: "IKPOBA OKHA",
-    },
-    {
-      pk: 13,
-      type: "OREDO",
-    },
-    {
-      pk: 14,
-      type: "ORHIONMWON",
-    },
-    {
-      pk: 15,
-      type: "OVIA NORTH EAST",
-    },
-    {
-      pk: 16,
-      type: "OVIA SOUTH WEST",
-    },
-    {
-      pk: 17,
-      type: "OWAN EAST",
-    },
-    {
-      pk: 18,
-      type: "OWAN WEST",
-    },
-    {
-      pk: 19,
-      type: "UHUNMWODE",
-    },
-
-  ], []);
-
-  const filterOptionForType = useMemo(()=>[
-
- 
-   {
-    pk:1,
-    type:'All'
-   },
-
-    {
-      pk: 2,
-      type: 'JSS'
-    },
-    {
-      pk: 3,
-      type: 'Primary'
-    },
-    {
-      pk: 4,
-      type: 'Progressive'
-    }
-  ])
+  ]);
 
   const handleComfirmationPopUps = (messageInfo, messageBgColor) => {
     setmessage(messageInfo);
@@ -409,22 +402,21 @@ function AdminDashboard() {
     },
     {
       pk: 2,
-      type:'pdf'
-    }
-   
+      type: "pdf",
+    },
   ];
   const handlePreviousPage = () => {
-    setCurrentPage(prev => Math.max(prev - 1, 0));
+    setCurrentPage((prev) => Math.max(prev - 1, 0));
   };
 
   const handleNextPage = () => {
-    setCurrentPage(prev => Math.min(prev + 1, totalPages - 1));
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
   };
   const Bardata = {
     // labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
 
-    labels: paginatedData.map(item => item.item_name),
-   
+    labels: paginatedData.map((item) => item.item_name),
+
     datasets: [
       {
         label: "Stock Level",
@@ -433,7 +425,7 @@ function AdminDashboard() {
         borderWidth: 1,
         hoverBackgroundColor: "rgba(146, 216, 200, 1)",
         hoverBorderColor: "rgba(75,192,192,1)",
-        data: paginatedData.map(item => item.quantity),
+        data: paginatedData.map((item) => item.quantity),
       },
     ],
   };
@@ -480,12 +472,19 @@ function AdminDashboard() {
   };
 
   const Piedata = {
-
-
-    labels: getItemsData.map(item=>item.item_name)||["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    labels: getItemsData.map((item) => item.item_name) || [
+      "Red",
+      "Blue",
+      "Yellow",
+      "Green",
+      "Purple",
+      "Orange",
+    ],
     datasets: [
       {
-        data: getItemsData.map(item=>item.quantity) ||[300, 50, 100, 40, 120, 75],
+        data: getItemsData.map((item) => item.quantity) || [
+          300, 50, 100, 40, 120, 75,
+        ],
         backgroundColor: [
           "#FF6384",
           "#36A2EB",
@@ -584,13 +583,11 @@ function AdminDashboard() {
     },
   };
 
- 
-
   const [showModal, setShowModal] = useState(false);
 
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
-  
+
   return (
     <div>
       <NavigationHeader toggleSidebar={toggleSidebar} />
@@ -605,141 +602,167 @@ function AdminDashboard() {
                 />
               )
             : null}
-          
 
-  {/* Header Section */}
-  <div className="d-flex justify-content-between align-items-center mb-3">
-    <TitleHeader text={"Dashboard"} />
-    
-  </div>
+          {/* Header Section */}
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <TitleHeader text={"Dashboard"} />
+          </div>
 
-  {/* Button Section */}
-  <Row className="mb-3">
-    <Col lg={3} md={3} xl={3} sm={6} xs={6} className="mb-2">
-      <Button
-        variant="primary"
-        onClick={handleShow}
-        className="InventoryReportButton"
-      >
-        View Low Stock Items
-      </Button>
-    </Col>
-    <Col lg={3} md={3} xl={3} sm={6} xs={6} className="mb-2">
-      <PrimaryButton
-        text={"Add New Item"}
-        Primarystyle={"InventoryReportButton"}
-        clickEvent={() => navigate('/AddNewItem')}
-      />
-    </Col>
-    <Col lg={3} md={3} xl={3} sm={6} xs={6}>
-      <PrimaryButton
-        text={"Generate Inventory Report"}
-        Primarystyle={"InventoryReportButton"}
-        clickEvent={handleGenerateReport}
-      />
-    </Col>
-    <Col lg={3} md={3} xl={3} sm={6} xs={6}>
-      <PrimaryButton
-        text={"Send Push Notification"}
-        Primarystyle={"InventoryReportButton"}
-        clickEvent={handlePushNotification}
-      />
-    </Col>
-  </Row>
+          {/* Button Section */}
+          <Row className="mb-3">
+            <Col lg={3} md={3} xl={3} sm={6} xs={6} className="mb-2">
+              <Button
+                variant="primary"
+                onClick={handleShow}
+                className="InventoryReportButton"
+              >
+                View Low Stock Items
+              </Button>
+            </Col>
+            <Col lg={3} md={3} xl={3} sm={6} xs={6} className="mb-2">
+              <PrimaryButton
+                text={"Add New Item"}
+                Primarystyle={"InventoryReportButton"}
+                clickEvent={() => navigate("/AddNewItem")}
+              />
+            </Col>
+            <Col lg={3} md={3} xl={3} sm={6} xs={6}>
+              <PrimaryButton
+                text={"Generate Inventory Report"}
+                Primarystyle={"InventoryReportButton"}
+                clickEvent={handleGenerateReport}
+              />
+            </Col>
+            <Col lg={3} md={3} xl={3} sm={6} xs={6}>
+              <PrimaryButton
+                text={"Send Push Notification"}
+                Primarystyle={"InventoryReportButton"}
+                clickEvent={handlePushNotification}
+              />
+            </Col>
+          </Row>
 
-  {/* UserBox Section */}
-  <UserBox items={lowItems} show={showModal} handleClose={handleClose} />
+          {/* UserBox Section */}
+          <UserBox
+            items={lowItems}
+            show={showModal}
+            handleClose={handleClose}
+          />
 
-  
-  {/* Filter Section */}
-  
-  <Row className="mb-3 mt-3">
-    <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-      <div className="d-flex justify-content-between align-items-center">
-        <TitleHeader
-          text={"Material Availability Overview"}
-          headerTextStyle={"headerTextStyle"}
-        />
-        <Form.Control
-          type="date"
-          placeholder="Minimum Stock Level"
-          className="pushNotificationTitle"
-          style={{ width: 150 }}
-        />
-        <div className="d-none d-lg-flex" style={{gap:20}}>
-        <Filter
-          optionTitle={"School Type"}
-          options={filterOptionForType}
-          defult={"All"}
-          onSelect={(value) => setFilter(value)}
-          
-        />
-        <Filter
-          optionTitle={"LGA"}
-          options={filterOptionforLGA}
-          defult={"All"}
-          onSelect={(value) => setFilter(value)}
-        />
-        </div>
-      </div>
-      <div className="d-lg-none d-flex justify-content-end mt-3">
-        <Filter
-          optionTitle={"School Type"}
-          options={filterOptionForType}
-          defult={"All"}
-          onSelect={(value) => setFilter(value)}
-        />
-        <Filter
-          optionTitle={"LGA"}
-          options={filterOptionforLGA}
-          defult={"All"}
-          onSelect={(value) => setFilter(value)}
-        />
-      </div>
-    </Col>
-  </Row>
+          {/* Filter Section */}
 
-  {/* Presentation Section */}
-       <Row className="mb-3">
-    <Col lg={6} md={12} xl={4} sm={12} xs={12} className="mb-2">
-      <Row className="mb-3">
-        <PresentaionCard
-          title={"Total EdoSUBEB Schools"}
-          image={inventoryImage}
-          figure={count ? count : 0}
-          margin={`${SchoolTrend === 'up' ? '↑' : SchoolTrend === 'down' ? '↓' : '~'} ${SchoolDifference}`}
-          marginColor={SchoolTrend === 'up' ? 'text-success' : SchoolTrend === 'down' ? 'text-danger' : 'text-primary'}
-        />
-      </Row>
-      <Row className="mb-3">
-        <PresentaionCard
-          title={"Total Items"}
-          image={schoolImage}
-          figure={getItemsData ? getItemsData.length : 0}
-          margin={`${InvetoryTrend === 'up' ? '↑' : InvetoryTrend === 'down' ? '↓' : '~'} ${InvetoryDifference}`}
-          marginColor={InvetoryTrend === 'up' ? 'text-success' : InvetoryTrend === 'down' ? 'text-danger' : 'text-primary'}
-        />
-      </Row>
-    </Col>
-    <Col lg={6} md={12} xl={8} sm={12} xs={12}>
-      {/* <BarGraph data={Bardata} options={Baroptions} /> */}
-      <UserBox items={lowItems} show={showModal} handleClose={handleClose} />
-      <div style={{ width: 150, margin: 'auto' }}>
-        <FontAwesomeIcon
-          icon={faArrowLeft}
-          className="mt-3 mx-3 fa-2x backButtonIcon"
-          onClick={handlePreviousPage}
-        />
-        <FontAwesomeIcon
-          icon={faArrowRight}
-          className="mt-3 mx-3 fa-2x backButtonIcon"
-          onClick={handleNextPage}
-        />
-      </div>
-    </Col>
-        </Row>
- 
+          <Row className="mb-3 mt-3">
+            <Col lg={12} md={12} xl={12} sm={12} xs={12}>
+              <div className="d-flex justify-content-between align-items-center">
+                <TitleHeader
+                  text={"Material Availability Overview"}
+                  headerTextStyle={"headerTextStyle"}
+                />
+                <Form.Control
+                  type="date"
+                  placeholder="Minimum Stock Level"
+                  className="pushNotificationTitle"
+                  style={{ width: 150 }}
+                />
+                <div className="d-none d-lg-flex" style={{ gap: 20 }}>
+                  <Filter
+                    optionTitle={"School Type"}
+                    options={filterOptionForType}
+                    defult={"All"}
+                    onSelect={(value) => setFilter(value)}
+                  />
+                  <Filter
+                    optionTitle={"LGA"}
+                    options={filterOptionforLGA}
+                    defult={"All"}
+                    onSelect={(value) => setFilter(value)}
+                  />
+                </div>
+              </div>
+              <div className="d-lg-none d-flex justify-content-end mt-3">
+                <Filter
+                  optionTitle={"School Type"}
+                  options={filterOptionForType}
+                  defult={"All"}
+                  onSelect={(value) => setFilter(value)}
+                />
+                <Filter
+                  optionTitle={"LGA"}
+                  options={filterOptionforLGA}
+                  defult={"All"}
+                  onSelect={(value) => setFilter(value)}
+                />
+              </div>
+            </Col>
+          </Row>
 
+          {/* Presentation Section */}
+          <Row className="mb-3">
+            <Col lg={6} md={12} xl={4} sm={12} xs={12} className="mb-2">
+              <Row className="mb-3">
+                <PresentaionCard
+                  title={"Total EdoSUBEB Schools"}
+                  image={inventoryImage}
+                  figure={count ? count : 0}
+                  margin={`${
+                    SchoolTrend === "up"
+                      ? "↑"
+                      : SchoolTrend === "down"
+                      ? "↓"
+                      : "~"
+                  } ${SchoolDifference}`}
+                  marginColor={
+                    SchoolTrend === "up"
+                      ? "text-success"
+                      : SchoolTrend === "down"
+                      ? "text-danger"
+                      : "text-primary"
+                  }
+                />
+              </Row>
+              <Row className="mb-3">
+                <PresentaionCard
+                  title={"Total Items"}
+                  image={schoolImage}
+                  figure={getItemsData ? getItemsData.length : 0}
+                  margin={`${
+                    InvetoryTrend === "up"
+                      ? "↑"
+                      : InvetoryTrend === "down"
+                      ? "↓"
+                      : "~"
+                  } ${InvetoryDifference}`}
+                  marginColor={
+                    InvetoryTrend === "up"
+                      ? "text-success"
+                      : InvetoryTrend === "down"
+                      ? "text-danger"
+                      : "text-primary"
+                  }
+                />
+              </Row>
+            </Col>
+            <Col lg={6} md={12} xl={8} sm={12} xs={12}>
+              <BarGraph data={Bardata} options={Baroptions} />
+              <UserBox
+                items={lowItems}
+                show={showModal}
+                handleClose={handleClose}
+              />
+              <div style={{ width: 150, margin: "auto" }}>
+                <FontAwesomeIcon
+                  icon={faArrowLeft}
+                  className="mt-3 mx-3 fa-2x backButtonIcon"
+                  onClick={handlePreviousPage}
+                />
+                <FontAwesomeIcon
+                  icon={faArrowRight}
+                  className="mt-3 mx-3 fa-2x backButtonIcon"
+                  onClick={handleNextPage}
+                />
+              </div>
+            </Col>
+          </Row>
 
           {/* <Row className="d-none d-lg-flex mobileCreateButton my-3">
             <Col className="d-flex justify-content-end">
@@ -766,12 +789,12 @@ function AdminDashboard() {
                 options={""}
                 defult={""}
               /> */}
-              {/* <Filter
+          {/* <Filter
                 optionTitle={"Sort by"}
                 // options={filterData}
                 defult={"All"}
               /> */}
-            {/* </Col> */}
+          {/* </Col> */}
           {/* </Row> */}
           {/* <Row className="mb-3">
             <Col lg={6} md={6} xl={4} sm={12} xs={12} className="mb-3">
@@ -924,12 +947,10 @@ function AdminDashboard() {
               </Card>
             </Col>
           </Row>
-         </Container>
+        </Container>
       </div>
     </div>
   );
 }
 
-
 export default AdminDashboard;
-

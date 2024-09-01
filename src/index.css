@@ -1,17 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap");
+
 :root {
   --background-color-dark: rgba(0, 0, 0, 1);
   --text-color-dark: rgba(242, 242, 242, 1);
   --background-color-light: rgba(242, 242, 242, 1);
   --text-color-light: rgba(0, 0, 0, 1);
 }
-html[data-theme='light'] {
+html[data-theme="light"] {
   --background-color: var(--background-color-light);
   --text-color: var(--text-color-light);
 }
 
-html[data-theme='dark'] {
+html[data-theme="dark"] {
   --background-color: var(--background-color-dark);
   --text-color: var(--text-color-dark);
+}
+
+body {
+  font-family: "Lora", Times, serif;
 }
 
 .reportContainer,
@@ -24,5 +30,3 @@ html[data-theme='dark'] {
 /* h1, h2, h3, h4, h5, h6, p, a, span, div {
   color: var(--text-color) !important;
 } */
-
-

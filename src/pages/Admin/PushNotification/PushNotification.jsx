@@ -11,10 +11,45 @@ import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons/faClockRota
 import { faPaperclip } from "@fortawesome/free-solid-svg-icons/faPaperclip";
 import CustomFileInput from "../../../components/CustomFileInput/CustomFileInput";
 
-
 function PushNotification() {
   const fileInputRef = useRef(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [message, setmessage] = useState("");
+  const [messageColor, setmessageColor] = useState("");
+  const [buttonLoading, setButtonLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    setloginIsLoading(true);
+    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+    e.preventDefault();
+    const formData = {
+      title: e.target.title.value,
+      body: e.target.body.value,
+    };
+    try {
+      console.log("Submitted");
+      // const result = await axios.post(`${baseUrl}/api/notification`, formData);
+      // if (result.data.status === "inactive") {
+      //   setloginError("Account Deactived");
+      // } else {
+      //   setUserData(result.data.user);
+      //   setUserToken(result.data.token);
+      //   sessionStorage.setItem("edoUserData", JSON.stringify(result.data.user));
+      //   sessionStorage.setItem(
+      //     "edoUserToken",
+      //     JSON.stringify(result.data.token)
+      //   );
+      //   const response = await axios.get(
+      //     `${baseUrl}/api/user/${result.data.user.id}`
+      //   );
+      //   setMessage(response.data.user.message_count);
+      // }
+    } catch (error) {
+      setloginError(error.response.data.message);
+    } finally {
+      setloginIsLoading(false);
+    }
+  };
 
   const handleFileChange = (event) => {
     const fileName = event.target.files[0]?.name || "Choose a file";
@@ -62,7 +97,7 @@ function PushNotification() {
               />
             </Col>
           </Row>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="notificationTitle">
               <Row>
                 <Col lg={8} md={8} xl={8} sm={12} xs={12}>
@@ -70,6 +105,8 @@ function PushNotification() {
                     type="text"
                     placeholder="Notification Title"
                     className="pushNotificationTitle"
+                    name="title"
+                    required
                   />
                 </Col>
               </Row>
@@ -83,6 +120,8 @@ function PushNotification() {
                     rows={6}
                     placeholder="Enter your message here..."
                     className="pushNotificationTextArea"
+                    name="body"
+                    required
                   />
                 </Form.Group>
               </Col>
@@ -92,12 +131,16 @@ function PushNotification() {
               <Col xs={12} lg={3} sm={12} className="mb-2 mb-lg-0">
                 <Form.Control
                   type="file"
-                  id="fileInput" 
+                  id="fileInput"
                   ref={fileInputRef}
                   onChange={handleFileChange}
                   style={{ display: "none" }}
                 />
-                <CustomFileInput fieldName={'fileInput'} title={'Attach File'} icon={faPaperclip}/>
+                <CustomFileInput
+                  fieldName={"fileInput"}
+                  title={"Attach File"}
+                  icon={faPaperclip}
+                />
               </Col>
             </Row>
             <Row>
@@ -107,7 +150,7 @@ function PushNotification() {
                 sm={12}
                 className="text-end d-flex justify-content-between"
               >
-                <Button variant="success" className="w-100">
+                <Button type="submit" variant="success" className="w-100">
                   Send Notification
                 </Button>
 
