@@ -13,7 +13,15 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Form,
+  Button,
+  Table,
+} from "react-bootstrap";
 import "./AdminDashboard.css";
 import NavigationHeader from "../../../components/Navigations/NavigationHeader";
 import SideNavigation from "../../../components/Navigations/SideNavigation";
@@ -144,9 +152,16 @@ function AdminDashboard() {
   useEffect(() => {
     getLogs();
   }, []);
-  const getLowStockItems = () => {
-    const low = originalItems.filter((item) => item.quantity < 20);
-    setLowItems(low);
+
+  const getLowStockItems = async () => {
+    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+    try {
+      const response = await axios.get(`${baseUrl}/api/item/low-stock-items`);
+
+      setLowItems(response.data.items);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -743,13 +758,45 @@ function AdminDashboard() {
               </Row>
             </Col>
             <Col lg={6} md={12} xl={8} sm={12} xs={12}>
-              <BarGraph data={Bardata} options={Baroptions} />
-              <UserBox
-                items={lowItems}
-                show={showModal}
-                handleClose={handleClose}
-              />
-              <div style={{ width: 150, margin: "auto" }}>
+              {/* <BarGraph data={Bardata} options={Baroptions} /> */}
+              <h3 className="px-2">Low Stock Items</h3>
+              <Container>
+                <div style={{ maxHeight: "400px", overflowY: "auto" }}>
+                  <Table
+                    responsive="lg"
+                    striped
+                    bordered
+                    hover
+                    className="mt-3"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Item Name</th>
+                        <th>Item Code</th>
+                        <th className="">Barcode ID</th>
+                        <th className="">Category</th>
+                        <th>Quantity</th>
+
+                        <th>School</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {lowItems.map((item, index) => (
+                        <tr key={index}>
+                          <td>{item.item_name}</td>
+                          <td>{item.item_code}</td>
+                          <td className="">{item.barcode_id}</td>
+                          <td className="">{item.subject_category}</td>
+                          <td>{item.quantity}</td>
+                          <td>{item.school}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+              </Container>
+
+              {/* <div style={{ width: 150, margin: "auto" }}>
                 <FontAwesomeIcon
                   icon={faArrowLeft}
                   className="mt-3 mx-3 fa-2x backButtonIcon"
@@ -760,7 +807,7 @@ function AdminDashboard() {
                   className="mt-3 mx-3 fa-2x backButtonIcon"
                   onClick={handleNextPage}
                 />
-              </div>
+              </div> */}
             </Col>
           </Row>
 

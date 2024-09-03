@@ -1,7 +1,10 @@
-import React from 'react';
-import { Modal, Container, Table } from 'react-bootstrap';
+import React from "react";
+import { Modal, Container, Table } from "react-bootstrap";
 
 export const UserBox = ({ items, show, handleClose }) => {
+  let allLowItems = items;
+  console.log("UserBox");
+  console.log(allLowItems);
   return (
     <Modal show={show} onHide={handleClose} size="xl">
       <Modal.Header closeButton>
@@ -9,7 +12,7 @@ export const UserBox = ({ items, show, handleClose }) => {
       </Modal.Header>
       <Modal.Body>
         <Container>
-          <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+          <div style={{ maxHeight: "400px", overflowY: "auto" }}>
             <Table responsive="lg" striped bordered hover className="mt-3">
               <thead>
                 <tr>
@@ -18,7 +21,7 @@ export const UserBox = ({ items, show, handleClose }) => {
                   <th className="">Barcode ID</th>
                   <th className="">Category</th>
                   <th>Quantity</th>
-                  
+
                   <th>School</th>
                 </tr>
               </thead>
