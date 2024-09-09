@@ -3,8 +3,7 @@ import { Modal, Container, Table } from "react-bootstrap";
 
 export const UserBox = ({ items, show, handleClose }) => {
   let allLowItems = items;
-  console.log("UserBox");
-  console.log(allLowItems);
+
   return (
     <Modal show={show} onHide={handleClose} size="xl">
       <Modal.Header closeButton>
