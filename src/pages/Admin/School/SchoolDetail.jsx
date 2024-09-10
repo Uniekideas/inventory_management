@@ -40,7 +40,6 @@ function SchoolDetail() {
     getSingleSchool(pk);
   }, []);
 
-
   useEffect(() => {
     if (!deleteSchoolIsLoading && deleteSchoolResponse) {
       navigate("/SchoolsManagement", {
@@ -51,7 +50,7 @@ function SchoolDetail() {
 
   useEffect(() => {
     if (!deleteSchoolIsLoading && deleteSchoolError) {
-      scrollToTop()
+      scrollToTop();
       handleComfirmationPopUps(deleteSchoolError, "bg-danger");
       setButtonLoading(false);
     }
@@ -120,72 +119,150 @@ function SchoolDetail() {
             </Container>
           ) : (
             <div>
-          <Row className="itemDetailMainRow mb-2">
-            <TitleHeader text={"School Information  "} headerTextStyle={'headerTextStyle'}/>
-            <Row className="mb-4 align-items-center">
-                {/* <Col className="itemHeaderText">School Logo:<Image src={getSingleSchoolData.school_image} rounded width="50" height="50" className="mx-2" /></Col> */}
-            </Row>
-            <Row className="mb-4 align-items-center">
-                <Col className="itemHeaderText">School Name: <b className="itemDetailText mx-2">{getSingleSchoolData.name}</b> </Col>
-            </Row>
-            <Row className="mb-4 align-items-center">
-                <Col className="itemHeaderText">School Level: <b className="itemDetailText mx-2">{getSingleSchoolData.level}</b> </Col>
-            </Row>
-            <Row className="mb-4 align-items-center">
-                <Col className="itemHeaderText">School Website: <b className="itemDetailText mx-2">{getSingleSchoolData.website}</b> </Col>
-            </Row>
-            <Row className="mb-4 align-items-center">
-                <Col className="itemHeaderText">School Email Address: <b className="itemDetailText mx-2">{getSingleSchoolData.email}</b> </Col>
-            </Row>
-            <Row className="mb-4 align-items-center">
-                <Col className="itemHeaderText">School Phone Number: <b className="itemDetailText mx-2">{getSingleSchoolData.phone_number}</b> </Col>
-            </Row>
-          </Row>
-          <Row className="itemDetailMainRow mb-2">
-            <TitleHeader text={"Location Details "} headerTextStyle={'headerTextStyle'}/>
-            <Row className="mb-4 align-items-center">
-                <Col className="itemHeaderText">Address: <b className="itemDetailText mx-2">{getSingleSchoolData.address}</b> </Col>
-            </Row>
-            <Row className="mb-4 align-items-center">
-                <Col className="itemHeaderText">City: <b className="itemDetailText mx-2">{getSingleSchoolData.city}</b> </Col>
-            </Row>
-            <Row className="mb-4 align-items-center">
-                <Col className="itemHeaderText">Local Government Area: <b className="itemDetailText mx-2">{getSingleSchoolData.lga}</b> </Col>
-            </Row>
-            <Row className="mb-4 align-items-center">
-                <Col className="itemHeaderText">Postal Code: <b className="itemDetailText mx-2">{getSingleSchoolData.postal_code}</b> </Col>
-            </Row>
-          </Row>
-          <Row className="itemDetailMainRow mb-2">
-            <TitleHeader text={"Additional Information "} headerTextStyle={'headerTextStyle'}/>
-            <Row className="mb-4 align-items-center">
-                <Col className="itemHeaderText">Date Established: <b className="itemDetailText mx-2">{convertDate(getSingleSchoolData.created_at)}</b> </Col>
-            </Row>
-            <Row className="mb-4 align-items-center">
-                <Col className="itemHeaderText">Number Of Staff: <b className="itemDetailText mx-2">123</b> </Col>
-            </Row>
-            <Row className="mb-4 align-items-center">
-                <Col className="itemHeaderText">Number Of Student : <b className="itemDetailText mx-2">456</b> </Col>
-            </Row>
-            <Row className="mb-4 align-items-center">
-                <Col className="itemHeaderText">Custom Fields: <b className="itemDetailText mx-2">__</b> </Col>
-            </Row> 
-          </Row>
-          <Row>
-          <Col xl={12} lg={12} md={12} xs={12} sm={12} className="mb-2">
-              <PrimaryButton text={'Edit School Data'} Primarystyle={'w-100 itemDetailEditButton'} clickEvent={() => handleEdit()}/>
-          </Col>
+              <Row className="itemDetailMainRow mb-2">
+                <div>
+                  <TitleHeader
+                    text={"School Information  "}
+                    headerTextStyle={"headerTextStyle"}
+                  />
+                  <button>Hello</button>
+                </div>
 
-          <Col xl={12} lg={12} md={12} xs={12} sm={12}>
-              <Button className="w-100 itemDetailEditButton bg-danger" onClick={handleDeleteSubmit}>
-              {
-              buttonLoading? <FontAwesomeIcon icon={faSpinner} spin size="2x" /> :'Delete School Data'
-              }
-              </Button>
-          </Col>
+                <Row className="mb-4 align-items-center">
+                  {/* <Col className="itemHeaderText">School Logo:<Image src={getSingleSchoolData.school_image} rounded width="50" height="50" className="mx-2" /></Col> */}
+                </Row>
+                <Row className="mb-4 align-items-center">
+                  <Col className="itemHeaderText">
+                    School Name:{" "}
+                    <b className="itemDetailText mx-2">
+                      {getSingleSchoolData.name}
+                    </b>{" "}
+                  </Col>
+                </Row>
+                <Row className="mb-4 align-items-center">
+                  <Col className="itemHeaderText">
+                    School Level:{" "}
+                    <b className="itemDetailText mx-2">
+                      {getSingleSchoolData.level}
+                    </b>{" "}
+                  </Col>
+                </Row>
+                <Row className="mb-4 align-items-center">
+                  <Col className="itemHeaderText">
+                    School Website:{" "}
+                    <b className="itemDetailText mx-2">
+                      {getSingleSchoolData.website}
+                    </b>{" "}
+                  </Col>
+                </Row>
+                <Row className="mb-4 align-items-center">
+                  <Col className="itemHeaderText">
+                    School Email Address:{" "}
+                    <b className="itemDetailText mx-2">
+                      {getSingleSchoolData.email}
+                    </b>{" "}
+                  </Col>
+                </Row>
+                <Row className="mb-4 align-items-center">
+                  <Col className="itemHeaderText">
+                    School Phone Number:{" "}
+                    <b className="itemDetailText mx-2">
+                      {getSingleSchoolData.phone_number}
+                    </b>{" "}
+                  </Col>
+                </Row>
+              </Row>
+              <Row className="itemDetailMainRow mb-2">
+                <TitleHeader
+                  text={"Location Details "}
+                  headerTextStyle={"headerTextStyle"}
+                />
+                <Row className="mb-4 align-items-center">
+                  <Col className="itemHeaderText">
+                    Address:{" "}
+                    <b className="itemDetailText mx-2">
+                      {getSingleSchoolData.address}
+                    </b>{" "}
+                  </Col>
+                </Row>
+                <Row className="mb-4 align-items-center">
+                  <Col className="itemHeaderText">
+                    City:{" "}
+                    <b className="itemDetailText mx-2">
+                      {getSingleSchoolData.city}
+                    </b>{" "}
+                  </Col>
+                </Row>
+                <Row className="mb-4 align-items-center">
+                  <Col className="itemHeaderText">
+                    Local Government Area:{" "}
+                    <b className="itemDetailText mx-2">
+                      {getSingleSchoolData.lga}
+                    </b>{" "}
+                  </Col>
+                </Row>
+                <Row className="mb-4 align-items-center">
+                  <Col className="itemHeaderText">
+                    Postal Code:{" "}
+                    <b className="itemDetailText mx-2">
+                      {getSingleSchoolData.postal_code}
+                    </b>{" "}
+                  </Col>
+                </Row>
+              </Row>
+              <Row className="itemDetailMainRow mb-2">
+                <TitleHeader
+                  text={"Additional Information "}
+                  headerTextStyle={"headerTextStyle"}
+                />
+                <Row className="mb-4 align-items-center">
+                  <Col className="itemHeaderText">
+                    Date Established:{" "}
+                    <b className="itemDetailText mx-2">
+                      {convertDate(getSingleSchoolData.created_at)}
+                    </b>{" "}
+                  </Col>
+                </Row>
+                <Row className="mb-4 align-items-center">
+                  <Col className="itemHeaderText">
+                    Number Of Staff: <b className="itemDetailText mx-2">123</b>{" "}
+                  </Col>
+                </Row>
+                <Row className="mb-4 align-items-center">
+                  <Col className="itemHeaderText">
+                    Number Of Student :{" "}
+                    <b className="itemDetailText mx-2">456</b>{" "}
+                  </Col>
+                </Row>
+                <Row className="mb-4 align-items-center">
+                  <Col className="itemHeaderText">
+                    Custom Fields: <b className="itemDetailText mx-2">__</b>{" "}
+                  </Col>
+                </Row>
+              </Row>
+              <Row>
+                <Col xl={12} lg={12} md={12} xs={12} sm={12} className="mb-2">
+                  <PrimaryButton
+                    text={"Edit School Data"}
+                    Primarystyle={"w-100 itemDetailEditButton"}
+                    clickEvent={() => handleEdit()}
+                  />
+                </Col>
 
-          </Row>
-          </div>
+                <Col xl={12} lg={12} md={12} xs={12} sm={12}>
+                  <Button
+                    className="w-100 itemDetailEditButton bg-danger"
+                    onClick={handleDeleteSubmit}
+                  >
+                    {buttonLoading ? (
+                      <FontAwesomeIcon icon={faSpinner} spin size="2x" />
+                    ) : (
+                      "Delete School Data"
+                    )}
+                  </Button>
+                </Col>
+              </Row>
+            </div>
           )}
         </Container>
       </div>
