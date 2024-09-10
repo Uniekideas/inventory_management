@@ -7,6 +7,7 @@ export default SchoolContext;
 
 export const SchoolProvider = ({ children }) => {
   const [getSchoolsData, setGetSchoolsData] = useState([]);
+  const [getSchoolTotal, setGetSchoolTotal] = useState(0);
   const [getSchoolsError, setGetSchoolsError] = useState(null);
   const [getSchoolsIsLoading, setGetSchoolsIsLoading] = useState(true);
 
@@ -41,12 +42,13 @@ export const SchoolProvider = ({ children }) => {
   const { handleAddFile, addFileError } = useContext(GeneralContext);
 
   const getSchools = async () => {
-    setGetSchoolsIsLoading(true); 
+    setGetSchoolsIsLoading(true);
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
     try {
       const response = await axios.get(`${baseUrl}/api/school`);
-      
+
       setGetSchoolsData(response.data.schools);
+      setGetSchoolTotal(response.data.pagination.total);
     } catch (error) {
       setGetSchoolsError(error);
     } finally {
@@ -102,7 +104,6 @@ export const SchoolProvider = ({ children }) => {
       try {
         const result = await axios.post(`${baseUrl}/api/school`, formData);
         setAddSchoolResponse(result.data);
-        
       } catch (error) {
         setAddSchoolError(error.response.data.message);
         console.log(error);
@@ -184,9 +185,9 @@ export const SchoolProvider = ({ children }) => {
     handleEditSchool: handleEditSchool,
     seteditSchoolResponse: seteditSchoolResponse,
     seteditSchoolError: seteditSchoolError,
-
     getSchoolsIsLoading: getSchoolsIsLoading,
     getSchoolsError: getSchoolsError,
+    getSchoolTotal: getSchoolTotal,
     getSchoolsData: getSchoolsData,
     addSchoolResponse: addSchoolResponse,
     addSchoolIsLoading: addSchoolIsLoading,
