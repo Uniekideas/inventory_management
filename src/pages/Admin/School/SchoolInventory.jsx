@@ -116,7 +116,7 @@ function SchoolInventory({ Searchstyle, searchText }) {
 
   const handleFilterSortSearch = () => {
     let filtered = filteredData;
-    let SearchData = filteredData;
+    const searchData = filteredData;
 
     if (filterBy && filterBy !== "All") {
       filtered = filtered.filter((item) => item.subject_category === filterBy);
@@ -132,12 +132,16 @@ function SchoolInventory({ Searchstyle, searchText }) {
       });
     }
 
-    if (searchTerm) {
+    if (searchTerm.length) {
       filtered = filtered.filter((item) =>
         item.item_name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       console.log("search");
       console.log(filtered);
+      console.log("data");
+      console.log(filteredData);
+    } else {
+      setFilteredData(searchData);
     }
 
     setFilteredData(filtered);

@@ -27,7 +27,9 @@ function SignUp() {
 
   useEffect(() => {
     if (!signInIsLoading && sigUpResponse) {
-      navigate("/Login", { state: { message: 'Signup successful, please login' } });
+      navigate("/Login", {
+        state: { message: "Signup successful, please login" },
+      });
       setSigUpResponse(null);
     }
   }, [signInIsLoading, sigUpResponse, navigate]);
@@ -106,10 +108,11 @@ function SignUp() {
                     required
                     defaultValue=""
                   >
-                    <option value="" disabled hidden>Role</option>
+                    <option value="" disabled hidden>
+                      Role
+                    </option>
                     <option value="qa">QA</option>
-                    <option value="admin">Admin</option>
-                    {/* <option value="head-teacher">HeadTeacher</option> */}
+                    <option value="head-teacher">HeadTeacher</option>
                     <option value="warehouse-staff">WareHouseStaff</option>
                   </Form.Select>
                 </Col>
@@ -129,7 +132,6 @@ function SignUp() {
                 placeholder="phone number"
                 className="mb-3 inputField"
                 name="phone_number"
-                 
               />
             </Form.Group>
             <Form.Group controlId="formEmail">
@@ -138,7 +140,6 @@ function SignUp() {
                 placeholder="Oracle ID or Email Address"
                 className="mb-3 inputField"
                 name="email"
-                
               />
             </Form.Group>
             <Form.Group controlId="formPassword">
@@ -175,6 +176,7 @@ function SignUp() {
           <Outlet />
         </Col>
       </Row>
+      {/* <option value="admin">Admin</option> */}
     </Container>
   );
 }
