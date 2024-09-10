@@ -133,7 +133,7 @@ function SchoolInventory({ Searchstyle, searchText }) {
     }
 
     if (searchTerm) {
-      filtered = filteredData.filter((item) =>
+      filtered = filtered.filter((item) =>
         item.item_name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       console.log("search");
