@@ -55,6 +55,7 @@ import QualityPushNotification from "../../pages/QualityAssurance/QualityPushNot
 import EditSchool from "../../pages/Admin/School/EditSchool";
 import EditUser from "../../pages/Admin/User/EditUser";
 import EditItem from "../../pages/Admin/Inventory/EditItem";
+import SchoolInventory from "../../pages/Admin/School/SchoolInventory";
 import Forgotemail from "../../pages/Admin/Authentication/Forgotpassword/Forgotemail";
 import ResetPassword from "../../pages/Admin/Authentication/Forgotpassword/Forgetpasswords";
 import ForgotPasswordPage from "../../pages/Admin/Authentication/Forgotpassword/Forgotemail";
@@ -136,6 +137,7 @@ function NavigationControl() {
             <Route path="/AddSchool" element={<AddSchool />} />
             <Route path="/GenerateInventory" element={<GenerateInventory />} />
             <Route path="/SchoolDetail/:pk" element={<SchoolDetail />} />
+            <Route path="/SchoolInventory/:pk" element={<SchoolInventory />} />
             <Route path="/EditSchool/:pk" element={<EditSchool />} />
             <Route path="/UserDetail/:pk" element={<UserDetail />} />
             <Route path="/EditUser/:pk" element={<EditUser />} />

@@ -91,6 +91,10 @@ function SchoolDetail() {
     navigate(`/EditSchool/${pk}`);
   };
 
+  const viewSchoolInventory = () => {
+    navigate(`/SchoolInventory/${pk}`);
+  };
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -120,12 +124,22 @@ function SchoolDetail() {
           ) : (
             <div>
               <Row className="itemDetailMainRow mb-2">
-                <div>
-                  <TitleHeader
-                    text={"School Information  "}
-                    headerTextStyle={"headerTextStyle"}
-                  />
-                  <button>Hello</button>
+                <div className="row justify-content-between">
+                  <div className="col">
+                    <TitleHeader
+                      text={"School Information  "}
+                      headerTextStyle={"headerTextStyle"}
+                    />
+                  </div>
+                  <div className="col text-end">
+                    <PrimaryButton
+                      text={"Inventory"}
+                      Primarystyle={"InventoryReportButton"}
+                      clickEvent={() =>
+                        viewSchoolInventory(getSingleSchoolData.id)
+                      }
+                    />
+                  </div>
                 </div>
 
                 <Row className="mb-4 align-items-center">

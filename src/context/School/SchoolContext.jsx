@@ -61,6 +61,7 @@ export const SchoolProvider = ({ children }) => {
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
     try {
       const response = await axios.get(`${baseUrl}/api/school/${pk}`);
+      console.log(response.data);
       setGetSingleSchoolData(response.data.school);
       seteditedFormData({
         name: response.data.school.name,
