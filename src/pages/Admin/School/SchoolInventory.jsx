@@ -70,7 +70,6 @@ function SchoolInventory({ Searchstyle, searchText }) {
       setSchoolName(response.data.school.name);
       setItemsCount(response.data.pagination.total);
       setLowItemsCount(lowStock);
-      console.log(response.data.items);
       setFilteredData(response.data.items);
     } catch (error) {
       console.log(error);
@@ -91,7 +90,11 @@ function SchoolInventory({ Searchstyle, searchText }) {
 
   useEffect(() => {
     handleFilterSortSearch();
-  }, [filterBy, sortBy, searchTerm, getItemsData]);
+  }, [filterBy, sortBy, filteredData]);
+
+  useEffect(() => {
+    handleSearch();
+  }, [searchTerm, filteredData]);
 
   useEffect(() => {
     if (location.state?.message || navigationMessages) {
@@ -116,7 +119,6 @@ function SchoolInventory({ Searchstyle, searchText }) {
 
   const handleFilterSortSearch = () => {
     let filtered = filteredData;
-    const searchData = filteredData;
 
     if (filterBy && filterBy !== "All") {
       filtered = filtered.filter((item) => item.subject_category === filterBy);
@@ -132,6 +134,12 @@ function SchoolInventory({ Searchstyle, searchText }) {
       });
     }
 
+    setFilteredData(filtered);
+  };
+
+  const handleSearch = () => {
+    let filtered = filteredData;
+
     if (searchTerm.length) {
       filtered = filtered.filter((item) =>
         item.item_name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -140,11 +148,9 @@ function SchoolInventory({ Searchstyle, searchText }) {
       console.log(filtered);
       console.log("data");
       console.log(filteredData);
-    } else {
-      setFilteredData(searchData);
     }
 
-    setFilteredData(filtered);
+    setFilteredData(filteredData);
   };
 
   const handleComfirmationPopUps = (messageInfo, messageBgColor) => {

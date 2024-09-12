@@ -14,7 +14,7 @@ import ConditionalSideNavigation from "../../../components/Navigations/Condition
 
 function Logout() {
   const navigate = useNavigate();
-  
+
   const { handleLogOutSubmit, isAdmin, isWareHouser, isHeadTeacher } =
     useContext(AuthenticationContext);
 
@@ -26,7 +26,7 @@ function Logout() {
 
   const handleClickYes = () => {
     handleLogOutSubmit();
-    navigate("/Login", { state: { message: "Logout successful!" } });
+    navigate("/", { state: { message: "Logout successful!" } });
   };
 
   const handleClickNo = () => {
@@ -37,7 +37,10 @@ function Logout() {
     <div>
       <NavigationHeader toggleSidebar={toggleSidebar} />
       <div className="d-flex justify-content-between">
-        <ConditionalSideNavigation isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <ConditionalSideNavigation
+          isSidebarOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+        />
         <Container className="reportContainer">
           <TitleHeader text={"Logout"} />
           <Row className="">

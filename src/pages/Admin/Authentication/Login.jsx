@@ -33,7 +33,8 @@ function Login() {
     if (!loginIsLoading && userData) {
       isQA()
         ? navigate("/QaDashboard", {
-           state: { message: "Login successful!" } })
+            state: { message: "Login successful!" },
+          })
         : isHeadTeacher()
         ? navigate("/HeadTeacherDashboard", {
             state: { message: "Login successful!" },
@@ -106,10 +107,10 @@ function Login() {
             <Form.Group controlId="formBasicEmail">
               <Form.Control
                 type="email"
-                placeholder="Oracle ID / Email Address / School ID"
+                placeholder="Email Address / School ID"
                 className="mb-3 inputField"
                 name="email"
-                required 
+                required
               />
             </Form.Group>
             <Form.Group controlId="formBasicPassword">
@@ -123,7 +124,10 @@ function Login() {
             </Form.Group>
             <Form.Group className="d-flex justify-content-between mb-3 inputField">
               <Form.Check type="checkbox" label="Remember me" />
-              <Link to={"/forgot-password"} className="text-decoration-none linkText">
+              <Link
+                to={"/forgot-password"}
+                className="text-decoration-none linkText"
+              >
                 Forgot Password?
               </Link>
             </Form.Group>
