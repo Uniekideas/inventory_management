@@ -4,11 +4,13 @@ const ThemeContext = createContext();
 export default ThemeContext;
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(JSON.parse(localStorage.getItem("theme")) || false);
+  const [theme, setTheme] = useState(
+    JSON.stringify(localStorage.getItem("theme")) || false
+  );
 
   useEffect(() => {
     localStorage.setItem("theme", theme);
-    const themeString = theme ? "dark" : "light";
+    const themeString = theme ? "light" : "light";
     // document.documentElement.setAttribute("data-bs-theme", themeString);
     document.documentElement.setAttribute("data-theme", themeString);
   }, [theme]);
@@ -23,8 +25,6 @@ export const ThemeProvider = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={context}>
-        {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={context}>{children}</ThemeContext.Provider>
   );
 };

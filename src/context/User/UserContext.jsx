@@ -3,7 +3,6 @@ import axios from "axios";
 import GeneralContext from "../General/GeneralContext";
 import debounce from "lodash.debounce";
 
-
 const UserContext = createContext();
 export default UserContext;
 
@@ -40,7 +39,6 @@ export const UsersProvider = ({ children }) => {
   });
 
   const { handleAddFile, addFileError } = useContext(GeneralContext);
-  
 
   const getUsers = async () => {
     setGetUsersIsLoading(true);
@@ -61,6 +59,8 @@ export const UsersProvider = ({ children }) => {
     try {
       const response = await axios.get(`${baseUrl}/api/user/${pk}`);
       setGetSingleUserData(response.data.user);
+      console.log("hey");
+      console.log(response.data);
       seteditedFormData({
         name: response.data.user.name || "",
         username: response.data.user.username || "",
@@ -83,6 +83,7 @@ export const UsersProvider = ({ children }) => {
     e.preventDefault();
     setAddUserIsLoading(true);
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+    // console.log(e.target.name.value);
     const imageData = e.target.image.files[0];
 
     const fileResponse = await handleAddFile(imageData);
@@ -98,6 +99,7 @@ export const UsersProvider = ({ children }) => {
         role: e.target.role.value,
         department: e.target.department.value,
         image: fileResponse.url,
+        school: e.target.school.value,
       };
       try {
         const result = await axios.post(`${baseUrl}/api/user`, formData);
@@ -167,24 +169,23 @@ export const UsersProvider = ({ children }) => {
   };
 
   const handleUserStatus = useCallback(
-   debounce(async (pk) => {
-    setUserStatusIsLoading(true);
-    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
-    try {
-      const result = await axios.patch(
-        `${baseUrl}/api/user/update-status/${pk}`
-      );
-      setUserStatusResponse(result.data.message);
-    } catch (error) {
-      setUserStatusError(error.response.data.message);
-      console.log(error);
-    } finally {
-      setUserStatusIsLoading(false);
-    }
-  }, 500),
-  []
-);
-
+    debounce(async (pk) => {
+      setUserStatusIsLoading(true);
+      const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+      try {
+        const result = await axios.patch(
+          `${baseUrl}/api/user/update-status/${pk}`
+        );
+        setUserStatusResponse(result.data.message);
+      } catch (error) {
+        setUserStatusError(error.response.data.message);
+        console.log(error);
+      } finally {
+        setUserStatusIsLoading(false);
+      }
+    }, 500),
+    []
+  );
 
   let contextData = {
     getUsers: getUsers,

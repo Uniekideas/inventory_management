@@ -14,6 +14,8 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import ComfirmationPop from "../../../components/ComfirmationPopUp/ComfirmationPop";
 import UserContext from "../../../context/User/UserContext";
 import { scrollToTop } from "../../../utils/HelperFunc";
+import Select from "react-select";
+import axios from "axios";
 
 function CreateNewUser() {
   const fileInputRef = useRef(null);
@@ -33,6 +35,27 @@ function CreateNewUser() {
   const [message, setmessage] = useState("");
   const [messageColor, setmessageColor] = useState("");
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [schools, setSchools] = useState([]);
+
+  const getSchoolsNew = async () => {
+    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+    try {
+      const response = await axios.get(`${baseUrl}/api/school`);
+
+      setSchools(
+        response.data.schools.map((item) => ({
+          id: item.id,
+          name: item.name,
+        }))
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getSchoolsNew();
+  }, []);
 
   useEffect(() => {
     if (!addUserIsLoading && addUserResponse) {
@@ -121,7 +144,17 @@ function CreateNewUser() {
                     />
                   </Col>
                 </Row>
-                
+                <Row className="mb-3">
+                  <Col lg={12} md={12} xl={12} sm={12} xs={12}>
+                    <Form.Control
+                      type="text"
+                      placeholder="Username"
+                      className="UserCreateInput"
+                      name="username"
+                      required
+                    />
+                  </Col>
+                </Row>
                 <Row className="mb-3">
                   <Col lg={12} md={12} xl={12} sm={12} xs={12}>
                     <Form.Control
@@ -156,12 +189,21 @@ function CreateNewUser() {
                   </Col>
                 </Row>
                 <Row className="mb-3">
-                  <Col lg={2} md={2} xl={2} sm={6} xs={6}>
+                  <Col
+                    className="UserCreateInput d-flex"
+                    lg={6}
+                    md={6}
+                    xl={6}
+                    sm={12}
+                    xs={12}
+                  >
+                    <label className="my-auto flex-fill">School Level</label>
                     <Form.Select
-                      className="UserCreateInput"
+                      className="no-border shadow-none w-auto"
                       name="level"
-                      required >
-                      <option value="">User Category</option>
+                      required
+                    >
+                      <option value="">Select Level</option>
                       <option value="Elementery">Elementery</option>
                     </Form.Select>
                   </Col>
@@ -186,15 +228,27 @@ function CreateNewUser() {
                 </Row>
               </Form.Group>
             </Row>
-            {/* <Row>
+            <Row>
               <TitleHeader
                 text={"Account Settings"}
                 headerTextStyle={"headerTextStyle"}
               />
               <Row className="mb-3">
-                <Col lg={2} md={2} xl={2} sm={6} xs={6}>
-                  <Form.Select className="UserCreateInput" name="role" required>
-                    <option value="">User Role</option>F{" "}
+                <Col
+                  className="UserCreateInput d-flex"
+                  lg={6}
+                  md={6}
+                  xl={6}
+                  sm={12}
+                  xs={12}
+                >
+                  <label className="my-auto flex-fill">User Role</label>
+                  <Form.Select
+                    className="no-border shadow-none w-auto"
+                    name="role"
+                    required
+                  >
+                    <option value="">Select Role</option>F{" "}
                     <option value="qa">QA</option>
                     <option value="admin">Admin</option>
                     <option value="head-teacher">HeadTecher</option>
@@ -203,18 +257,72 @@ function CreateNewUser() {
                 </Col>
               </Row>
               <Row className="mb-3">
-                <Col lg={2} md={2} xl={2} sm={6} xs={6}>
+                <Col
+                  className="UserCreateInput d-flex"
+                  lg={6}
+                  md={6}
+                  xl={6}
+                  sm={12}
+                  xs={12}
+                >
+                  <label className="my-auto">School</label>
+                  <Select
+                    classNames={{
+                      control: (state) =>
+                        state.isFocused
+                          ? "border-0 py-2 shadow-none w-100"
+                          : "border-0 py-2 w-100",
+                    }}
+                    name="school"
+                    options={schools}
+                    getOptionLabel={(options) => options["name"]}
+                    getOptionValue={(options) => options["name"]}
+                    isSearchable
+                  />
+                </Col>
+              </Row>
+              <Row className="mb-3">
+                <Col
+                  className="UserCreateInput d-flex"
+                  lg={6}
+                  md={6}
+                  xl={6}
+                  sm={12}
+                  xs={12}
+                >
+                  <label className="my-auto flex-fill">Department</label>
                   <Form.Select
-                    className="UserCreateInput"
+                    className="no-border shadow-none w-auto"
                     name="department"
                     required
                   >
-                    <option value="">Department</option>
+                    <option value="">Select Department</option>
                     <option value="Admin">Admin</option>
                   </Form.Select>
                 </Col>
               </Row>
-            </Row> */}
+              <Row className="mb-3">
+                <Col
+                  className="UserCreateInput d-flex"
+                  lg={6}
+                  md={6}
+                  xl={6}
+                  sm={12}
+                  xs={12}
+                >
+                  <label className="my-auto flex-fill">Status</label>
+                  <Form.Select
+                    className="no-border shadow-none w-auto"
+                    name="status"
+                    required
+                  >
+                    <option value="">Select Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </Form.Select>
+                </Col>
+              </Row>
+            </Row>
             <Row>
               <TitleHeader
                 text={"Addittional Information"}
@@ -225,10 +333,9 @@ function CreateNewUser() {
                   <Row className="mb-3">
                     <Col lg={12} md={12} xl={12} sm={12} xs={12}>
                       <Form.Control
-                        type="text"
+                        type="date"
                         placeholder="Date Employed"
                         className="UserCreateInput"
-                        
                       />
                     </Col>
                   </Row>
@@ -239,7 +346,6 @@ function CreateNewUser() {
                         rows={6}
                         placeholder="Addittional Information"
                         className="UserCreateTextArea"
-                        
                       />
                     </Col>
                   </Row>

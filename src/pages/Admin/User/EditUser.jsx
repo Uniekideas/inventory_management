@@ -111,6 +111,8 @@ function EditUser() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  console.log(editedFormData);
+
   return (
     <div>
       <NavigationHeader toggleSidebar={toggleSidebar} />
@@ -208,7 +210,7 @@ function EditUser() {
                     </Col>
                   </Row>
                   <Row className="mb-3">
-                    <Col lg={2} md={2} xl={2} sm={6} xs={6}>
+                    <Col lg={6} md={6} xl={6} sm={12} xs={12}>
                       <Form.Select
                         className="UserCreateInput"
                         name="level"
@@ -246,7 +248,7 @@ function EditUser() {
                   headerTextStyle={"headerTextStyle"}
                 />
                 <Row className="mb-3">
-                  <Col lg={2} md={2} xl={2} sm={6} xs={6}>
+                  <Col lg={6} md={6} xl={6} sm={12} xs={12}>
                     <Form.Select
                       className="UserCreateInput"
                       name="role"
@@ -254,7 +256,7 @@ function EditUser() {
                       onChange={handleChange}
                       required
                     >
-                      <option value="">User Role</option>F{" "}
+                      <option value="">User Role</option>
                       <option value="1">QA</option>
                       <option value="2">Admin</option>
                       <option value="3">HeadTecher</option>
@@ -263,7 +265,7 @@ function EditUser() {
                   </Col>
                 </Row>
                 <Row className="mb-3">
-                  <Col lg={2} md={2} xl={2} sm={6} xs={6}>
+                  <Col lg={6} md={6} xl={6} sm={12} xs={12}>
                     <Form.Select
                       className="UserCreateInput"
                       name="department"
@@ -287,10 +289,9 @@ function EditUser() {
                     <Row className="mb-3">
                       <Col lg={12} md={12} xl={12} sm={12} xs={12}>
                         <Form.Control
-                          type="text"
+                          type="date"
                           placeholder="Date Employed"
                           className="UserCreateInput"
-                          
                         />
                       </Col>
                     </Row>
@@ -301,7 +302,6 @@ function EditUser() {
                           rows={6}
                           placeholder="Addittional Information"
                           className="UserCreateTextArea"
-                          
                         />
                       </Col>
                     </Row>
