@@ -36,6 +36,7 @@ export const UsersProvider = ({ children }) => {
     image: "",
     role: "",
     department: "",
+    school: "",
   });
 
   const { handleAddFile, addFileError } = useContext(GeneralContext);
@@ -59,8 +60,6 @@ export const UsersProvider = ({ children }) => {
     try {
       const response = await axios.get(`${baseUrl}/api/user/${pk}`);
       setGetSingleUserData(response.data.user);
-      console.log("hey");
-      console.log(response.data);
       seteditedFormData({
         name: response.data.user.name || "",
         username: response.data.user.username || "",
@@ -71,6 +70,7 @@ export const UsersProvider = ({ children }) => {
         image: response.data.user.image || "",
         role: response.data.user.role_id || "",
         department: response.data.user.department || "",
+        school: response.data.user.school_id || "",
       });
     } catch (error) {
       setSingleUserError(error);
@@ -83,7 +83,6 @@ export const UsersProvider = ({ children }) => {
     e.preventDefault();
     setAddUserIsLoading(true);
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
-    // console.log(e.target.name.value);
     const imageData = e.target.image.files[0];
 
     const fileResponse = await handleAddFile(imageData);
@@ -134,17 +133,9 @@ export const UsersProvider = ({ children }) => {
       email: editedFormData.email,
       phone_number: editedFormData.phone_number,
       level: editedFormData.level,
-      role:
-        editedFormData.role === 1
-          ? "qa"
-          : editedFormData.role === 2
-          ? "admin"
-          : editedFormData.role === 3
-          ? "warehouse-staff"
-          : editedFormData.role === 4
-          ? "head-teacher"
-          : editedFormData.role,
+      role: editedFormData.role,
       department: editedFormData.department,
+      school: editedFormData.school,
       image:
         fileResponse && fileResponse.success
           ? fileResponse.url

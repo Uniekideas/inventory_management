@@ -106,7 +106,7 @@ function Login() {
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formBasicEmail">
               <Form.Control
-                type="email"
+                type="text"
                 placeholder="Email Address / School ID"
                 className="mb-3 inputField"
                 name="email"

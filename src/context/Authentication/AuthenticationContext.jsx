@@ -16,8 +16,16 @@ axios.interceptors.request.use(
 );
 
 export const AuthenticationProvider = ({ children }) => {
-  const [userData, setUserData] = useState(() => (sessionStorage.getItem("edoUserData") ? JSON.parse(sessionStorage.getItem("edoUserData")) : null));
-  const [userToken, setUserToken] = useState(() => (sessionStorage.getItem("edoUserToken") ? JSON.parse(sessionStorage.getItem("edoUserToken")) : null));
+  const [userData, setUserData] = useState(() =>
+    sessionStorage.getItem("edoUserData")
+      ? JSON.parse(sessionStorage.getItem("edoUserData"))
+      : null
+  );
+  const [userToken, setUserToken] = useState(() =>
+    sessionStorage.getItem("edoUserToken")
+      ? JSON.parse(sessionStorage.getItem("edoUserToken"))
+      : null
+  );
   const [sigUpResponse, setSigUpResponse] = useState(null);
   const [sigUpError, setSigUpError] = useState(null);
   const [loginError, setloginError] = useState(null);
@@ -52,7 +60,7 @@ export const AuthenticationProvider = ({ children }) => {
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
     e.preventDefault();
     const formData = {
-      email: e.target.email.value,
+      value: e.target.email.value,
       password: e.target.password.value,
     };
     try {
@@ -63,8 +71,13 @@ export const AuthenticationProvider = ({ children }) => {
         setUserData(result.data.user);
         setUserToken(result.data.token);
         sessionStorage.setItem("edoUserData", JSON.stringify(result.data.user));
-        sessionStorage.setItem("edoUserToken", JSON.stringify(result.data.token));
-        const response = await axios.get(`${baseUrl}/api/user/${result.data.user.id}`);
+        sessionStorage.setItem(
+          "edoUserToken",
+          JSON.stringify(result.data.token)
+        );
+        const response = await axios.get(
+          `${baseUrl}/api/user/${result.data.user.id}`
+        );
         setMessages(response.data.user.message_count);
       }
     } catch (error) {
@@ -130,5 +143,9 @@ export const AuthenticationProvider = ({ children }) => {
     setMessages,
   };
 
-  return <AuthenticationContext.Provider value={contextData}>{children}</AuthenticationContext.Provider>;
+  return (
+    <AuthenticationContext.Provider value={contextData}>
+      {children}
+    </AuthenticationContext.Provider>
+  );
 };

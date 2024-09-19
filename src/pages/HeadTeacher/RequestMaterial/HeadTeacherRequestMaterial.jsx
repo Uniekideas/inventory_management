@@ -33,7 +33,7 @@ function HeadTeacherRequestMaterial() {
   const [buttonLoading, setButtonLoading] = useState(false);
 
   const initialFormData = {
-    school_name: "",
+    school_name: userData.school,
     head_teacher_name: userData.name,
     item_name: "",
     quantity: 0,
@@ -102,8 +102,6 @@ function HeadTeacherRequestMaterial() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
- 
-
   return (
     <div>
       <NavigationHeader toggleSidebar={toggleSidebar} />
@@ -113,7 +111,7 @@ function HeadTeacherRequestMaterial() {
           toggleSidebar={toggleSidebar}
         />
         <Container className="reportContainer">
-          <BackButtonIcon/>
+          <BackButtonIcon />
           <TitleHeader text={"Request Materials"} />
           {message
             ? comfirmationAction && (
@@ -140,6 +138,7 @@ function HeadTeacherRequestMaterial() {
                       onChange={handleChange}
                       name="school_name"
                       required
+                      readOnly
                     />
                   </Col>
                 </Row>
@@ -152,7 +151,7 @@ function HeadTeacherRequestMaterial() {
                       value={formData.head_teacher_name}
                       onChange={handleChange}
                       name="head_teacher_name"
-                     
+                      readOnly
                     />
                   </Col>
                 </Row>
@@ -208,11 +207,11 @@ function HeadTeacherRequestMaterial() {
                 </Row>
               </Form.Group>
               <Button variant="success" className="w-100 p-2" type="submit">
-              {buttonLoading ? (
-                    <FontAwesomeIcon icon={faSpinner} spin size="2x" />
-                  ) : (
-                    "Request Material"
-                  )}
+                {buttonLoading ? (
+                  <FontAwesomeIcon icon={faSpinner} spin size="2x" />
+                ) : (
+                  "Request Material"
+                )}
               </Button>
             </Row>
           </Form>

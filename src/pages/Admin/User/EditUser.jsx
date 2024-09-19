@@ -15,6 +15,8 @@ import UserContext from "../../../context/User/UserContext";
 import ComfirmationPop from "../../../components/ComfirmationPopUp/ComfirmationPop";
 import Loading from "../../../components/Loading/Loading";
 import { scrollToTop } from "../../../utils/HelperFunc";
+import Select from "react-select";
+import axios from "axios";
 
 function EditUser() {
   const fileInputRef = useRef(null);
@@ -39,8 +41,27 @@ function EditUser() {
   const [message, setmessage] = useState("");
   const [messageColor, setmessageColor] = useState("");
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [schools, setSchools] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const getSchoolsNew = async () => {
+    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+    try {
+      const response = await axios.get(`${baseUrl}/api/school/all-schools`);
+
+      setSchools(
+        response.data.schools.map((item) => ({
+          id: item.school_id,
+          name: item.name,
+        }))
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
+    getSchoolsNew();
     getSingleUser(pk);
   }, []);
 
@@ -107,11 +128,17 @@ function EditUser() {
     document.getElementById("fileLabel").innerText = fileName;
   };
 
+  const handleSchoolChange = (event) => {
+    setSelectedOption(event.id);
+    seteditedFormData({
+      ...editedFormData,
+      school: event.id,
+    });
+  };
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
-  console.log(editedFormData);
 
   return (
     <div>
@@ -167,6 +194,7 @@ function EditUser() {
                         onChange={handleChange}
                         name="username"
                         required
+                        readOnly
                       />
                     </Col>
                   </Row>
@@ -193,6 +221,7 @@ function EditUser() {
                         onChange={handleChange}
                         name="email"
                         required
+                        readOnly
                       />
                     </Col>
                   </Row>
@@ -252,16 +281,45 @@ function EditUser() {
                     <Form.Select
                       className="UserCreateInput"
                       name="role"
-                      value={editedFormData.role}
+                      defaultValue={editedFormData.role}
                       onChange={handleChange}
                       required
                     >
                       <option value="">User Role</option>
-                      <option value="1">QA</option>
-                      <option value="2">Admin</option>
-                      <option value="3">HeadTecher</option>
-                      <option value="4">WareHouseStaff</option>
+                      <option value="qa">QA</option>
+                      <option value="admin">Admin</option>
+                      <option value="head-teacher">Head Techer</option>
+                      <option value="warehouse-staff">WareHouse Staff</option>
                     </Form.Select>
+                  </Col>
+                </Row>
+                <Row className="mb-3">
+                  <Col
+                    className="UserCreateInput d-flex ms-2"
+                    lg={6}
+                    md={6}
+                    xl={6}
+                    sm={12}
+                    xs={12}
+                  >
+                    <label className="my-auto">School</label>
+                    <div className="flex-fill">
+                      <Select
+                        classNames={{
+                          control: (state) =>
+                            state.isFocused
+                              ? "border-0 py-2 shadow-none w-100"
+                              : "border-0 py-2 w-100",
+                        }}
+                        name="school"
+                        placeholder="Select the School"
+                        options={schools}
+                        getOptionLabel={(options) => options["name"]}
+                        getOptionValue={(options) => options["name"]}
+                        isSearchable
+                        onChange={handleSchoolChange}
+                      />
+                    </div>
                   </Col>
                 </Row>
                 <Row className="mb-3">

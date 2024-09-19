@@ -40,11 +40,11 @@ function CreateNewUser() {
   const getSchoolsNew = async () => {
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
     try {
-      const response = await axios.get(`${baseUrl}/api/school`);
+      const response = await axios.get(`${baseUrl}/api/school/all-schools`);
 
       setSchools(
         response.data.schools.map((item) => ({
-          id: item.id,
+          id: item.school_id,
           name: item.name,
         }))
       );
@@ -190,7 +190,7 @@ function CreateNewUser() {
                 </Row>
                 <Row className="mb-3">
                   <Col
-                    className="UserCreateInput d-flex"
+                    className="UserCreateInput d-flex ms-2"
                     lg={6}
                     md={6}
                     xl={6}
@@ -235,7 +235,7 @@ function CreateNewUser() {
               />
               <Row className="mb-3">
                 <Col
-                  className="UserCreateInput d-flex"
+                  className="UserCreateInput d-flex ms-2"
                   lg={6}
                   md={6}
                   xl={6}
@@ -248,17 +248,17 @@ function CreateNewUser() {
                     name="role"
                     required
                   >
-                    <option value="">Select Role</option>F{" "}
+                    <option value="">Select Role</option>
                     <option value="qa">QA</option>
                     <option value="admin">Admin</option>
-                    <option value="head-teacher">HeadTecher</option>
-                    <option value="warehouse-staff">WareHouseStaff</option>
+                    <option value="head-teacher">Head Techer</option>
+                    <option value="warehouse-staff">WareHouse Staff</option>
                   </Form.Select>
                 </Col>
               </Row>
               <Row className="mb-3">
                 <Col
-                  className="UserCreateInput d-flex"
+                  className="UserCreateInput d-flex ms-2"
                   lg={6}
                   md={6}
                   xl={6}
@@ -266,24 +266,27 @@ function CreateNewUser() {
                   xs={12}
                 >
                   <label className="my-auto">School</label>
-                  <Select
-                    classNames={{
-                      control: (state) =>
-                        state.isFocused
-                          ? "border-0 py-2 shadow-none w-100"
-                          : "border-0 py-2 w-100",
-                    }}
-                    name="school"
-                    options={schools}
-                    getOptionLabel={(options) => options["name"]}
-                    getOptionValue={(options) => options["name"]}
-                    isSearchable
-                  />
+                  <div className="flex-fill">
+                    <Select
+                      classNames={{
+                        control: (state) =>
+                          state.isFocused
+                            ? "border-0 py-2 shadow-none w-100"
+                            : "border-0 py-2 w-100",
+                      }}
+                      name="school"
+                      placeholder="Select the School"
+                      options={schools}
+                      getOptionLabel={(options) => options["name"]}
+                      getOptionValue={(options) => options["name"]}
+                      isSearchable
+                    />
+                  </div>
                 </Col>
               </Row>
               <Row className="mb-3">
                 <Col
-                  className="UserCreateInput d-flex"
+                  className="UserCreateInput d-flex ms-2"
                   lg={6}
                   md={6}
                   xl={6}
@@ -303,7 +306,7 @@ function CreateNewUser() {
               </Row>
               <Row className="mb-3">
                 <Col
-                  className="UserCreateInput d-flex"
+                  className="UserCreateInput d-flex ms-2"
                   lg={6}
                   md={6}
                   xl={6}

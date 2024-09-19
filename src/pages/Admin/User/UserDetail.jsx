@@ -55,6 +55,7 @@ function UserDetail() {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
   return (
     <div>
       <NavigationHeader toggleSidebar={toggleSidebar} />
@@ -77,7 +78,7 @@ function UserDetail() {
             <Container className="d-flex justify-content-center align-items-center vh-100">
               <Loading loading={getSingleUserIsLoading} />
             </Container>
-          ) : getSingleUserData? (
+          ) : getSingleUserData ? (
             <div>
               <Row className="itemDetailMainRow mb-2">
                 <TitleHeader
@@ -125,6 +126,22 @@ function UserDetail() {
                     Email Address:{" "}
                     <b className="itemDetailText mx-2">
                       {getSingleUserData.email}
+                    </b>{" "}
+                  </Col>
+                </Row>
+                <Row className="mb-4 align-items-center">
+                  <Col className="itemHeaderText">
+                    School:{" "}
+                    <b className="itemDetailText mx-2">
+                      {getSingleUserData.school}
+                    </b>{" "}
+                  </Col>
+                </Row>
+                <Row className="mb-4 align-items-center">
+                  <Col className="itemHeaderText">
+                    School ID:{" "}
+                    <b className="itemDetailText mx-2">
+                      {getSingleUserData.school_id}
                     </b>{" "}
                   </Col>
                 </Row>
@@ -200,12 +217,12 @@ function UserDetail() {
                 clickEvent={() => handleEdit()}
               />
             </div>
-                 ) : (
-                  <NonAvaliable
-                    textMessage={"Sorry, User not available"}
-                    imageWidth={"300px"}
-                  />
-                )}
+          ) : (
+            <NonAvaliable
+              textMessage={"Sorry, User not available"}
+              imageWidth={"300px"}
+            />
+          )}
         </Container>
       </div>
     </div>
