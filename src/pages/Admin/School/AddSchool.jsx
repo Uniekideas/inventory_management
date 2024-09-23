@@ -42,7 +42,6 @@ function AddSchool() {
     }
   }, [addSchoolIsLoading, addSchoolResponse, navigate]);
 
-  
   useEffect(() => {
     if (!addSchoolIsLoading && addSchoolError) {
       scrollToTop();
@@ -161,7 +160,6 @@ function AddSchool() {
                       className="UserCreateInput"
                       name="level"
                       required
-                      
                     >
                       <option value="">School Level</option>
                       <option value="Elementery">Elementery</option>
@@ -177,7 +175,6 @@ function AddSchool() {
                       name="school_image"
                       onChange={handleFileChange}
                       style={{ display: "none" }}
-                      required
                     />
                     <CustomFileInput
                       fieldName={"shoolfileInput"}
@@ -224,7 +221,24 @@ function AddSchool() {
                       required
                     >
                       <option value="">Local Government Area</option>
+                      <option value="Akoko Edo">Akoko Edo</option>
+                      <option value="Egor">Egor</option>
+                      <option value="Esan Central">Esan Central</option>
                       <option value="Esan North-East">Esan North-East</option>
+                      <option value="Esan South-East">Esan North-East</option>
+                      <option value="Esan West">Esan West</option>
+                      <option value="Etsako Central">Etsako Central</option>
+                      <option value="Etsako East">Etsako East</option>
+                      <option value="Etsako West">Etsako West</option>
+                      <option value="Igueben">Igueben</option>
+                      <option value="Ikpoba Okha">Ikpoba Okha</option>
+                      <option value="Oredo">Oredo</option>
+                      <option value="Orhionmwon">Orhionmwon</option>
+                      <option value="Ovia North East">Ovia North East</option>
+                      <option value="Ovia South Wast">Ovia South Wast</option>
+                      <option value="Owan East">Owan East</option>
+                      <option value="Owan West">Owan West</option>
+                      <option value="Uhunmwode">Uhunmwode</option>
                     </Form.Select>
                   </Col>
                 </Row>

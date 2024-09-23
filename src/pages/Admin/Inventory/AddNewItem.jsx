@@ -35,25 +35,25 @@ function AddNewItem() {
   } = useContext(InventoryItemContext);
   const [loading, setLoading] = useState(false);
   const { setnavigationMessages } = useContext(MessageContext);
-  const getSchoolsNew = async () => {
-    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
-    try {
-      const response = await axios.get(`${baseUrl}/api/school`);
-      console.log(response);
-      setSchools(
-        response.data.schools.map((item) => ({
-          id: item.id,
-          name: item.name,
-        }))
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getSchoolsNew = async () => {
+  //   const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+  //   try {
+  //     const response = await axios.get(`${baseUrl}/api/school`);
+  //     console.log(response);
+  //     setSchools(
+  //       response.data.schools.map((item) => ({
+  //         id: item.id,
+  //         name: item.name,
+  //       }))
+  //     );
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    getSchoolsNew();
-  }, []);
+  // useEffect(() => {
+  //   getSchoolsNew();
+  // }, []);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [comfirmationAction, setComfirmationAction] = useState(false);
@@ -263,18 +263,6 @@ function AddNewItem() {
                     </Form.Select>
                   </Col>
                 </Row>
-                <Row className="mb-3">
-                  <Col lg={6} md={6} xl={6} sm={12} xs={12}>
-                    <Select
-                      className="UserCreateInput"
-                      name="school"
-                      options={schools}
-                      getOptionLabel={(options) => options["name"]}
-                      getOptionValue={(options) => options["name"]}
-                      isSearchable
-                    />
-                  </Col>
-                </Row>
                 <Row className="mb-5">
                   <Col lg={12} md={12} xl={12} sm={12} xs={12}>
                     <Form.Control
@@ -333,15 +321,18 @@ function AddNewItem() {
                     />
                   </Col>
                 </Row> */}
-                <Row className="mb-5">
-                  <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-                    <Form.Control
-                      type="text"
+                <Row className="mb-3">
+                  <Col lg={6} md={6} xl={6} sm={12} xs={12}>
+                    <Form.Select
                       className="UserCreateInput"
-                      placeholder="Distribution"
                       name="distribution"
                       required
-                    />
+                    >
+                      <option value="">Book Distribution</option>
+                      <option value="pupil">Pupil</option>
+                      <option value="bench">Bench</option>
+                      <option value="class">Class</option>
+                    </Form.Select>
                   </Col>
                 </Row>
               </Form.Group>

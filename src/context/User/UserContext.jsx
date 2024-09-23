@@ -82,36 +82,42 @@ export const UsersProvider = ({ children }) => {
   const handleAddUser = async (e) => {
     e.preventDefault();
     setAddUserIsLoading(true);
+    let fileResponse = null;
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
-    const imageData = e.target.image.files[0];
+    // const imageData = e.target.image.files[0];
 
-    const fileResponse = await handleAddFile(imageData);
-
-    if (fileResponse && fileResponse.success) {
-      const formData = {
-        name: e.target.name.value,
-        username: e.target.username.value,
-        oracle_id: e.target.oracle_id.value,
-        email: e.target.email.value,
-        phone_number: e.target.phone_number.value,
-        level: e.target.level.value,
-        role: e.target.role.value,
-        department: e.target.department.value,
-        image: fileResponse.url,
-        school: e.target.school.value,
-      };
-      try {
-        const result = await axios.post(`${baseUrl}/api/user`, formData);
-        setAddUserResponse(result.data);
-      } catch (error) {
-        setAddUserError(error.response.data.message);
-        console.log(error);
-      } finally {
-        setAddUserIsLoading(false);
+    // const fileResponse = await handleAddFile(imageData);
+    if (e.target.image.files.length) {
+      const imageData = e.target.image.files[0];
+      fileResponse = await handleAddFile(imageData);
+      if (fileResponse && fileResponse.success) {
+        setAddUserError(addFileError || "File upload failed");
       }
-    } else {
-      setAddUserError(addFileError || "File upload failed");
     }
+
+    const formData = {
+      name: e.target.name.value,
+      username: e.target.username.value,
+      oracle_id: e.target.oracle_id.value,
+      email: e.target.email.value,
+      phone_number: e.target.phone_number.value,
+      level: e.target.level.value,
+      role: e.target.role.value,
+      department: e.target.department.value,
+      image: fileResponse ? fileResponse.url : null,
+      school: e.target.school.value,
+    };
+
+    try {
+      const result = await axios.post(`${baseUrl}/api/user`, formData);
+      setAddUserResponse(result.data);
+    } catch (error) {
+      setAddUserError(error.response.data.message);
+      console.log(error);
+    } finally {
+      setAddUserIsLoading(false);
+    }
+
     setAddUserIsLoading(false);
   };
 

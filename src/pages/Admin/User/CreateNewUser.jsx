@@ -217,7 +217,6 @@ function CreateNewUser() {
                       onChange={handleFileChange}
                       style={{ display: "none" }}
                       name="image"
-                      required
                     />
                     <CustomFileInput
                       fieldName={"userfileInput"}
@@ -278,7 +277,7 @@ function CreateNewUser() {
                       placeholder="Select the School"
                       options={schools}
                       getOptionLabel={(options) => options["name"]}
-                      getOptionValue={(options) => options["name"]}
+                      getOptionValue={(options) => options["school_id"]}
                       isSearchable
                     />
                   </div>

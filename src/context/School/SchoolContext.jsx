@@ -84,36 +84,39 @@ export const SchoolProvider = ({ children }) => {
   const handleAddSchool = async (e) => {
     e.preventDefault();
     setAddSchoolIsLoading(true);
+    let fileResponse = "";
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
-    const imageData = e.target.school_image.files[0];
 
-    const fileResponse = await handleAddFile(imageData);
-
-    if (fileResponse && fileResponse.success) {
-      const formData = {
-        name: e.target.name.value,
-        website: e.target.website.value,
-        email: e.target.email.value,
-        phone_number: e.target.phone_number.value,
-        level: e.target.level.value,
-        address: e.target.address.value,
-        city: e.target.city.value,
-        lga: e.target.lga.value,
-        postal_code: e.target.postal_code.value,
-        school_image: fileResponse.url,
-      };
-      try {
-        const result = await axios.post(`${baseUrl}/api/school`, formData);
-        setAddSchoolResponse(result.data);
-      } catch (error) {
-        setAddSchoolError(error.response.data.message);
-        console.log(error);
-      } finally {
-        setAddSchoolIsLoading(false);
+    if (e.target.school_image.files.length) {
+      const imageData = e.target.school_image.files[0];
+      fileResponse = await handleAddFile(imageData);
+      if (fileResponse && fileResponse.success) {
+        setAddSchoolError(addFileError || "File upload failed");
       }
-    } else {
-      setAddSchoolError(addFileError || "File upload failed");
     }
+
+    const formData = {
+      name: e.target.name.value,
+      website: e.target.website.value,
+      email: e.target.email.value,
+      phone_number: e.target.phone_number.value,
+      level: e.target.level.value,
+      address: e.target.address.value,
+      city: e.target.city.value,
+      lga: e.target.lga.value,
+      postal_code: e.target.postal_code.value,
+      school_image: fileResponse.url,
+    };
+    try {
+      const result = await axios.post(`${baseUrl}/api/school`, formData);
+      setAddSchoolResponse(result.data);
+    } catch (error) {
+      setAddSchoolError(error.response.data.message);
+      console.log(error);
+    } finally {
+      setAddSchoolIsLoading(false);
+    }
+
     setAddSchoolIsLoading(false);
   };
 

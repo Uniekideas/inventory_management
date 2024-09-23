@@ -124,7 +124,7 @@ export const InventoryItemProvider = ({ children }) => {
         brand: e.target.brand.value,
         category: e.target.category.value,
         barcode_id: e.target.barcode_id.value,
-        school: e.target.school.value,
+        // school: e.target.school.value,
         image: fileResponse.url,
         // unit_cost: e.target.unit_cost.value,
         quantity: e.target.quantity.value,
@@ -169,10 +169,16 @@ export const InventoryItemProvider = ({ children }) => {
       supplier: editedFormData.supplier,
       category: editedFormData.category,
       value: editedFormData.value,
-      image: fileResponse && fileResponse.success ? fileResponse.url : editedFormData.image,
+      image:
+        fileResponse && fileResponse.success
+          ? fileResponse.url
+          : editedFormData.image,
     };
     try {
-      const result = await axios.patch(`${baseUrl}/api/item/${pk}`, updatedData);
+      const result = await axios.patch(
+        `${baseUrl}/api/item/${pk}`,
+        updatedData
+      );
 
       seteditItemResponse(result.data);
     } catch (error) {
@@ -191,13 +197,22 @@ export const InventoryItemProvider = ({ children }) => {
     setCreateReportIsLoading(true);
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
     try {
-      const response = await axios.get(`${baseUrl}/api/item/inventory-report?format=${formatQuery}&lga=${lga}&schoolType=${schoolType}`);
+      const response = await axios.get(
+        `${baseUrl}/api/item/inventory-report?format=${formatQuery}&lga=${lga}&schoolType=${schoolType}`
+      );
 
       if (formatQuery === "pdf") {
         let doc = new jsPDF();
         autoTable(doc, {
           head: [["Id", "Name", "Brand", "Category", "Quantity", "Supplier"]],
-          body: response.data.map((item) => [item.id, item.name, item.brand, item.category, item.quantity, item.supplier]),
+          body: response.data.map((item) => [
+            item.id,
+            item.name,
+            item.brand,
+            item.category,
+            item.quantity,
+            item.supplier,
+          ]),
         });
         doc.save("edo-inventory.pdf");
         setCreateReportResponse(response);
@@ -255,5 +270,9 @@ export const InventoryItemProvider = ({ children }) => {
     handlePrevPage: handlePrevPage,
   };
 
-  return <InventoryItemContext.Provider value={contextData}>{children}</InventoryItemContext.Provider>;
+  return (
+    <InventoryItemContext.Provider value={contextData}>
+      {children}
+    </InventoryItemContext.Provider>
+  );
 };

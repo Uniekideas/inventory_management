@@ -315,7 +315,7 @@ function EditUser() {
                         placeholder="Select the School"
                         options={schools}
                         getOptionLabel={(options) => options["name"]}
-                        getOptionValue={(options) => options["name"]}
+                        getOptionValue={(options) => options["school_id"]}
                         isSearchable
                         onChange={handleSchoolChange}
                       />

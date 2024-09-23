@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Container, Row, Col, Form, Table } from "react-bootstrap";
 import "./HeadTeacherTrackMaterial.css";
 import NavigationHeader from "../../../components/Navigations/NavigationHeader";
 import TitleHeader from "../../../components/Headers/TitleHeader";
@@ -12,62 +12,62 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import HeadTeacherNavigation from "../Navigation/HeadTeacherNavigation";
 import TrackingContext from "../../../context/Tracking/TrackingContext";
-import jsPDF from 'jspdf'
-import autoTable from "jspdf-autotable"
-import * as XLSX from 'xlsx'
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import * as XLSX from "xlsx";
 import BackButtonIcon from "../../../components/Button/BackButtonIcon";
 function HeadTeacherTrackMaterial() {
-
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [filteredData, setFilteredData] = useState();
   const [searchTerm, setSearchTerm] = useState();
-  const [filterBy, setFilterBy] = useState('')
-  const [sortBy, setSortBy] = useState('')
+  const [filterBy, setFilterBy] = useState("");
+  const [sortBy, setSortBy] = useState("");
   const [exportType, setExportType] = useState("");
-  const [originalData, setOriginalData] = useState([])
+  const [originalData, setOriginalData] = useState([]);
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
   const { getTrackings, getTrackingsData, getTrackingsIsLoading } =
-  useContext(TrackingContext);
+    useContext(TrackingContext);
 
-  const exportAccordingToType = ()=>{
-    if(exportType ===''){
+  const exportAccordingToType = () => {
+    if (exportType === "") {
       return;
     }
-    if(exportType ==='pdf'){
+    if (exportType === "pdf") {
       let doc = new jsPDF();
-      autoTable(doc,{
-        head: [['Id','Name', 'Brand', 'Category','Quantity','Supplier' ]],
-        body: getTrackingsData.map(item=>[item.id, item.item_name, item.brand, item.subject_category, item.quantity, item.distribution]),
-      })
-      doc.save('edo-inventory.pdf');
-     
-   
-    }
-    else{
-      var wb = XLSX.utils.book_new()
-    var ws = XLSX.utils.json_to_sheet(getTrackingsData);
+      autoTable(doc, {
+        head: [["Id", "Name", "Brand", "Category", "Quantity", "Supplier"]],
+        body: getTrackingsData.map((item) => [
+          item.id,
+          item.item_name,
+          item.brand,
+          item.subject_category,
+          item.quantity,
+          item.distribution,
+        ]),
+      });
+      doc.save("edo-inventory.pdf");
+    } else {
+      var wb = XLSX.utils.book_new();
+      var ws = XLSX.utils.json_to_sheet(getTrackingsData);
 
-    XLSX.utils.book_append_sheet(wb, ws, 'edo_iventory_report');
-    XLSX.writeFile(wb, 'edo_inventory_report.xlsx');
-   
+      XLSX.utils.book_append_sheet(wb, ws, "edo_iventory_report");
+      XLSX.writeFile(wb, "edo_inventory_report.xlsx");
     }
-  }
-  useEffect(()=>{
+  };
+  useEffect(() => {
     exportAccordingToType();
-  }, [exportType])
-  
+  }, [exportType]);
 
   useEffect(() => {
     getTrackings();
     setFilteredData(getTrackingsData);
-    setOriginalData(getTrackingsData)
-    
+    setOriginalData(getTrackingsData);
   }, []);
   useEffect(() => {
     handleFilterSortSearch();
-  }, [ sortBy, searchTerm, getTrackingsData, filterBy]);
+  }, [sortBy, searchTerm, getTrackingsData, filterBy]);
   const filterData = [
     {
       pk: 1,
@@ -75,13 +75,12 @@ function HeadTeacherTrackMaterial() {
     },
     {
       pk: 2,
-      type:'pdf'
-    }
-   
+      type: "pdf",
+    },
   ];
-  const handleSearchChange = (e)=>{
-    setSearchTerm(e.target.value)
-  }
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
   const handleFilterSortSearch = () => {
     let filtered = [...getTrackingsData];
 
@@ -100,7 +99,6 @@ function HeadTeacherTrackMaterial() {
     }
 
     if (searchTerm) {
-      
       filtered = filtered.filter((item) =>
         item.item_name.toLowerCase().includes(searchTerm.toLowerCase())
       );
@@ -108,25 +106,21 @@ function HeadTeacherTrackMaterial() {
 
     setFilteredData(filtered);
   };
-
+  console.log("filteredData");
+  console.log(filteredData);
   const data = filteredData;
- 
 
   const columns = [
     {
       name: "Date",
-      selector: (row) => row.
-      date_moved
-      
-      ,
+      selector: (row) => row.date_moved,
+
       sortable: true,
       wrap: true,
     },
     {
       name: "Time",
-      selector: (row) => row.
-      time_moved
-      ,
+      selector: (row) => row.time_moved,
       sortable: true,
       wrap: true,
     },
@@ -155,9 +149,7 @@ function HeadTeacherTrackMaterial() {
     },
     {
       name: "To Location",
-      selector: (row) => row.
-      picking_area
-      ,
+      selector: (row) => row.picking_area,
       sortable: true,
       wrap: true,
     },
@@ -191,14 +183,14 @@ function HeadTeacherTrackMaterial() {
         />
         <Container className="reportContainer">
           <div className="d-flex justify-content-between">
-            <BackButtonIcon/>
+            <BackButtonIcon />
             <TitleHeader text={"Track Materials"} />
             <Form.Control
-                    type="date"
-                    placeholder="Minimum Stock Level"
-                    className="pushNotificationTitle"
-                    style={{width:300}}
-                  />
+              type="date"
+              placeholder="Minimum Stock Level"
+              className="pushNotificationTitle"
+              style={{ width: 300 }}
+            />
           </div>
           <div className="d-flex justify-content-between">
             <TitleHeader
@@ -215,15 +207,14 @@ function HeadTeacherTrackMaterial() {
           </div>
           <Row className="mb-4">
             <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-            <input
+              <input
                 type="text"
-                placeholder='Search Inventory'
+                placeholder="Search Inventory"
                 className="seachContentBar"
                 value={searchTerm}
                 onChange={handleSearchChange}
-                style={{display:'block', width:'100%', borderRadius:10}}
-                
-            />
+                style={{ display: "block", width: "100%", borderRadius: 10 }}
+              />
             </Col>
           </Row>
           <Row className="d-lg-none mb-3">
@@ -257,11 +248,38 @@ function HeadTeacherTrackMaterial() {
                 options={filterData}
                 dropdrowStyle={"DashboardExportData"}
                 onSelect={(value) => setExportType(value)}
-                
               />
             </Col>
           </Row>
           <Container>
+            <div>
+              <Table responsive="lg" striped bordered hover className="mt-3">
+                <thead>
+                  <tr>
+                    <th>Reference</th>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>School</th>
+                    <th>Start Point</th>
+                    <th>Current Point</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filterData.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.reference_number}</td>
+                      <td>{item.item_id}</td>
+                      <td>{item.quantity}</td>
+                      <td>{item.school_id}</td>
+                      <td>{item.start_point}</td>
+                      <td>{item.current_point}</td>
+                      <td>{item.status}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
             <DataTable
               columns={columns}
               data={data}
