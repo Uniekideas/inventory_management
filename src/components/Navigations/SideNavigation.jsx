@@ -11,14 +11,10 @@ import {
   faSignOutAlt,
   faDashboard,
   faStore,
-
+  faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  SideNavButton,
-  SideNavAppStore,
-} from "./SideNavComponent";
+import { SideNavButton, SideNavAppStore } from "./SideNavComponent";
 import Search from "../Search/Search";
-
 
 function SideNavigation({ isOpen, toggleSidebar }) {
   return (
@@ -26,9 +22,8 @@ function SideNavigation({ isOpen, toggleSidebar }) {
       className={`d-flex flex-column sidebar ${isOpen ? "open" : ""} fixed-top`}
     >
       {" "}
-      <Search Searchstyle={"seachSideBar"} searchText={'Search'}/>
+      <Search Searchstyle={"seachSideBar"} searchText={"Search"} />
       <Nav className="flex-column">
-        
         <Nav.Link
           as={NavLink}
           to="/AdminDashboard"
@@ -52,7 +47,7 @@ function SideNavigation({ isOpen, toggleSidebar }) {
             hoverStyle={"sideNavPrimaryHoverButton"}
           />
         </Nav.Link>
-        
+
         <Nav.Link
           as={NavLink}
           to="/SchoolsManagement"
@@ -94,6 +89,17 @@ function SideNavigation({ isOpen, toggleSidebar }) {
           <SideNavButton
             text={"Discrepancy"}
             icon={faTachometerAlt}
+            hoverStyle={"sideNavPrimaryHoverButton"}
+          />
+        </Nav.Link>
+        <Nav.Link
+          as={NavLink}
+          to="/locations"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
+          <SideNavButton
+            text={"Locations"}
+            icon={faLocationDot}
             hoverStyle={"sideNavPrimaryHoverButton"}
           />
         </Nav.Link>

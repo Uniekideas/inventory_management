@@ -5,43 +5,40 @@ const ItemRequestContext = createContext();
 export default ItemRequestContext;
 
 export const ItemRequestProvider = ({ children }) => {
-    const [addItemRequestError, setAddItemRequestError] = useState(null);
-    const [addItemRequestIsLoading, setAddItemRequestIsLoading] = useState(true);
-    const [addItemRequestResponse, setAddItemRequestResponse] = useState(null);
-    const [formData, setFormData] = useState(
-        {
-            school_name: '',
-            head_teacher_name: '',
-            item_name: '',
-            quantity: '',
-            comment: '',
-        }
+  const [addItemRequestError, setAddItemRequestError] = useState(null);
+  const [addItemRequestIsLoading, setAddItemRequestIsLoading] = useState(true);
+  const [addItemRequestResponse, setAddItemRequestResponse] = useState(null);
+  const [formData, setFormData] = useState({
+    item_id: "",
+    quantity: "",
+    comment: "",
+  });
+
+  const handleAddItemRequest = async (e) => {
+    e.preventDefault();
+    setAddItemRequestIsLoading(true);
+    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+    console.log("we here");
+    console.log(e.target.item_id.value);
+    const RequestData = {
+      item_id: e.target.item_id.value,
+      quantity: e.target.quantity.value,
+      comment: e.target.comment.value,
+    };
+    try {
+      const result = await axios.post(
+        `${baseUrl}/api/item-request`,
+        RequestData
       );
 
-    const handleAddItemRequest = async (e) => {
-        e.preventDefault();
-        setAddItemRequestIsLoading(true);
-        const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
-      
-        const RequestData = {
-            school_name: formData.school_name,
-            head_teacher_name: formData.head_teacher_name,
-            item_name: formData.item_name,
-            quantity: formData.quantity,
-            comment: formData.comment,
-        };
-        try {
-          const result = await axios.post(`${baseUrl}/api/item-request`, RequestData);
-          
-          setAddItemRequestResponse(result.data);
-        } catch (error) {
-          console.log(error)
-            setAddItemRequestError(error.response.data.message);
-        } finally {
-            setAddItemRequestIsLoading(false);
-        }
-      };
-
+      setAddItemRequestResponse(result.data);
+    } catch (error) {
+      console.log(error);
+      setAddItemRequestError(error.response.data.message);
+    } finally {
+      setAddItemRequestIsLoading(false);
+    }
+  };
 
   let contextData = {
     handleAddItemRequest: handleAddItemRequest,

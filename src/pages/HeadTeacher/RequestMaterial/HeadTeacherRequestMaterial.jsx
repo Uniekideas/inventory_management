@@ -11,6 +11,8 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import ComfirmationPop from "../../../components/ComfirmationPopUp/ComfirmationPop";
 import { scrollToTop } from "../../../utils/HelperFunc";
 import BackButtonIcon from "../../../components/Button/BackButtonIcon";
+import Select from "react-select";
+import axios from "axios";
 
 function HeadTeacherRequestMaterial() {
   const {
@@ -31,17 +33,28 @@ function HeadTeacherRequestMaterial() {
   const [message, setmessage] = useState("");
   const [messageColor, setmessageColor] = useState("");
   const [buttonLoading, setButtonLoading] = useState(false);
+  const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
 
-  const initialFormData = {
-    school_name: userData.school,
-    head_teacher_name: userData.name,
-    item_name: "",
-    quantity: 0,
-    comment: "",
+  const [inventory, setInventory] = useState([]);
+
+  const getInventory = async () => {
+    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+    try {
+      const response = await axios.get(`${baseUrl}/api/item`);
+
+      setInventory(
+        response.data.items.map((item) => ({
+          id: item.id,
+          name: item.item_name,
+        }))
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
-    setFormData(initialFormData);
+    getInventory();
   }, []);
 
   useEffect(() => {
@@ -50,7 +63,6 @@ function HeadTeacherRequestMaterial() {
       handleComfirmationPopUps("Report created successfully!", "bg-success");
       setButtonLoading(false);
       setAddItemRequestResponse(null);
-      setFormData(initialFormData);
     }
   }, [addItemRequestIsLoading, addItemRequestResponse]);
 
@@ -123,58 +135,26 @@ function HeadTeacherRequestMaterial() {
             : null}
           <Form onSubmit={handleSubmit}>
             <Row>
-              <TitleHeader
-                text={"Requestor Information"}
-                headerTextStyle={"headerTextStyle"}
-              />
               <Form.Group className="mb-3" controlId="notificationTitle">
                 <Row className="mb-3">
-                  <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-                    <Form.Control
-                      type="text"
-                      placeholder="School Name"
-                      className="DiscrepancyInput"
-                      value={formData.school_name}
-                      onChange={handleChange}
-                      name="school_name"
-                      required
-                      readOnly
-                    />
-                  </Col>
-                </Row>
-                <Row className="mb-3">
-                  <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-                    <Form.Control
-                      type="text"
-                      placeholder="Head Teacher Name"
-                      className="DiscrepancyInput"
-                      value={formData.head_teacher_name}
-                      onChange={handleChange}
-                      name="head_teacher_name"
-                      readOnly
-                    />
-                  </Col>
-                </Row>
-              </Form.Group>
-            </Row>
-
-            <Row>
-              <TitleHeader
-                text={"Item Details"}
-                headerTextStyle={"headerTextStyle"}
-              />
-              <Form.Group className="mb-3" controlId="notificationTitle">
-                <Row className="mb-3">
-                  <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-                    <Form.Control
-                      type="text"
-                      placeholder="Item Name"
-                      className="DiscrepancyInput"
-                      value={formData.item_name}
-                      onChange={handleChange}
-                      name="item_name"
-                      required
-                    />
+                  <Col className="UserCreateInput d-flex ms-2" lg={12}>
+                    <label className="my-auto">Item</label>
+                    <div className="flex-fill">
+                      <Select
+                        classNames={{
+                          control: (state) =>
+                            state.isFocused
+                              ? "border-0 py-2 shadow-none w-100"
+                              : "border-0 py-2 w-100",
+                        }}
+                        name="item_id"
+                        placeholder="Select Item"
+                        options={inventory}
+                        getOptionLabel={(options) => options["name"]}
+                        getOptionValue={(options) => options["id"]}
+                        isSearchable
+                      />
+                    </div>
                   </Col>
                 </Row>
                 <Row className="mb-3">
@@ -198,7 +178,6 @@ function HeadTeacherRequestMaterial() {
                       rows={15}
                       placeholder="Description..."
                       className="DiscrepancyTextArea"
-                      value={formData.comment}
                       onChange={handleChange}
                       name="comment"
                       required
