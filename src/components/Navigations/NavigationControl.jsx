@@ -31,6 +31,7 @@ import WareHouseViewItem from "../../pages/WareHouseStaff/Inventory/WareHouseVie
 import WareHouseAddMovement from "../../pages/WareHouseStaff/TrackMaterial/WareHouseAddMovement";
 import Locations from "../../pages/Admin/Location/Locations";
 import HeadTeacherDashboard from "../../pages/HeadTeacher/Dashboard/HeadTeacherDashboard";
+import HeadTeacherRequests from "../../pages/HeadTeacher/RequestMaterial/HeadTeacherRequests";
 import ForgotPassword from "../../pages/Admin/Authentication/Forgot-Password";
 import HeaderTeacherInventory from "../../pages/HeadTeacher/Inventory/HeaderTeacherInventory";
 import HeaderTeacherGenerateReport from "../../pages/HeadTeacher/Inventory/HeaderTeacherGenerateReport";
@@ -213,8 +214,8 @@ function NavigationControl() {
             />
             <Route path="/GenerateInventory" element={<GenerateInventory />} />
             <Route
-              path="/HeadTeacherRequestMaterial"
-              element={<HeadTeacherRequestMaterial />}
+              path="/HeadTeacherRequests"
+              element={<HeadTeacherRequests />}
             />
             <Route
               path="/HeadTeacherGenerateInventory"

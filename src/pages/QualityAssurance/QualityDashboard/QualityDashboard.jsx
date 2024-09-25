@@ -16,109 +16,105 @@ import Loading from "../../../components/Loading/Loading";
 import axios from "axios";
 
 function QualityDashboard() {
-    const navigate = useNavigate();
-    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
-    const [filterBy, setFilterBy] = useState("");
-    const [filteredData, setFilteredData] = useState([]);
-    const [sortBy, setSortBy] = useState("");
-    const [searchTerm, setSearchTerm] = useState("");
-    const [change, setChange] = useState(false);
-    const [logs, setLogs] = useState([])
-    const { getTrackings, getTrackingsData, getTrackingsIsLoading } =
+  const navigate = useNavigate();
+  const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+  const [filterBy, setFilterBy] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
+  const [sortBy, setSortBy] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [change, setChange] = useState(false);
+  const [logs, setLogs] = useState([]);
+  const { getTrackings, getTrackingsData, getTrackingsIsLoading } =
     useContext(TrackingContext);
-    const getLogs = async()=>{
-      const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
-      try {
-        const response = await axios.get(`${baseUrl}/api/get-logs`);
-        
-        setLogs(response.data)
-      } catch (error) {
-        console.log(error)
-      }
-     
+  const getLogs = async () => {
+    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+    try {
+      const response = await axios.get(`${baseUrl}/api/get-logs`);
+
+      setLogs(response.data);
+    } catch (error) {
+      console.log(error);
     }
-  
-    useEffect(()=>{
-      getLogs()
-    }, [])
+  };
 
-    useEffect(() => {
-      getTrackings();
-      setFilteredData(getTrackingsData);
-    }, [change]);
-    const handleSearchChange = (event) => {
-      setSearchTerm(event.target.value);
-    };
-    useEffect(() => {
-      handleFilterSortSearch();
-    }, [filterBy, sortBy, searchTerm, getTrackingsData]);
+  useEffect(() => {
+    getLogs();
+  }, []);
 
-    const handleApprove = async (status, id)=>{
-      try {
-        const res = await axios.put(`${baseUrl}/api/tracking/${id}`, {status})
-        console.log(res.data)
-        setChange(true)
-      } catch (error) {
-        console.log(error)
-      }
-     
+  useEffect(() => {
+    getTrackings();
+    setFilteredData(getTrackingsData);
+  }, [change]);
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+  useEffect(() => {
+    handleFilterSortSearch();
+  }, [filterBy, sortBy, searchTerm, getTrackingsData]);
+
+  const handleApprove = async (status, id) => {
+    try {
+      const res = await axios.put(`${baseUrl}/api/tracking/${id}`, { status });
+      console.log(res.data);
+      setChange(true);
+    } catch (error) {
+      console.log(error);
     }
-    const handleFilterSortSearch = () => {
-      let filtered = [...getTrackingsData];
-  
-      if (filterBy && filterBy !== "All") {
-        filtered = filtered.filter((item) => item.status === filterBy);
-      }
-  
-      if (sortBy) {
-        filtered.sort((a, b) => {
-          if (sortBy === "ascending") {
-            return a.item_name.localeCompare(b.item_name);
-          } else {
-            return b.item_name.localeCompare(a.item_name);
-          }
-        });
-      }
+  };
+  const handleFilterSortSearch = () => {
+    let filtered = [...getTrackingsData];
 
-  
-      if (searchTerm) {
-        filtered = filtered.filter((item) =>
-          item.item_name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      }
-  
-      setFilteredData(filtered);
-    };
+    if (filterBy && filterBy !== "All") {
+      filtered = filtered.filter((item) => item.status === filterBy);
+    }
+
+    if (sortBy) {
+      filtered.sort((a, b) => {
+        if (sortBy === "ascending") {
+          return a.item_name.localeCompare(b.item_name);
+        } else {
+          return b.item_name.localeCompare(a.item_name);
+        }
+      });
+    }
+
+    if (searchTerm) {
+      filtered = filtered.filter((item) =>
+        item.item_name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    setFilteredData(filtered);
+  };
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
   const filterDataSortBy = [
     {
-      pk:1,
-      type:'ascending'
+      pk: 1,
+      type: "ascending",
     },
     {
-    pk:2,
-    type:'descending'
-    }
-  ]
+      pk: 2,
+      type: "descending",
+    },
+  ];
   const filterData = [
     {
       pk: 1,
       type: "pending",
     },
     {
-      pk:2,
-      type:'approved'
+      pk: 2,
+      type: "approved",
     },
     {
-      pk:3,
-      type:'denied'
-    }
+      pk: 3,
+      type: "denied",
+    },
   ];
   const users1 = [
     {
@@ -127,55 +123,55 @@ function QualityDashboard() {
       suppy: "Office Supplies",
       itemName: "Blue ballpoint pen",
       Admin: "Admin Name",
-      action: 'Add New Item',
+      action: "Add New Item",
       joinDate: "2024-05-18",
     },
     {
-        id: 2,
-        itemType: "Pen",
-        suppy: "Office Supplies",
-        itemName: "Blue ballpoint pen",
-        Admin: "Admin Name",
-        action: 'Add New Item',
-        joinDate: "2024-05-18",
-      },
-      {
-        id: 3,
-        itemType: "Pen",
-        suppy: "Office Supplies",
-        itemName: "Blue ballpoint pen",
-        Admin: "Admin Name",
-        action: 'Add New Item',
-        joinDate: "2024-05-18",
-      },
-      {
-        id: 4,
-        itemType: "Pen",
-        suppy: "Office Supplies",
-        itemName: "Blue ballpoint pen",
-        Admin: "Admin Name",
-        action: 'Add New Item',
-        joinDate: "2024-05-18",
-      },
-      {
-        id: 5,
-        itemType: "Pen",
-        suppy: "Office Supplies",
-        itemName: "Blue ballpoint pen",
-        Admin: "Admin Name",
-        action: 'Add New Item',
-        joinDate: "2024-05-18",
-      },
-      {
-        id: 6,
-        itemType: "Pen",
-        suppy: "Office Supplies",
-        itemName: "Blue ballpoint pen",
-        Admin: "Admin Name",
-        action: 'Add New Item',
-        joinDate: "2024-05-18",
-      },
-  ]
+      id: 2,
+      itemType: "Pen",
+      suppy: "Office Supplies",
+      itemName: "Blue ballpoint pen",
+      Admin: "Admin Name",
+      action: "Add New Item",
+      joinDate: "2024-05-18",
+    },
+    {
+      id: 3,
+      itemType: "Pen",
+      suppy: "Office Supplies",
+      itemName: "Blue ballpoint pen",
+      Admin: "Admin Name",
+      action: "Add New Item",
+      joinDate: "2024-05-18",
+    },
+    {
+      id: 4,
+      itemType: "Pen",
+      suppy: "Office Supplies",
+      itemName: "Blue ballpoint pen",
+      Admin: "Admin Name",
+      action: "Add New Item",
+      joinDate: "2024-05-18",
+    },
+    {
+      id: 5,
+      itemType: "Pen",
+      suppy: "Office Supplies",
+      itemName: "Blue ballpoint pen",
+      Admin: "Admin Name",
+      action: "Add New Item",
+      joinDate: "2024-05-18",
+    },
+    {
+      id: 6,
+      itemType: "Pen",
+      suppy: "Office Supplies",
+      itemName: "Blue ballpoint pen",
+      Admin: "Admin Name",
+      action: "Add New Item",
+      joinDate: "2024-05-18",
+    },
+  ];
 
   const activities = [
     {
@@ -222,6 +218,8 @@ function QualityDashboard() {
   const handleApprovalDetail = () => {
     navigate("/ApprovalDetail");
   };
+  console.log("list");
+  console.log(filteredData);
   return (
     <div>
       <NavigationHeader toggleSidebar={toggleSidebar} />
@@ -237,7 +235,7 @@ function QualityDashboard() {
               optionTitle={"Time"}
               options={filterData}
               defult={"This week"}
-            /> 
+            />
           </div>
           <Row className="mb-3 mt-3 ">
             <TitleHeader
@@ -286,7 +284,7 @@ function QualityDashboard() {
                 </span>
               </div>
             </div>
-          </Row> 
+          </Row>
           <Row className="mb-5 mt-5">
             <TitleHeader
               text={"Your Schools"}
@@ -311,18 +309,25 @@ function QualityDashboard() {
                 headerTextStyle={"headerTextStyle"}
               />
             </Col>
-            <Col xl={6} lg={6} md={12} sm={12} xs={12} className="d-flex justify-content-between ms-auto gap-3">
+            <Col
+              xl={6}
+              lg={6}
+              md={12}
+              sm={12}
+              xs={12}
+              className="d-flex justify-content-between ms-auto gap-3"
+            >
               <Filter
                 optionTitle={"Filter by"}
                 options={filterData}
                 defult={"Ramdom"}
-                onSelect={(value)=>setFilterBy(value)}
+                onSelect={(value) => setFilterBy(value)}
               />
               <Filter
                 optionTitle={"Sort by"}
                 options={filterDataSortBy}
                 defult={"Ramdom"}
-                onSelect={(value)=>setSortBy(value)}
+                onSelect={(value) => setSortBy(value)}
               />
             </Col>
           </Row>
@@ -338,92 +343,100 @@ function QualityDashboard() {
                   optionTitle={"Filter by"}
                   options={filterData}
                   defult={"Ramdom"}
-                  onSelect={(value)=>setFilterBy(value)}
+                  onSelect={(value) => setFilterBy(value)}
                 />
                 <Filter
                   optionTitle={"Sort by"}
                   options={filterDataSortBy}
                   defult={"Ramdom"}
-                  onSelect={(value)=>setSortBy(value)}
+                  onSelect={(value) => setSortBy(value)}
                 />
               </Col>
             </div>
           </Row>
           <Container className="ListContainer mb-5">
-            {
-              !getTrackingsIsLoading? (
-                filteredData && filterData.length>0?(
-                  filteredData.map((item) => (
-                    <Row
-                      key={item.id}
-                      className="UserListRow my-2 py-2 align-items-center"
-                    >
-                      <Col xs={7} md={7} sm={7} lg={7} className="d-flex gap-3">
-                        <Image
-                          src={inventoryListImage}
-                          rounded
-                          width="50"
-                          height="50"
-                        />
-                        <div>
-                          <h6>{item.item_name}</h6>
-                          <h6 className="fs-6">
+            {!getTrackingsIsLoading ? (
+              filteredData && filterData.length > 0 ? (
+                filteredData.map((item) => (
+                  <Row
+                    key={item.id}
+                    className="UserListRow my-2 py-2 align-items-center"
+                  >
+                    <Col xs={7} md={7} sm={7} lg={7} className="d-flex gap-3">
+                      <Image
+                        src={inventoryListImage}
+                        rounded
+                        width="50"
+                        height="50"
+                      />
+                      <div>
+                        <h6>{item.item.name}</h6>
+                        <h6 className="fs-6">
+                          {" "}
+                          {item.action}
+                          <span className="quailtyDashboardListText">
                             {" "}
-                            {item.action}
-                            <span className="quailtyDashboardListText">
-                              {" "}
-                              | {item.address}{" "}| <span style={{color:item.status=='approved'? 'green': 'red'}}>{item.status}</span>|
-                              <span className="d-none d-lg-inline me">
-                                {item.brand}  | {item.created_at}
-                                                   </span>{" "}
+                            | {item.address} |{" "}
+                            <span
+                              style={{
+                                color:
+                                  item.status == "delivered" ? "green" : "red",
+                              }}
+                            >
+                              {item.status}
                             </span>
-                          </h6>
-                        </div>
-                      </Col>
-                      <Col
-                        xs={2}
-                        md={2}
-                        sm={2}
-                        lg={2}
-                        className=""
-                      >
-                        <PrimaryButton
-                          text={"View"}
-                          Primarystyle={"quailtyListViewButton rounded rounded-4 px-4 "}
-                          clickEvent={() => handleApprovalDetail()}
-      
-                        />
-                      </Col>
-                      <Col
-                        xs={3}
-                        md={3}
-                        sm={3}
-                        lg={3}
-                        className="d-flex justify-content-end gap-2 d-none d-lg-flex"
-                      >
-                        <PrimaryButton
-                          text={"Approve"}
-                          Primarystyle={"bg-success border border-0 rounded rounded-4 px-3 "}
-                          clickEvent={()=>handleApprove('approved', item.id)}
-                        />
-                        <PrimaryButton
-                          text={"Deny"}
-                          Primarystyle={"bg-danger border border-0 rounded rounded-4 px-3"}
-                          clickEvent={()=>handleApprove('denied', item.id)}
-                        />
-                      </Col>
-                    </Row>
-                  ))
-                ):(
-                  <NonAvaliable textMessage={ "Sorry, there is currently no available item! 😥"}  imageWidth={"300px"}/>
-                )
-              ):(
-                <Container className="d-flex justify-content-center align-items-center h-50">
+                            |
+                            <span className="d-none d-lg-inline me">
+                              {item.brand} | {item.created_at}
+                            </span>{" "}
+                          </span>
+                        </h6>
+                      </div>
+                    </Col>
+                    <Col
+                      xs={3}
+                      md={3}
+                      sm={3}
+                      lg={3}
+                      className="d-flex justify-content-end gap-2 d-none d-lg-flex"
+                    >
+                      <PrimaryButton
+                        text={"View"}
+                        Primarystyle={
+                          "quailtyListViewButton rounded rounded-4 px-4 "
+                        }
+                        clickEvent={() => handleApprovalDetail()}
+                      />
+                      <PrimaryButton
+                        text={"Approve"}
+                        Primarystyle={
+                          "bg-success border border-0 rounded rounded-4 px-3 "
+                        }
+                        clickEvent={() => handleApprove("approved", item.id)}
+                      />
+                      <PrimaryButton
+                        text={"Deny"}
+                        Primarystyle={
+                          "bg-danger border border-0 rounded rounded-4 px-3"
+                        }
+                        clickEvent={() => handleApprove("denied", item.id)}
+                      />
+                    </Col>
+                  </Row>
+                ))
+              ) : (
+                <NonAvaliable
+                  textMessage={
+                    "Sorry, there is currently no available item! 😥"
+                  }
+                  imageWidth={"300px"}
+                />
+              )
+            ) : (
+              <Container className="d-flex justify-content-center align-items-center h-50">
                 <Loading loading={getTrackingsIsLoading} />
               </Container>
-              )
-            }
-           
+            )}
           </Container>
           <Row>
             <Col lg={12} md={12} xl={12} sm={12} xs={12} className="">
@@ -465,8 +478,6 @@ function QualityDashboard() {
                       </Row>
                     ))}
                   </Card.Body>
-                  
-                 
                 </div>
               </Card>
             </Col>

@@ -33,7 +33,6 @@ function HeadTeacherRequestMaterial() {
   const [message, setmessage] = useState("");
   const [messageColor, setmessageColor] = useState("");
   const [buttonLoading, setButtonLoading] = useState(false);
-  const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
 
   const [inventory, setInventory] = useState([]);
 
