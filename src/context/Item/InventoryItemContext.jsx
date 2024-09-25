@@ -122,7 +122,7 @@ export const InventoryItemProvider = ({ children }) => {
         item_name: e.target.item_name.value,
         item_code: e.target.item_code.value,
         brand: e.target.brand.value,
-        category: e.target.category.value,
+        subject_category: e.target.category.value,
         barcode_id: e.target.barcode_id.value,
         // school: e.target.school.value,
         image: fileResponse.url,
