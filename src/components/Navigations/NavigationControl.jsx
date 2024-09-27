@@ -31,11 +31,11 @@ import WareHouseViewItem from "../../pages/WareHouseStaff/Inventory/WareHouseVie
 import WareHouseAddMovement from "../../pages/WareHouseStaff/TrackMaterial/WareHouseAddMovement";
 import Locations from "../../pages/Admin/Location/Locations";
 import HeadTeacherDashboard from "../../pages/HeadTeacher/Dashboard/HeadTeacherDashboard";
-import HeadTeacherRequests from "../../pages/HeadTeacher/RequestMaterial/HeadTeacherRequests";
 import ForgotPassword from "../../pages/Admin/Authentication/Forgot-Password";
 import HeaderTeacherInventory from "../../pages/HeadTeacher/Inventory/HeaderTeacherInventory";
 import HeaderTeacherGenerateReport from "../../pages/HeadTeacher/Inventory/HeaderTeacherGenerateReport";
 import HeadTeacherRequestMaterial from "../../pages/HeadTeacher/RequestMaterial/HeadTeacherRequestMaterial";
+import HeadTeacherRequests from "../../pages/HeadTeacher/RequestMaterial/HeadTeacherRequests";
 import HeadTeacherReportDiscrepancy from "../../pages/HeadTeacher/ReportDiscrepancy/HeadTeacherReportDiscrepancy";
 import HeadTeacherPushNotification from "../../pages/HeadTeacher/PushNotification/HeadTeacherPushNotification";
 import HeadTeacherTrackMaterial from "../../pages/HeadTeacher/TrackMaterial/HeadTeacherTrackMaterial";
@@ -216,6 +216,10 @@ function NavigationControl() {
             <Route
               path="/HeadTeacherRequests"
               element={<HeadTeacherRequests />}
+            />
+            <Route
+              path="/HeadTeacherRequestMaterial"
+              element={<HeadTeacherRequestMaterial />}
             />
             <Route
               path="/HeadTeacherGenerateInventory"
