@@ -76,20 +76,15 @@ function PushNotification() {
           <Row>
             <Row className="d-lg-none">
               <Col className="d-flex text-center justify-content-end mb-3">
-                <PrimaryButton
+                {/* <PrimaryButton
                   icon={faClockRotateLeft}
                   text={"Notification History"}
                   Primarystyle={"pushNotificationTimer "}
-                />
+                /> */}
               </Col>
             </Row>
 
             <Col className="d-flex justify-content-end ms-auto gap-3 mb-5">
-              <Filter
-                optionTitle={"Select Target Audience:"}
-                options={filterData}
-                defult={"All"}
-              />
               <PrimaryButton
                 icon={faClockRotateLeft}
                 text={"Notification History"}
@@ -98,6 +93,18 @@ function PushNotification() {
             </Col>
           </Row>
           <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="notificationudience">
+              <Row>
+                <Col lg={8} md={8} xl={8} sm={12} xs={12}>
+                  <Filter
+                    optionTitle={"Select Target Audience:"}
+                    options={filterData}
+                    defult={"All"}
+                    onSelect={(value) => setAudience(value)}
+                  />
+                </Col>
+              </Row>
+            </Form.Group>
             <Form.Group className="mb-3" controlId="notificationTitle">
               <Row>
                 <Col lg={8} md={8} xl={8} sm={12} xs={12}>

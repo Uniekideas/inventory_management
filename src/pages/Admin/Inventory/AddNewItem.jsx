@@ -159,7 +159,7 @@ function AddNewItem() {
                 />
               )
             : null}
-          <Form.Control
+          {/* <Form.Control
             type="file"
             // id="shoolfileInput"
 
@@ -178,13 +178,14 @@ function AddNewItem() {
             ) : (
               "Upload"
             )}
-          </Button>
-          <Form onSubmit={handleSubmit}>
-            <h3
+          </Button> 
+           <h3
               style={{ fontWeight: "lighter", fontSize: 17, marginBottom: 2 }}
             >
               Upload csv file (if available)
             </h3>
+          */}
+          <Form onSubmit={handleSubmit}>
             {success && (
               <p
                 style={{

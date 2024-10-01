@@ -3,22 +3,41 @@ import { Row, Col, Form, Button } from "react-bootstrap";
 import "./Notification.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-
+import Filter from "../Filter/Filter";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons/faClockRotateLeft";
 
 import axios from "axios";
 import AuthenticationContext from "../../context/Authentication/AuthenticationContext";
 import { Schedule } from "./Schedule/NotificationSchedule";
 
-function PushNotification({ audience }) {
+function PushNotification() {
   // const fileInputRef = useRef(null);
   const { messages, setMessages } = useContext(AuthenticationContext);
-
+  const [audience, setAudience] = useState("");
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const filterData = [
+    {
+      pk: 1,
+      type: "QA",
+    },
+    {
+      pk: 2,
+      type: "Warehouse Staff",
+    },
+    {
+      pk: 3,
+      type: "Head Teacher",
+    },
+    {
+      pk: 4,
+      type: "Admin",
+    },
+  ];
 
   // const handleFileChange = (event) => {
   //   const fileName = event.target.files[0]?.name || "Choose a file";
@@ -29,8 +48,8 @@ function PushNotification({ audience }) {
 
     const data = {
       title: e.target.title.value,
-      body: message,
-      target: audience,
+      message: message,
+      audience: audience,
     };
 
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
@@ -39,7 +58,10 @@ function PushNotification({ audience }) {
       setError("");
       setSuccess("");
       console.log(data);
-      const response = await axios.post(`${baseUrl}/api/notification`, data);
+      const response = await axios.post(
+        `${baseUrl}/api/notification/sendnotification`,
+        data
+      );
       if (response.data) {
         setLoading(false);
 
@@ -67,6 +89,19 @@ function PushNotification({ audience }) {
   return (
     <div>
       <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3" controlId="notificationudience">
+          <Row>
+            <Col>
+              <Filter
+                optionTitle={"Select Target Audience:"}
+                options={filterData}
+                defult={"All"}
+                onSelect={(value) => setAudience(value)}
+                className="pushNotificationTitle"
+              />
+            </Col>
+          </Row>
+        </Form.Group>
         <Form.Group className="mb-3" controlId="notificationTitle">
           <Row>
             <Col lg={8} md={8} xl={8} sm={12} xs={12}>

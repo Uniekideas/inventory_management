@@ -58,7 +58,7 @@ function AdminPushNotification() {
 
           <Row>
             <Row className="d-lg-none">
-              <Col className="d-flex text-center justify-content-end mb-3">
+              {/* <Col className="d-flex text-center justify-content-end mb-3">
                 <NotificationBtn
                   Primaryicon={faClockRotateLeft}
                   onClick={handleShow}
@@ -71,18 +71,11 @@ function AdminPushNotification() {
                   text={"Notification HistoryX"}
                   Primarystyle={"pushNotificationTimer "}
                 />
-              </Col>
+              </Col> */}
             </Row>
             <NotificationHistory show={showModal} handleClose={handleClose} />
 
             <Col className="d-flex justify-content-end ms-auto gap-3 mb-5">
-              <Filter
-                optionTitle={"Select Target Audience:"}
-                options={filterData}
-                defult={"All"}
-                onSelect={(value) => setAudience(value)}
-              />
-
               <NotificationBtn
                 Primaryicon={faClockRotateLeft}
                 onClick={() => navigate("/Notifications")}
@@ -97,7 +90,7 @@ function AdminPushNotification() {
               /> */}
             </Col>
           </Row>
-          <PushNotification audience={audience} />
+          <PushNotification />
         </Container>
       </div>
     </div>

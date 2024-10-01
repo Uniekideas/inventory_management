@@ -214,6 +214,10 @@ function InventoryManagement({ Searchstyle, searchText }) {
   const filterOption = useMemo(
     () => [
       {
+        pk: 0,
+        type: "All",
+      },
+      {
         pk: 1,
         type: "English",
       },
@@ -483,74 +487,69 @@ function InventoryManagement({ Searchstyle, searchText }) {
             {!getItemsIsLoading ? (
               filteredData && filteredData.length > 0 ? (
                 <>
-                  {filteredData.map((Item) => (
-                    <Row
-                      key={Item.id}
-                      className="UserListRow my-2 py-2 align-items-center"
-                    >
-                      <Col xs={9} className="d-flex gap-3">
-                        <Image
-                          src={Item.image}
-                          rounded
-                          width="50"
-                          height="50"
-                        />
-                        <div>
-                          <h6>{Item.item_name}</h6>
-                          <h6 className="fs-6">
-                            INV-{Item.id}
-                            <span className="text-muted InventoryCategoryText">
-                              | {Item.category} | {""}
-                              <span className="d-none d-lg-inline me">
-                                {Item.item_code} | {`${Item.school}`} |{" "}
-                                {Item.quantity} {""}
-                                <span
-                                  className={
-                                    Item.quantity > 35
-                                      ? "text-success"
-                                      : Item.quantity < 1
-                                      ? "text-danger"
-                                      : "text-warning"
-                                  }
-                                >
-                                  {Item.quantity > 35
-                                    ? "| In stock"
-                                    : Item.quantity < 1
-                                    ? "| Out of stock"
-                                    : "| Low on stock"}
-                                </span>{" "}
-                                | {""}
-                                {Item.supplier} | {""}
-                                <span
-                                  className={
-                                    Item.status === "pending"
-                                      ? "text-danger"
-                                      : "text-success"
-                                  }
-                                >
-                                  {Item.status}
-                                </span>{" "}
-                                | {""}
-                                {convertDate(Item.created_at)}
-                              </span>
+                  <table className="table rounded mt-5">
+                    <thead>
+                      <tr>
+                        <th>SN</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Subject</th>
+                        <th>Quantity</th>
+                        <th>Stock</th>
+                        <th>....</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredData.map((Item, index) => (
+                        <tr key={Item.id}>
+                          <th>{index + 1}</th>
+                          <td>
+                            <Image
+                              src={Item.image}
+                              rounded
+                              width="50"
+                              height="50"
+                            />
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              className="btn btn-link"
+                              onClick={() => handleItemDetail(Item.item_code)}
+                            >
+                              {Item.item_name}
+                            </button>
+                          </td>
+                          <td>{Item.subject_category}</td>
+                          <td>{Item.quantity}</td>
+                          <td>
+                            <span
+                              className={
+                                Item.quantity > 35
+                                  ? "text-success"
+                                  : Item.quantity < 1
+                                  ? "text-danger"
+                                  : "text-warning"
+                              }
+                            >
+                              {Item.quantity > 35
+                                ? "In stock"
+                                : Item.quantity < 1
+                                ? "Out of stock"
+                                : "Low on stock"}
                             </span>
-                          </h6>
-                        </div>
-                      </Col>
-                      <Col xs={3} className="d-flex justify-content-end gap-2">
-                        <PrimaryButton
-                          text={"Edit"}
-                          Primarystyle={"UserViewButton d-none d-lg-block"}
-                          clickEvent={() => handleEditDetail(Item.id)}
-                        />
-                        <PrimaryButton
-                          text={"View details"}
-                          Primarystyle={"schoolViewButton"}
-                          clickEvent={() => handleItemDetail(Item.item_code)}
-                        />
-                      </Col>
-                    </Row>
-                  ))}
+                          </td>
+                          <td>
+                            <PrimaryButton
+                              text={"Edit"}
+                              Primarystyle={"UserViewButton"}
+                              clickEvent={() => handleEditDetail(Item.id)}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                   <div
                     style={{
                       display: "flex",

@@ -113,35 +113,41 @@ export const InventoryItemProvider = ({ children }) => {
     setAddItemIsLoading(true);
 
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
-    const imageData = e.target.image.files[0];
+    let fileResponse = null;
+    console.log(e.target.image.files.length);
+    if (e.target.image.files.length) {
+      const imageData = e.target.image.files[0];
 
-    const fileResponse = await handleAddFile(imageData);
+      let uploadResponse = await handleAddFile(imageData);
 
-    if (fileResponse && fileResponse.success) {
-      const formData = {
-        item_name: e.target.item_name.value,
-        item_code: e.target.item_code.value,
-        brand: e.target.brand.value,
-        subject_category: e.target.category.value,
-        barcode_id: e.target.barcode_id.value,
-        // school: e.target.school.value,
-        image: fileResponse.url,
-        // unit_cost: e.target.unit_cost.value,
-        quantity: e.target.quantity.value,
-        // reorder_point: e.target.reorder_point.value,
-        distribution: e.target.distribution.value,
-      };
-
-      try {
-        const result = await axios.post(`${baseUrl}/api/item`, formData);
-
-        setAddItemResponse(result.data);
-      } catch (error) {
-        setAddItemError(error.response.data.message);
-        console.log(error);
+      if (uploadResponse && uploadResponse.success) {
+        fileResponse = uploadResponse.url;
+      } else {
+        setAddItemError(addFileError || "File upload failed");
       }
-    } else {
-      setAddItemError(addFileError || "File upload failed");
+    }
+
+    const formData = {
+      item_name: e.target.item_name.value,
+      item_code: e.target.item_code.value,
+      brand: e.target.brand.value,
+      subject_category: e.target.category.value,
+      barcode_id: e.target.barcode_id.value,
+      // school: e.target.school.value,
+      image: fileResponse,
+      // unit_cost: e.target.unit_cost.value,
+      quantity: e.target.quantity.value,
+      // reorder_point: e.target.reorder_point.value,
+      distribution: e.target.distribution.value,
+    };
+
+    try {
+      const result = await axios.post(`${baseUrl}/api/item`, formData);
+
+      setAddItemResponse(result.data);
+    } catch (error) {
+      setAddItemError(error.response.data.message);
+      console.log(error);
     }
 
     setAddItemIsLoading(false);
