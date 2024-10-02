@@ -28,6 +28,7 @@ function CreateNewUser() {
     addUserError,
     setAddUserError,
     setAddUserResponse,
+    setSelectSchool,
   } = useContext(UserContext);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -93,6 +94,10 @@ function CreateNewUser() {
     } else {
       setButtonLoading(false);
     }
+  };
+
+  const handleSchoolChange = (event) => {
+    setSelectSchool(event.id);
   };
 
   const handleAddSubmit = (e) => {
@@ -279,6 +284,7 @@ function CreateNewUser() {
                       getOptionLabel={(options) => options["name"]}
                       getOptionValue={(options) => options["school_id"]}
                       isSearchable
+                      onChange={handleSchoolChange}
                     />
                   </div>
                 </Col>

@@ -10,6 +10,7 @@ export const UsersProvider = ({ children }) => {
   const [getUsersData, setGetUsersData] = useState([]);
   const [getUsersError, setGetUsersError] = useState(null);
   const [getUsersIsLoading, setGetUsersIsLoading] = useState(true);
+  const [selectSchool, setSelectSchool] = useState("");
 
   const [getSingleUserData, setGetSingleUserData] = useState(null);
   const [getSingleUserError, setSingleUserError] = useState(null);
@@ -79,13 +80,14 @@ export const UsersProvider = ({ children }) => {
     }
   };
 
-  const handleAddUser = async (e) => {
+  const handleAddUser = async (e, school) => {
     e.preventDefault();
     setAddUserIsLoading(true);
     let fileResponse = null;
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
     // const imageData = e.target.image.files[0];
-
+    console.log("school");
+    console.log(selectSchool);
     // const fileResponse = await handleAddFile(imageData);
     if (e.target.image.files.length) {
       const imageData = e.target.image.files[0];
@@ -105,7 +107,7 @@ export const UsersProvider = ({ children }) => {
       role: e.target.role.value,
       department: e.target.department.value,
       image: fileResponse ? fileResponse.url : null,
-      school: e.target.school.value,
+      school: selectSchool,
     };
 
     try {
@@ -194,7 +196,7 @@ export const UsersProvider = ({ children }) => {
     handleEditUser: handleEditUser,
     seteditUserResponse: seteditUserResponse,
     seteditUserError: seteditUserError,
-
+    setSelectSchool: setSelectSchool,
     handleUserStatus: handleUserStatus,
     getUsersIsLoading: getUsersIsLoading,
     getUsersError: getUsersError,

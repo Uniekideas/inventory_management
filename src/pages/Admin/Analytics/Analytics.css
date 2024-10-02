@@ -15,7 +15,7 @@
   border-radius: 16px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
 }
 .reportContentAppearText {
   width: 180px;

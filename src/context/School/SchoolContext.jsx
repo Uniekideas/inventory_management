@@ -193,6 +193,7 @@ export const SchoolProvider = ({ children }) => {
     getSchoolsError: getSchoolsError,
     getSchoolTotal: getSchoolTotal,
     getSchoolsData: getSchoolsData,
+    setGetSchoolsIsLoading: setGetSchoolsIsLoading,
     addSchoolResponse: addSchoolResponse,
     addSchoolIsLoading: addSchoolIsLoading,
     addSchoolError: addSchoolError,

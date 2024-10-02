@@ -17,13 +17,18 @@ import ComfirmationPop from "../../../components/ComfirmationPopUp/ComfirmationP
 import { scrollToTop, convertDate } from "../../../utils/HelperFunc";
 import AnalysisContext from "../../../context/Analysis/AnalysisContext";
 import BackButtonIcon from "../../../components/Button/BackButtonIcon";
-
+import axios from "axios";
 function SchoolsManagement() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { getSchoolsData, getSchoolsIsLoading, getSchools, getSchoolTotal } =
-    useContext(SchoolContext);
+  const {
+    getSchoolsData,
+    getSchoolsIsLoading,
+    setGetSchoolsIsLoading,
+    getSchools,
+    getSchoolTotal,
+  } = useContext(SchoolContext);
 
   const { ProcessAnalysis, schoolDataAnalysis } = useContext(AnalysisContext);
 
@@ -49,7 +54,11 @@ function SchoolsManagement() {
 
   useEffect(() => {
     handleFilterSortSearch();
-  }, [filterBy, sortBy, searchTerm, getSchoolsData]);
+  }, [filterBy, sortBy, getSchoolsData]);
+
+  useEffect(() => {
+    handleNameSearch();
+  }, [searchTerm]);
 
   useEffect(() => {
     if (location.state?.message) {
@@ -181,6 +190,26 @@ function SchoolsManagement() {
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleNameSearch = async (e) => {
+    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+
+    const formData = {
+      search: searchTerm, //e.target.name.value,
+    };
+
+    try {
+      const results = await axios.post(
+        `${baseUrl}/api/school/search`,
+        formData
+      );
+      console.log(results);
+      setFilteredData(results);
+    } catch (error) {
+    } finally {
+      setGetSchoolsIsLoading(false);
+    }
   };
 
   const handleFilterSortSearch = () => {
