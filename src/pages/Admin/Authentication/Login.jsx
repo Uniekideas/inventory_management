@@ -142,12 +142,6 @@ function Login() {
                 "Login"
               )}
             </Button>
-            <p>
-              Are you a new user?{" "}
-              <Link to={"/SignUp"} className="text-decoration-none">
-                Create an account
-              </Link>
-            </p>
           </Form>
           <Outlet />
         </Col>

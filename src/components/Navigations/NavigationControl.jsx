@@ -80,14 +80,14 @@ function NavigationControl() {
             </PrivatteAuthentactionRoute>
           }
         />
-        <Route
+        {/* <Route
           path="/SignUp"
           element={
             <PrivatteAuthentactionRoute>
               <SignUp />
             </PrivatteAuthentactionRoute>
           }
-        />
+        /> */}
         <Route
           path="/forgot-password"
           element={
