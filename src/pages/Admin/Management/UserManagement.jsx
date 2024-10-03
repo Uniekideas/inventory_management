@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useMemo  } from "react";
+import React, { useContext, useEffect, useState, useMemo } from "react";
 import { Container, Row, Col, Image, Button } from "react-bootstrap";
 import "./Management.css";
 import NavigationHeader from "../../../components/Navigations/NavigationHeader";
@@ -35,8 +35,7 @@ function UserManagement() {
     userStatusResponse,
   } = useContext(UserContext);
 
-  const { ProcessAnalysis, userDataAnalysis } =
-  useContext(AnalysisContext);
+  const { ProcessAnalysis, userDataAnalysis } = useContext(AnalysisContext);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [comfirmationAction, setComfirmationAction] = useState(false);
@@ -56,12 +55,11 @@ function UserManagement() {
   }, []);
 
   useEffect(() => {
-    ProcessAnalysis(getUsersData, 'users');
+    ProcessAnalysis(getUsersData, "users");
   }, [getUsersIsLoading]);
-  
-  const {value, trend} = userDataAnalysis
 
- 
+  const { value, trend } = userDataAnalysis;
+
   useEffect(() => {
     handleFilterSortSearch();
   }, [filterBy, sortBy, searchTerm, getUsersData]);
@@ -88,13 +86,16 @@ function UserManagement() {
     }
   }, [userStatusIsLoading, userStatusError]);
 
-  const filterOption = useMemo(() => [
-    { pk: 1, type: "All" },
-    { pk: 2, type: "QA" },
-    { pk: 3, type: "Admin" },
-    { pk: 4, type: "HeadTeacher" },
-    { pk: 5, type: "WareHouse" },
-  ], []);
+  const filterOption = useMemo(
+    () => [
+      { pk: 1, type: "All" },
+      { pk: 2, type: "QA" },
+      { pk: 3, type: "Admin" },
+      { pk: 4, type: "HeadTeacher" },
+      { pk: 5, type: "WareHouse" },
+    ],
+    []
+  );
 
   const filterMapping = {
     All: null,
@@ -104,34 +105,37 @@ function UserManagement() {
     HeadTeacher: 4,
   };
 
-  const sortOption = useMemo(() => [
-    {
-      pk: 1,
-      type: "ascending",
-    },
-    {
-      pk: 2,
-      type: "descending",
-    },
-  ], []);
+  const sortOption = useMemo(
+    () => [
+      {
+        pk: 1,
+        type: "ascending",
+      },
+      {
+        pk: 2,
+        type: "descending",
+      },
+    ],
+    []
+  );
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
   const handleFilterSortSearch = () => {
     let filtered = [...getUsersData];
-  
+
     // Apply role filter
     if (filterBy && filterBy !== "All") {
       const filterId = filterMapping[filterBy];
       filtered = filtered.filter((item) => item.role_id === filterId);
     }
-  
+
     // Apply sorting
     if (sortBy) {
       filtered.sort((a, b) => {
-        const nameA = a.name || '';
-        const nameB = b.name || '';
+        const nameA = a.name || "";
+        const nameB = b.name || "";
         if (sortBy === "ascending") {
           return nameA.localeCompare(nameB);
         } else {
@@ -139,19 +143,19 @@ function UserManagement() {
         }
       });
     }
-  
-  
+
     // Apply search by name and email
     if (searchTerm) {
-      const searchWords = searchTerm.toLowerCase().split(' ');
+      const searchWords = searchTerm.toLowerCase().split(" ");
       filtered = filtered.filter((item) =>
-        searchWords.every((word) => 
-          (item.name && item.name.toLowerCase().includes(word)) ||
-          (item.email && item.email.toLowerCase().includes(word))
+        searchWords.every(
+          (word) =>
+            (item.name && item.name.toLowerCase().includes(word)) ||
+            (item.email && item.email.toLowerCase().includes(word))
         )
       );
     }
-  
+
     setFilteredData(filtered);
   };
 
@@ -206,20 +210,18 @@ function UserManagement() {
                 />
               )
             : null}
-          <BackButtonIcon/>
+          <BackButtonIcon />
           <TitleHeader text={"User Management"} />
           <Row className="mb-3">
             <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-              
-             <input
+              <input
                 type="text"
-                placeholder='Search School'
-                className="seachContentBar"
+                placeholder="Search User"
+                className="seachContentBar px-2"
                 value={searchTerm}
                 onChange={handleSearchChange}
-                style={{display:'block', width:'100%', borderRadius:10}}
-                
-            />
+                style={{ display: "block", width: "100%", borderRadius: 10 }}
+              />
             </Col>
           </Row>
           <Row className="mb-3">
@@ -228,8 +230,16 @@ function UserManagement() {
                 title={"Total IMS Users"}
                 image={usersImage}
                 figure={getUsersData ? getUsersData.length : 0}
-                margin={`${trend === 'up' ? '↑' : trend === 'down' ? '↓' : '~'} ${value}`}
-                marginColor={trend === 'up' ? 'text-success': trend === 'down' ? 'text-danger' : 'text-primary'}
+                margin={`${
+                  trend === "up" ? "↑" : trend === "down" ? "↓" : "~"
+                } ${value}`}
+                marginColor={
+                  trend === "up"
+                    ? "text-success"
+                    : trend === "down"
+                    ? "text-danger"
+                    : "text-primary"
+                }
               />
             </Col>
           </Row>
@@ -252,7 +262,7 @@ function UserManagement() {
                 defult={"All"}
                 onSelect={(value) => setFilterBy(value)}
               />
-                <Filter
+              <Filter
                 Filterstyle={"responsive"}
                 optionTitle={"Sort by"}
                 options={sortOption}
@@ -293,12 +303,7 @@ function UserManagement() {
                     className="UserListRow my-2 py-2 align-items-center"
                   >
                     <Col xs={9} md={9} sm={9} lg={9} className="d-flex gap-3">
-                      <Image
-                        src={user.image}
-                        rounded
-                        width="50"
-                        height="50"
-                      />
+                      <Image src={user.image} rounded width="50" height="50" />
                       <div>
                         <h6>{user.name}</h6>
                         <h6 className="fs-6">

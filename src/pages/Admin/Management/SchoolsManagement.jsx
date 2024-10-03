@@ -54,11 +54,11 @@ function SchoolsManagement() {
 
   useEffect(() => {
     handleFilterSortSearch();
-  }, [filterBy, sortBy, getSchoolsData]);
+  }, [sortBy, getSchoolsData]);
 
-  useEffect(() => {
-    handleNameSearch();
-  }, [searchTerm]);
+  useEffect(() => handleLgaTypeFilter(), [filterBy]);
+
+  useEffect(() => handleNameSearch(), [searchTerm]);
 
   useEffect(() => {
     if (location.state?.message) {
@@ -192,28 +192,37 @@ function SchoolsManagement() {
     setSearchTerm(event.target.value);
   };
 
-  const handleNameSearch = async (e) => {
-    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+  const handleNameSearch = () => {
+    setGetSchoolsIsLoading(true);
+    setTimeout(async () => {
+      const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
 
-    const formData = {
-      search: searchTerm, //e.target.name.value,
-    };
+      try {
+        if (searchTerm.length) {
+          const formData = {
+            search: searchTerm,
+          };
+          const results = await axios.post(
+            `${baseUrl}/api/school/search`,
+            formData
+          );
 
-    try {
-      const results = await axios.post(
-        `${baseUrl}/api/school/search`,
-        formData
-      );
-      console.log(results);
-      setFilteredData(results);
-    } catch (error) {
-    } finally {
-      setGetSchoolsIsLoading(false);
-    }
+          setFilteredData(
+            results.data.schools.length ? results.data.schools : []
+          );
+        } else {
+          setFilteredData(filteredData);
+        }
+      } catch (error) {
+      } finally {
+        setGetSchoolsIsLoading(false);
+      }
+    }, 1500);
   };
 
-  const handleFilterSortSearch = () => {
-    let filtered = [...getSchoolsData];
+  const handleLgaTypeFilter = () => {
+    setGetSchoolsIsLoading(true);
+    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
 
     if (filterBy && filterBy !== "All") {
       if (
@@ -221,11 +230,44 @@ function SchoolsManagement() {
         filterBy === "Primary" ||
         filterBy === "Progressive"
       ) {
-        filtered = filtered.filter((item) => item.SCHOOL_TYPE === filterBy);
       } else {
-        filtered = filtered.filter((item) => item.LGA === filterBy);
+        setTimeout(async () => {
+          try {
+            const formData = {
+              lga: filterBy,
+            };
+            const results = await axios.post(
+              `${baseUrl}/api/school/lga`,
+              formData
+            );
+            console.log("LGA");
+            console.log(results);
+            setFilteredData(
+              results.data.schools.length ? results.data.schools : []
+            );
+          } catch (error) {
+          } finally {
+            setGetSchoolsIsLoading(false);
+          }
+        }, 500);
       }
     }
+  };
+
+  const handleFilterSortSearch = () => {
+    let filtered = [...getSchoolsData];
+
+    // if (filterBy && filterBy !== "All") {
+    //   if (
+    //     filterBy === "JSS" ||
+    //     filterBy === "Primary" ||
+    //     filterBy === "Progressive"
+    //   ) {
+    //     filtered = filtered.filter((item) => item.SCHOOL_TYPE === filterBy);
+    //   } else {
+    //     filtered = filtered.filter((item) => item.LGA === filterBy);
+    //   }
+    // }
 
     if (sortBy) {
       filtered.sort((a, b) => {
@@ -235,12 +277,6 @@ function SchoolsManagement() {
           return b.SCHOOL_NAME.localeCompare(a.SCHOOL_NAME);
         }
       });
-    }
-
-    if (searchTerm) {
-      filtered = filtered.filter((item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
     }
 
     setFilteredData(filtered);
