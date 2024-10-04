@@ -230,6 +230,26 @@ function SchoolsManagement() {
         filterBy === "Primary" ||
         filterBy === "Progressive"
       ) {
+        setTimeout(async () => {
+          try {
+            console.log("filteredby");
+            console.log(filterBy);
+            const formData = {
+              level: filterBy,
+            };
+            const results = await axios.post(
+              `${baseUrl}/api/school/level`,
+              formData
+            );
+
+            setFilteredData(
+              results.data.schools.length ? results.data.schools : []
+            );
+          } catch (error) {
+          } finally {
+            setGetSchoolsIsLoading(false);
+          }
+        }, 500);
       } else {
         setTimeout(async () => {
           try {
@@ -240,8 +260,7 @@ function SchoolsManagement() {
               `${baseUrl}/api/school/lga`,
               formData
             );
-            console.log("LGA");
-            console.log(results);
+
             setFilteredData(
               results.data.schools.length ? results.data.schools : []
             );
@@ -251,6 +270,9 @@ function SchoolsManagement() {
           }
         }, 500);
       }
+    } else {
+      setFilteredData(getSchoolsData);
+      setGetSchoolsIsLoading(false);
     }
   };
 
@@ -364,7 +386,7 @@ function SchoolsManagement() {
                 Filterstyle={"responsive"}
                 optionTitle={"Filter by"}
                 options={filterOption}
-                defult={"Rdom"}
+                defult={"All"}
                 onSelect={(value) => setFilterBy(value)}
               />
 
@@ -372,7 +394,7 @@ function SchoolsManagement() {
                 Filterstyle={"responsive"}
                 optionTitle={"Filter by"}
                 options={filterOptionForType}
-                defult={"Random"}
+                defult={"All"}
                 onSelect={(value) => setFilterBy(value)}
               />
             </Col>

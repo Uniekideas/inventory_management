@@ -52,7 +52,6 @@ function EditSchool() {
     }
   }, [editSchoolIsLoading, editSchoolResponse, navigate]);
 
-  
   useEffect(() => {
     if (!editSchoolIsLoading && editSchoolError) {
       scrollToTop();
@@ -61,8 +60,6 @@ function EditSchool() {
       seteditSchoolError(null);
     }
   }, [editSchoolIsLoading, editSchoolError]);
-
-
 
   const handleComfirmationPopUps = (messageInfo, messageBgColor) => {
     setmessage(messageInfo);
@@ -108,7 +105,6 @@ function EditSchool() {
 
     document.getElementById("fileLabel").innerText = fileName;
   };
-
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -197,7 +193,7 @@ function EditSchool() {
                     </Col>
                   </Row>
                   <Row className="mb-3">
-                    <Col lg={2} md={2} xl={2} sm={6} xs={6}>
+                    <Col lg={6} md={6} xl={6} sm={6} xs={6}>
                       <Form.Select
                         className="UserCreateInput"
                         name="level"
@@ -206,7 +202,9 @@ function EditSchool() {
                         onChange={handleChange}
                       >
                         <option value="">School Level</option>
-                        <option value="Elementary">Elementary</option>
+                        <option value="Primary">Elementary</option>
+                        <option value="JSS">JSS</option>
+                        <option value="Progressive">Progressive</option>
                       </Form.Select>
                     </Col>
                   </Row>
@@ -262,7 +260,7 @@ function EditSchool() {
                     </Col>
                   </Row>
                   <Row className="mb-3">
-                    <Col lg={2} md={2} xl={2} sm={6} xs={6}>
+                    <Col lg={6} md={6} xl={6} sm={6} xs={6}>
                       <Form.Select
                         className="UserCreateInput"
                         name="lga"
@@ -271,7 +269,24 @@ function EditSchool() {
                         onChange={handleChange}
                       >
                         <option value="">Local Government Area</option>
+                        <option value="Akoko Edo">Akoko Edo</option>
+                        <option value="Egor">Egor</option>
+                        <option value="Esan Central">Esan Central</option>
                         <option value="Esan North-East">Esan North-East</option>
+                        <option value="Esan South-East">Esan North-East</option>
+                        <option value="Esan West">Esan West</option>
+                        <option value="Etsako Central">Etsako Central</option>
+                        <option value="Etsako East">Etsako East</option>
+                        <option value="Etsako West">Etsako West</option>
+                        <option value="Igueben">Igueben</option>
+                        <option value="Ikpoba Okha">Ikpoba Okha</option>
+                        <option value="Oredo">Oredo</option>
+                        <option value="Orhionmwon">Orhionmwon</option>
+                        <option value="Ovia North East">Ovia North East</option>
+                        <option value="Ovia South Wast">Ovia South Wast</option>
+                        <option value="Owan East">Owan East</option>
+                        <option value="Owan West">Owan West</option>
+                        <option value="Uhunmwode">Uhunmwode</option>
                       </Form.Select>
                     </Col>
                   </Row>

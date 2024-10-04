@@ -155,14 +155,16 @@ function AddSchool() {
                   </Col>
                 </Row>
                 <Row className="mb-3">
-                  <Col lg={2} md={2} xl={2} sm={6} xs={6}>
+                  <Col lg={6} md={6} xl={6} sm={6} xs={6}>
                     <Form.Select
                       className="UserCreateInput"
                       name="level"
                       required
                     >
                       <option value="">School Level</option>
-                      <option value="Elementery">Elementery</option>
+                      <option value="Primary">Elementary</option>
+                      <option value="JSS">JSS</option>
+                      <option value="Progressive">Progressive</option>
                     </Form.Select>
                   </Col>
                 </Row>
@@ -214,7 +216,7 @@ function AddSchool() {
                   </Col>
                 </Row>
                 <Row className="mb-3">
-                  <Col lg={2} md={2} xl={2} sm={6} xs={6}>
+                  <Col lg={6} md={6} xl={6} sm={6} xs={6}>
                     <Form.Select
                       className="UserCreateInput"
                       name="lga"
