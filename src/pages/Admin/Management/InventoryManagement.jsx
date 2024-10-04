@@ -394,7 +394,7 @@ function InventoryManagement({ Searchstyle, searchText }) {
               />
             </Col>
           </Row>
-          <Row className="d-none d-lg-flex mobileCreateButton my-3">
+          {/* <Row className="d-none d-lg-flex mobileCreateButton my-3">
             <Col className="d-flex justify-content-end">
               <Filter
                 optionTitle={"Export Data"}
@@ -432,7 +432,7 @@ function InventoryManagement({ Searchstyle, searchText }) {
             <Col lg={6} md={6} xl={8} sm={12} xs={12} className="">
               <LineGraph data={Arkdata} options={Arkoptions} />
             </Col>
-          </Row>
+          </Row> */}
           <Row className="d-lg-none mobileCreateButton my-3">
             <Col className="d-flex justify-content-end">
               <PrimaryButton

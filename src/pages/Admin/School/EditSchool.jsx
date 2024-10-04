@@ -202,7 +202,7 @@ function EditSchool() {
                         onChange={handleChange}
                       >
                         <option value="">School Level</option>
-                        <option value="Primary">Elementary</option>
+                        <option value="Primary">Primary</option>
                         <option value="JSS">JSS</option>
                         <option value="Progressive">Progressive</option>
                       </Form.Select>
