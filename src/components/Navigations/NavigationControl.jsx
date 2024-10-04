@@ -4,6 +4,7 @@ import ReportAnalytics from "../../pages/Admin/Analytics/ReportAnalytics";
 import Login from "../../pages/Admin/Authentication/Login";
 import SignUp from "../../pages/Admin/Authentication/SignUp";
 import DiscrepancyList from "../../pages/Admin/Discrepancy/DiscrepancyList";
+import DiscrepancyListResolved from "../../pages/Admin/Discrepancy/DiscrepancyListResolved";
 import UserManagement from "../../pages/Admin/Management/UserManagement";
 import SchoolsManagement from "../../pages/Admin/Management/SchoolsManagement";
 import InventoryManagement from "../../pages/Admin/Management/InventoryManagement";
@@ -124,6 +125,10 @@ function NavigationControl() {
               element={<AdminPushNotification />}
             />
             <Route path="/DiscrepancyList" element={<DiscrepancyList />} />
+            <Route
+              path="/DiscrepancyListResolved"
+              element={<DiscrepancyListResolved />}
+            />
             <Route path="/UserManagement" element={<UserManagement />} />
             <Route path="/SchoolsManagement" element={<SchoolsManagement />} />
             <Route

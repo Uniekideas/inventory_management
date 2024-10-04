@@ -17,25 +17,36 @@ export const DiscrepancyProvider = ({ children }) => {
   const [addDiscrepancyError, setAddDiscrepancyError] = useState(null);
   const [addDiscrepancyIsLoading, setAddDiscrepancyIsLoading] = useState(true);
   const [addDiscrepancyResponse, setAddDiscrepancyResponse] = useState(null);
-  const [formData, setFormData] = useState(
-    {
-      report_id: '',
-      reporter: '',
-      item_name: '',
-      supplier: '',
-      expected_quantity: '',
-      actual_quantity: '',
-      discrepancy_type: '',
-      description: '',
-      date: '',
-    }
-  );
+  const [formData, setFormData] = useState({
+    report_id: "",
+    reporter: "",
+    item_name: "",
+    supplier: "",
+    expected_quantity: "",
+    actual_quantity: "",
+    discrepancy_type: "",
+    description: "",
+    date: "",
+  });
 
   const getDiscrepancys = async () => {
     setGetDiscrepancysIsLoading(true);
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
     try {
       const response = await axios.get(`${baseUrl}/api/discrepancy`);
+      setGetDiscrepancysData(response.data.discrepancies);
+    } catch (error) {
+      setGetDiscrepancysError(error);
+    } finally {
+      setGetDiscrepancysIsLoading(false);
+    }
+  };
+
+  const getResolvedDiscrepancys = async () => {
+    setGetDiscrepancysIsLoading(true);
+    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+    try {
+      const response = await axios.get(`${baseUrl}/api/discrepancy/resolved`);
       setGetDiscrepancysData(response.data.discrepancies);
     } catch (error) {
       setGetDiscrepancysError(error);
@@ -76,7 +87,10 @@ export const DiscrepancyProvider = ({ children }) => {
     console.log(DiscrepancyData);
 
     try {
-      const result = await axios.post(`${baseUrl}/api/discrepancy`, DiscrepancyData);
+      const result = await axios.post(
+        `${baseUrl}/api/discrepancy`,
+        DiscrepancyData
+      );
       setAddDiscrepancyResponse(result.data);
     } catch (error) {
       setAddDiscrepancyError(error.response.data.message);
@@ -88,6 +102,7 @@ export const DiscrepancyProvider = ({ children }) => {
 
   let contextData = {
     getDiscrepancys: getDiscrepancys,
+    getResolvedDiscrepancys: getResolvedDiscrepancys,
     getDiscrepancy: getDiscrepancy,
     handleAddDiscrepancy: handleAddDiscrepancy,
     setAddDiscrepancyResponse: setAddDiscrepancyResponse,
@@ -103,7 +118,7 @@ export const DiscrepancyProvider = ({ children }) => {
     addDiscrepancyResponse: addDiscrepancyResponse,
     addDiscrepancyIsLoading: addDiscrepancyIsLoading,
     addDiscrepancyError: addDiscrepancyError,
-    formData: formData
+    formData: formData,
   };
 
   return (

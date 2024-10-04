@@ -16,11 +16,14 @@ import { convertDate } from "../../../utils/HelperFunc";
 import DiscrepancyContext from "../../../context/Discrepancy/DiscrepancyContext";
 import BackButtonIcon from "../../../components/Button/BackButtonIcon";
 
-function DiscrepancyList() {
+function DiscrepancyListResolved() {
   const navigate = useNavigate();
 
-  const { getDiscrepancys, getDiscrepancysIsLoading, getDiscrepancysData } =
-    useContext(DiscrepancyContext);
+  const {
+    getResolvedDiscrepancys,
+    getDiscrepancysIsLoading,
+    getDiscrepancysData,
+  } = useContext(DiscrepancyContext);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [comfirmationAction, setComfirmationAction] = useState(false);
@@ -32,7 +35,7 @@ function DiscrepancyList() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    getDiscrepancys();
+    getResolvedDiscrepancys();
     setFilteredData(getDiscrepancysData);
   }, []);
 
@@ -238,14 +241,7 @@ function DiscrepancyList() {
             <div className="row justify-content-between">
               <div className="col d-flex">
                 <BackButtonIcon />
-                <TitleHeader text={"Discrepancy"} />
-              </div>
-              <div className="col text-end">
-                <PrimaryButton
-                  text={"Resolved Discrepancy"}
-                  Primarystyle={"InventoryReportButton"}
-                  clickEvent={() => navigate("/DiscrepancyListResolved")}
-                />
+                <TitleHeader text={"Resolved Discrepancy"} />
               </div>
             </div>
           </Row>
@@ -357,4 +353,4 @@ function DiscrepancyList() {
   );
 }
 
-export default DiscrepancyList;
+export default DiscrepancyListResolved;
