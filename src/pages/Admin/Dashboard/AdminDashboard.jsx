@@ -673,7 +673,7 @@ function AdminDashboard() {
                   text={"Material Availability Overview"}
                   headerTextStyle={"headerTextStyle"}
                 />
-                <Form.Control
+                {/* <Form.Control
                   type="date"
                   placeholder="Minimum Stock Level"
                   className="pushNotificationTitle"
@@ -692,7 +692,7 @@ function AdminDashboard() {
                     defult={"All"}
                     onSelect={(value) => setFilter(value)}
                   />
-                </div>
+                </div> */}
               </div>
               <div className="d-lg-none d-flex justify-content-end mt-3">
                 <Filter
