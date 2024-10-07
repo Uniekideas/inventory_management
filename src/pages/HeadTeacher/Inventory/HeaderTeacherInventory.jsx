@@ -20,7 +20,15 @@ import BackButtonIcon from "../../../components/Button/BackButtonIcon";
 function HeaderTeacherInventory() {
   const navigate = useNavigate();
 
-  const { getInventoryItems, getItemsData, getItemsPagination, getItemsDataCount, getItemsIsLoading, handleNextPage, handlePrevPage } = useContext(InventoryItemContext);
+  const {
+    getInventoryItems,
+    getItemsData,
+    getItemsPagination,
+    getItemsDataCount,
+    getItemsIsLoading,
+    handleNextPage,
+    handlePrevPage,
+  } = useContext(InventoryItemContext);
 
   const { ProcessAnalysis, itemDataAnalysis } = useContext(AnalysisContext);
 
@@ -99,7 +107,9 @@ function HeaderTeacherInventory() {
     }
 
     if (searchTerm) {
-      filtered = filtered.filter((item) => item.item_name.toLowerCase().includes(searchTerm.toLowerCase()));
+      filtered = filtered.filter((item) =>
+        item.item_name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     }
 
     setFilteredData(filtered);
@@ -116,26 +126,60 @@ function HeaderTeacherInventory() {
     <div>
       <NavigationHeader toggleSidebar={toggleSidebar} />
       <div className="d-flex justify-content-between">
-        <HeadTeacherNavigation isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <HeadTeacherNavigation
+          isOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+        />
         <Container className="reportContainer">
           <BackButtonIcon />
           <TitleHeader text={"Inventory Management"} />
           <Row className="mb-3">
             <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-              <input type="text" placeholder="Search Inventory" className="seachContentBar" value={searchTerm} onChange={handleSearchChange} style={{ display: "block", width: "100%", borderRadius: 10 }} />
+              <input
+                type="text"
+                placeholder="Search Inventory"
+                className="seachContentBar"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                style={{ display: "block", width: "100%", borderRadius: 10 }}
+              />
             </Col>
           </Row>
           <Row className="mb-3">
             <Col lg={6} md={12} xl={4} sm={12} xs={12} className="mb-2">
-              <PresentaionCard title={"Total Items"} image={schoolImage} figure={getItemsDataCount ? getItemsDataCount : 0} margin={`${trend === "up" ? "↑" : trend === "down" ? "↓" : "~"} ${value}`} marginColor={trend === "up" ? "text-success" : trend === "down" ? "text-danger" : "text-primary"} />
+              <PresentaionCard
+                title={"Total Items"}
+                image={schoolImage}
+                figure={getItemsDataCount ? getItemsDataCount : 0}
+                margin={`${
+                  trend === "up" ? "↑" : trend === "down" ? "↓" : "~"
+                } ${value}`}
+                marginColor={
+                  trend === "up"
+                    ? "text-success"
+                    : trend === "down"
+                    ? "text-danger"
+                    : "text-primary"
+                }
+              />
             </Col>
             <Col lg={6} md={12} xl={4} sm={12} xs={12}>
-              <PresentaionCard title={"Low Stock Alerts"} image={schoolImage} figure={"46"} margin={"↓"} marginColor={"red"} />
+              <PresentaionCard
+                title={"Low Stock Alerts"}
+                image={schoolImage}
+                figure={"46"}
+                margin={"↓"}
+                marginColor={"red"}
+              />
             </Col>
           </Row>
           <Row>
             <Col className="d-lg-none ">
-              <PrimaryButton text={"Generate Inventory Report"} Primarystyle={"WareHouseGenerateInventoryButton w-100"} clickEvent={() => handleGenerateReport()} />
+              <PrimaryButton
+                text={"Generate Inventory Report"}
+                Primarystyle={"WareHouseGenerateInventoryButton w-100"}
+                clickEvent={() => handleGenerateReport()}
+              />
             </Col>
             {/* <Col className="d-lg-none ">
               <PrimaryButton
@@ -149,7 +193,11 @@ function HeaderTeacherInventory() {
             {/* <Col className="d-flex justify-content-between ms-auto gap-3"> */}
 
             <Col xl={3}>
-              <PrimaryButton text={"Generate Inventory Report"} Primarystyle={"WareHouseGenerateInventoryButton w-100"} clickEvent={() => handleGenerateReport()} />
+              <PrimaryButton
+                text={"Generate Inventory Report"}
+                Primarystyle={"WareHouseGenerateInventoryButton w-100"}
+                clickEvent={() => handleGenerateReport()}
+              />
             </Col>
             {/* <Col xl={2}>
               <PrimaryButton
@@ -163,40 +211,91 @@ function HeaderTeacherInventory() {
             {!getItemsIsLoading ? (
               filteredData && filteredData.length > 0 ? (
                 <>
-                  {filteredData.map((Item, index) => (
-                    <Row key={index} className="UserListRow my-2 py-2 align-items-center">
-                      <Col xs={12} md={12} sm={12} lg={12} xl={12} className="d-flex gap-3">
-                        <Image src={Item.image} rounded width="50" height="50" />
-                        <div>
-                          <h6>{Item.name}</h6>
-                          <h6 className="fs-6">
-                            INV-{index + 1}
-                            <span className="text-muted ">
-                              | {Item.item_name} | {""}
-                              <span className="d-none d-lg-inline me">
-                                {Item.item_code} | {`${Item.school}`} | {Item.quantity} {""}
-                                <span className={Item.quantity > 35 ? "text-success" : Item.quantity < 1 ? "text-danger" : "text-warning"}>{Item.quantity > 35 ? "| In stock" : Item.quantity < 1 ? "| Out of stock" : "| Low on stock"}</span> | {""}
-                                {Item.supplier} | {""}
-                                <span className={Item.status === "pending" ? "text-danger" : "text-success"}>{Item.status}</span> | {""}
-                                {convertDate(Date.now())}
-                              </span>
+                  <table className="table rounded mt-5">
+                    <thead>
+                      <tr>
+                        <th>SN</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Subject</th>
+                        <th>Quantity</th>
+                        <th>Stock</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredData.map((Item, index) => (
+                        <tr key={Item.id}>
+                          <th>{index + 1}</th>
+                          <td>
+                            <Image
+                              src={Item.image}
+                              rounded
+                              width="50"
+                              height="50"
+                            />
+                          </td>
+                          <td>{Item.item_name}</td>
+                          <td>{Item.subject_category}</td>
+                          <td>{Item.quantity}</td>
+                          <td>
+                            <span
+                              className={
+                                Item.quantity > 35
+                                  ? "text-success"
+                                  : Item.quantity < 1
+                                  ? "text-danger"
+                                  : "text-warning"
+                              }
+                            >
+                              {Item.quantity > 35
+                                ? "In stock"
+                                : Item.quantity < 1
+                                ? "Out of stock"
+                                : "Low on stock"}
                             </span>
-                          </h6>
-                        </div>
-                      </Col>
-                    </Row>
-                  ))}
-                  <div style={{ display: "flex", justifyContent: "center", gap: 4, marginBottom: 10 }}>
-                    <button type="button" onClick={(e) => handlePrevPage(e, getItemsPagination?.prev_page_url)} disabled={getItemsPagination?.prev_page_url === null} className="btn btn-outline-primary">
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      gap: 4,
+                      marginBottom: 10,
+                    }}
+                  >
+                    <button
+                      type="button"
+                      onClick={(e) =>
+                        handlePrevPage(e, getItemsPagination?.prev_page_url)
+                      }
+                      disabled={getItemsPagination?.prev_page_url === null}
+                      className="btn btn-outline-primary"
+                    >
                       Previous
                     </button>
-                    <button type="button" onClick={(e) => handlePrevPage(e, getItemsPagination?.next_page_url)} disabled={getItemsPagination?.next_page_url === null} className="btn btn-outline-primary">
+                    <button
+                      type="button"
+                      onClick={(e) =>
+                        handlePrevPage(e, getItemsPagination?.next_page_url)
+                      }
+                      disabled={getItemsPagination?.next_page_url === null}
+                      className="btn btn-outline-primary"
+                    >
                       Next
                     </button>
                   </div>
                 </>
               ) : (
-                <NonAvaliable textMessage={"Sorry, there is currently no available item! 😥"} imageWidth={"300px"} />
+                <NonAvaliable
+                  textMessage={
+                    "Sorry, there is currently no available item! 😥"
+                  }
+                  imageWidth={"300px"}
+                />
               )
             ) : (
               <Container className="d-flex justify-content-center align-items-center h-50">
