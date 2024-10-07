@@ -231,6 +231,10 @@ function NavigationControl() {
               element={<GenerateInventory />}
             />
             <Route
+              path="/HeadTeacherReportDiscrepancy"
+              element={<HeadTeacherReportDiscrepancy />}
+            />
+            <Route
               path="/HeadTeacherPushNotification"
               element={<HeadTeacherPushNotification />}
             />

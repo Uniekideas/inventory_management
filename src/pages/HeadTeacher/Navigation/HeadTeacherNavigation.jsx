@@ -72,7 +72,7 @@ function HeadTeacherNavigation({ toggleSidebar, isOpen }) {
         </Nav.Link>
         <Nav.Link
           as={NavLink}
-          to="/ReportDiscrepancy"
+          to="/HeadTeacherReportDiscrepancy"
           className={({ isActive }) => (isActive ? "active" : "")}
         >
           <SideNavButton
