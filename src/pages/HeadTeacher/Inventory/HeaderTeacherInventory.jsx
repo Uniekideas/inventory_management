@@ -23,6 +23,7 @@ function HeaderTeacherInventory() {
   const {
     getInventoryItems,
     getItemsData,
+    getLowStockItemsData,
     getItemsPagination,
     getItemsDataCount,
     getItemsIsLoading,
@@ -167,7 +168,7 @@ function HeaderTeacherInventory() {
               <PresentaionCard
                 title={"Low Stock Alerts"}
                 image={schoolImage}
-                figure={"46"}
+                figure={getLowStockItemsData.length}
                 margin={"↓"}
                 marginColor={"red"}
               />
