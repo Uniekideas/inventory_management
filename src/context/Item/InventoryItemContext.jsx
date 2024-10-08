@@ -12,6 +12,8 @@ export default InventoryItemContext;
 export const InventoryItemProvider = ({ children }) => {
   const [getItemsData, setGetItemsData] = useState([]);
   const [getItemsDataCount, setGetItemsDataCount] = useState(0);
+  const [getLowStockItemsData, setGetLowStockItemsData] = useState([]);
+  const [getLowStockItemsDataCount, setGetLowStockItemsDataCount] = useState(0);
   const [getItemsPagination, setGetItemsPagination] = useState({});
   const [getItemsError, setGetItemsError] = useState(null);
   const [getItemsIsLoading, setGetItemsIsLoading] = useState(true);
@@ -56,6 +58,8 @@ export const InventoryItemProvider = ({ children }) => {
 
       setGetItemsData(response.data.items);
       setGetItemsDataCount(response.data.allItems);
+      setGetLowStockItemsData(response.data.lowStockItems);
+      setGetLowStockItemsDataCount(response.data.lowStock);
       setGetItemsPagination(response.data.pagination);
     } catch (error) {
       console.log(error);
@@ -242,6 +246,8 @@ export const InventoryItemProvider = ({ children }) => {
     getItemsError: getItemsError,
     getItemsData: getItemsData,
     getItemsDataCount: getItemsDataCount,
+    getLowStockItemsData: getLowStockItemsData,
+    getLowStockItemsDataCount: getLowStockItemsDataCount,
     getItemsPagination: getItemsPagination,
     setGetItemsPagination,
     setGetItemsData,
