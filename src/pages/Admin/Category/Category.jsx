@@ -5,6 +5,8 @@ import "../Inventory/Inventory.css";
 import NavigationHeader from "../../../components/Navigations/NavigationHeader";
 import TitleHeader from "../../../components/Headers/TitleHeader";
 import BackButtonIcon from "../../../components/Button/BackButtonIcon";
+import PrimaryButton from "../../../components/Button/PrimaryButton";
+import { faAdd } from "@fortawesome/free-solid-svg-icons/faAdd";
 import LocationContext from "../../../context/Location/LocationContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -103,7 +105,16 @@ function Category() {
           <div className="d-flex">
             <BackButtonIcon />
             <TitleHeader text={"Categories"} />
+            
           </div>
+          <div className="d-flex justify-content-end mb-3">
+          <PrimaryButton
+                icPrimaryiconon={faAdd}
+                text={"New Category"}
+                Primarystyle={"UserManagementCreateButton"}
+                clickEvent={() => navigate("/addCategory")}
+              />
+            </div>
           {message
             ? comfirmationAction && (
                 <ComfirmationPop

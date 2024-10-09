@@ -59,6 +59,7 @@ import QualityPushNotification from "../../pages/QualityAssurance/QualityPushNot
 import EditSchool from "../../pages/Admin/School/EditSchool";
 import EditUser from "../../pages/Admin/User/EditUser";
 import EditItem from "../../pages/Admin/Inventory/EditItem";
+import AddCategory from "../../pages/Admin/Category/AddCategory";
 import SchoolInventory from "../../pages/Admin/School/SchoolInventory";
 import Forgotemail from "../../pages/Admin/Authentication/Forgotpassword/Forgotemail";
 import ResetPassword from "../../pages/Admin/Authentication/Forgotpassword/Forgetpasswords";
@@ -143,6 +144,7 @@ function NavigationControl() {
               path="/DiscrepancyDetail/:pk"
               element={<DiscrepancyDetail />}
             />
+             <Route path="/addcategory" element={<AddCategory />} />
             <Route path="/CreateNewUser" element={<CreateNewUser />} />
             <Route path="/AddSchool" element={<AddSchool />} />
             <Route path="/GenerateInventory" element={<GenerateInventory />} />

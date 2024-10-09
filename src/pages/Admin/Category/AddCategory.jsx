@@ -46,7 +46,7 @@ function AddCategory() {
   }, []);
 
   useEffect(() => {
-    if (!editItemIsLoading && editItemResponse) {
+    if (!buttonLoading && editItemResponse) {
       setnavigationMessages("Edit successful!");
       navigate(-1);
       seteditItemResponse(null);
@@ -82,7 +82,7 @@ function AddCategory() {
     }
   };
 
-  const handleEditSubmit = (e) => {
+  const handleAddCategory = (e) => {
     handleEditLocation(e, pk);
     handleLoadingClick();
   };
@@ -93,18 +93,6 @@ function AddCategory() {
       ...editedFormData,
       [name]: value,
     });
-  };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    const fileName = file ? file.name : "Choose a file";
-
-    seteditedFormData({
-      ...editedFormData,
-      image: file.name,
-    });
-
-    document.getElementById("fileLabel").innerText = fileName;
   };
 
   const toggleSidebar = () => {
@@ -122,7 +110,7 @@ function AddCategory() {
         <Container className="reportContainer">
           <div className="d-flex">
             <BackButtonIcon />
-            <TitleHeader text={"Add Location"} />
+            <TitleHeader text={"Add Category"} />
           </div>
           {message
             ? comfirmationAction && (
@@ -132,15 +120,15 @@ function AddCategory() {
                 />
               )
             : null}
-          {getSingleItemIsLoading ? (
+          {buttonLoading ? (
             <Container className="d-flex justify-content-center align-items-center vh-100">
-              <Loading loading={getSingleItemIsLoading} />
+              <Loading loading={buttonLoading} />
             </Container>
           ) : (
-            <Form onSubmit={handleAddLocation}>
+            <Form onSubmit={handleAddCategory}>
               <Row>
                 <TitleHeader
-                  text={"Location "}
+                  text={"Category "}
                   headerTextStyle={"headerTextStyle"}
                 />
                 <Form.Group className="mb-3">
@@ -148,9 +136,9 @@ function AddCategory() {
                     <Col lg={12} md={12} xl={12} sm={12} xs={12}>
                       <Form.Control
                         type="text"
-                        placeholder="Location Name"
+                        placeholder="Category Name"
                         className="UserCreateInput"
-                        name="title"
+                        name="name"
                         required
                       />
                     </Col>
