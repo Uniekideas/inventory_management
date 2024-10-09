@@ -203,21 +203,24 @@ export const InventoryItemProvider = ({ children }) => {
     }
   };
 
-  const generateReport = async (formatQuery, lga, schoolType) => {
+  const generateReport = async (formatQuery, maximum, lga, schoolType) => {
     setCreateReportIsLoading(true);
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
     try {
       const response = await axios.get(
-        `${baseUrl}/api/item/inventory-report?format=${formatQuery}&lga=${lga}&schoolType=${schoolType}`
+        `${baseUrl}/api/item/inventory-report?max=${maximum}&lga=${lga}&schoolType=${schoolType}`
       );
+
+      console.log("response data");
+      console.log(response);
 
       if (formatQuery === "pdf") {
         let doc = new jsPDF();
         autoTable(doc, {
-          head: [["Id", "Name", "Brand", "Category", "Quantity", "Supplier"]],
-          body: response.data.map((item) => [
-            item.id,
-            item.name,
+          head: [["SN", "Name", "Brand", "Category", "Quantity", "Supplier"]],
+          body: response.data.data.map((item, index) => [
+            index + 1,
+            item.item_name,
             item.brand,
             item.category,
             item.quantity,
@@ -228,7 +231,7 @@ export const InventoryItemProvider = ({ children }) => {
         setCreateReportResponse(response);
       } else {
         var wb = XLSX.utils.book_new();
-        var ws = XLSX.utils.json_to_sheet(response.data);
+        var ws = XLSX.utils.json_to_sheet(response.data.data);
 
         XLSX.utils.book_append_sheet(wb, ws, "edo_iventory_report");
         XLSX.writeFile(wb, "edo_inventory_report.xlsx");
