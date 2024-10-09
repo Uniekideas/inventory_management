@@ -74,6 +74,7 @@ function AdminDashboard() {
   const {
     getInventoryItems,
     getItemsData,
+    getItemsDataCount,
     getItemsIsLoading,
     setGetItemsData,
   } = useContext(InventoryItemContext);
@@ -739,7 +740,7 @@ function AdminDashboard() {
                 <PresentaionCard
                   title={"Total Items"}
                   image={schoolImage}
-                  figure={getItemsData ? getItemsData.length : 0}
+                  figure={getItemsDataCount}
                   margin={`${
                     InvetoryTrend === "up"
                       ? "↑"

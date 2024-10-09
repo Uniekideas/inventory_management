@@ -34,20 +34,20 @@ function Category() {
   const { setnavigationMessages } = useContext(MessageContext);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [locationsData, setLocationsData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
   const [comfirmationAction, setComfirmationAction] = useState(false);
   const [message, setmessage] = useState("");
   const [messageColor, setmessageColor] = useState("");
   const [buttonLoading, setButtonLoading] = useState(false);
   const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
 
-  const getLocations = async (url = `${baseUrl}/api/category`) => {
+  const getCategories = async (url = `${baseUrl}/api/category`) => {
     setButtonLoading(true);
 
     try {
       const response = await axios.get(url);
 
-      setLocationsData(response.data.data);
+      setCategoryData(response.data.data);
     } catch (error) {
       console.log(error);
       //   setGetItemsError(error);
@@ -57,11 +57,9 @@ function Category() {
   };
 
   useEffect(() => {
-    getLocations();
+    getCategories();
   }, []);
 
-  console.log("all category");
-  console.log(locationsData);
 
   useEffect(() => {
     if (!getButtonLoading && editItemResponse) {
@@ -104,7 +102,7 @@ function Category() {
         <Container className="reportContainer">
           <div className="d-flex">
             <BackButtonIcon />
-            <TitleHeader text={"Locations"} />
+            <TitleHeader text={"Categories"} />
           </div>
           {message
             ? comfirmationAction && (
@@ -124,17 +122,17 @@ function Category() {
                 <thead>
                   <tr>
                     <td>SN</td>
-                    <td>Location</td>
+                    <td>category</td>
                     <td>Description</td>
                     <td>...</td>
                   </tr>
                 </thead>
                 <tbody>
-                  {locationsData.map((location, index) => (
+                  {categoryData.map((category, index) => (
                     <tr>
                       <td>{index + 1}</td>
-                      <td>{location.title}</td>
-                      <td>{location.description}</td>
+                      <td>{category.name}</td>
+                      <td>{category.description}</td>
                       <td></td>
                     </tr>
                   ))}

@@ -31,6 +31,7 @@ import WareHouseAddItem from "../../pages/WareHouseStaff/Inventory/WareHouseAddI
 import WareHouseViewItem from "../../pages/WareHouseStaff/Inventory/WareHouseViewItem";
 import WareHouseAddMovement from "../../pages/WareHouseStaff/TrackMaterial/WareHouseAddMovement";
 import Locations from "../../pages/Admin/Location/Locations";
+import Category from "../../pages/Admin/Category/Category";
 import HeadTeacherDashboard from "../../pages/HeadTeacher/Dashboard/HeadTeacherDashboard";
 import ForgotPassword from "../../pages/Admin/Authentication/Forgot-Password";
 import HeaderTeacherInventory from "../../pages/HeadTeacher/Inventory/HeaderTeacherInventory";
@@ -116,6 +117,7 @@ function NavigationControl() {
           <Route path="/ItemDetail/:pk" element={<ItemDetail />} />
           <Route path="/AddNewItem" element={<AddNewItem />} />
           <Route path="/EditItem/:pk" element={<EditItem />} />
+          <Route path="/category" element={<Category />} />
           <Route path="/locations" element={<Locations />} />
 
           <Route element={<PrivatteAdminRoute />}>

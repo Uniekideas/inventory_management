@@ -172,7 +172,7 @@ function AddCategory() {
                   {buttonLoading ? (
                     <FontAwesomeIcon icon={faSpinner} spin size="2x" />
                   ) : (
-                    "Create Location"
+                    "Create Category"
                   )}
                 </Button>
               </Row>

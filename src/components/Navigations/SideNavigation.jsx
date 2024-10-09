@@ -94,6 +94,17 @@ function SideNavigation({ isOpen, toggleSidebar }) {
         </Nav.Link>
         <Nav.Link
           as={NavLink}
+          to="/category"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
+          <SideNavButton
+            text={"Category"}
+            icon={faLocationDot}
+            hoverStyle={"sideNavPrimaryHoverButton"}
+          />
+        </Nav.Link>
+        <Nav.Link
+          as={NavLink}
           to="/locations"
           className={({ isActive }) => (isActive ? "active" : "")}
         >
