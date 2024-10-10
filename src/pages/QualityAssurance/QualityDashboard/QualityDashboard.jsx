@@ -237,61 +237,13 @@ function QualityDashboard() {
               defult={"This week"}
             />
           </div>
-          <Row className="mb-3 mt-3 ">
-            <TitleHeader
-              text={"System Performance"}
-              headerTextStyle={"headerTextStyle"}
-            />
-            <div className="d-flex quailtyDashboardDisplayCardWrapper gap-3">
-              <div className="quailtyDashboardDisplayCard rounded rounded-4 d-flex justify-content-center align-items-center ">
-                <h6 className="p-2 text-center quailtyDashboardDisplayCardText">
-                  System Uptime:
-                </h6>{" "}
-                <span className="text-muted quailtyDashboardDisplayCardText mx-4">
-                  4,678 Hrs 47 Mins
-                </span>
-              </div>
-              <div className="quailtyDashboardDisplayCard rounded rounded-4 d-flex justify-content-center align-items-center ">
-                <h6 className="p-2 text-center quailtyDashboardDisplayCardText">
-                  API Response Time:
-                </h6>{" "}
-                <span className="text-muted quailtyDashboardDisplayCardText mx-4">
-                  0.6 seconds
-                </span>
-              </div>
-              <div className="quailtyDashboardDisplayCard rounded rounded-4 d-flex justify-content-center align-items-center ">
-                <h6 className="p-2 text-center quailtyDashboardDisplayCardText">
-                  API Request Success Rate:
-                </h6>{" "}
-                <span className="text-muted quailtyDashboardDisplayCardText mx-4">
-                  98%
-                </span>
-              </div>
-              <div className="quailtyDashboardDisplayCard rounded rounded-4 d-flex justify-content-center align-items-center ">
-                <h6 className="p-2 text-center quailtyDashboardDisplayCardText">
-                  API Request Error Rate:
-                </h6>{" "}
-                <span className="text-muted quailtyDashboardDisplayCardText mx-4">
-                  2%
-                </span>
-              </div>
-              <div className="quailtyDashboardDisplayCard rounded rounded-4 d-flex justify-content-center align-items-center ">
-                <h6 className="p-2 text-center quailtyDashboardDisplayCardText">
-                  Warehouse Throughput:
-                </h6>{" "}
-                <span className="text-muted quailtyDashboardDisplayCardText mx-4">
-                  469
-                </span>
-              </div>
-            </div>
-          </Row>
           <Row className="mb-5 mt-5">
             <TitleHeader
               text={"Your Schools"}
               headerTextStyle={"headerTextStyle"}
             />
             <div className="d-flex quailtyDashboardDisplaySchoolWrapper">
-              {Array.from({ length: 8 }).map((_, index) => (
+              {Array.from({ length: 4 }).map((_, index) => (
                 <NoImagCard
                   key={index}
                   title={`School ${index + 1}`}
@@ -438,50 +390,6 @@ function QualityDashboard() {
               </Container>
             )}
           </Container>
-          <Row>
-            <Col lg={12} md={12} xl={12} sm={12} xs={12} className="">
-              <Card className="AdminRecentUserCardBody">
-                <div className="AdminRecentUserActivtyScroll">
-                  <Card.Title className="CardTiTle fw-bold m-3">
-                    User Activities Log
-                  </Card.Title>
-                  <Card.Body className="AdminRecentUser m-4 rounded">
-                    {logs.map((log) => (
-                      <Row
-                        key={log.id}
-                        className="align-items-center mb-2 py-2 "
-                      >
-                        <Col xs={4} lg={2} sm={4} md={4}>
-                          <span className="">{log.email}</span>
-                        </Col>
-                        <Col xs={4} lg={2} sm={4} md={4}>
-                          <a
-                            href="/"
-                            className="text-decoration-none text-success"
-                          >
-                            {log.category}
-                          </a>
-                        </Col>
-                        <Col xs={4} lg={4} className="d-none d-lg-flex">
-                          {log["log-details"]}
-                        </Col>
-                        <Col
-                          xs={2}
-                          lg={2}
-                          className="text-muted d-none d-lg-flex"
-                        >
-                          {log.date}
-                        </Col>
-                        <Col xs={4} lg={2} sm={4} md={4} className="text-muted">
-                          {log.time}
-                        </Col>
-                      </Row>
-                    ))}
-                  </Card.Body>
-                </div>
-              </Card>
-            </Col>
-          </Row>
         </Container>
       </div>
     </div>
