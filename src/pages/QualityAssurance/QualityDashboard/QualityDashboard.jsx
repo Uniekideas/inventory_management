@@ -218,8 +218,7 @@ function QualityDashboard() {
   const handleApprovalDetail = () => {
     navigate("/ApprovalDetail");
   };
-  console.log("list");
-  console.log(filteredData);
+
   return (
     <div>
       <NavigationHeader toggleSidebar={toggleSidebar} />
@@ -243,10 +242,10 @@ function QualityDashboard() {
               headerTextStyle={"headerTextStyle"}
             />
             <div className="d-flex quailtyDashboardDisplaySchoolWrapper">
-              {Array.from({ length: 4 }).map((_, index) => (
+              {Array.from({ length: 1 }).map((_, index) => (
                 <NoImagCard
                   key={index}
-                  title={`School ${index + 1}`}
+                  title={`Abere Primary School`}
                   figure={"4,678"}
                   margin={"↓"}
                   marginColor="red"
