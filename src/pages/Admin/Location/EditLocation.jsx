@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import axios from "axios";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import "../Inventory/Inventory.css";
 import NavigationHeader from "../../../components/Navigations/NavigationHeader";
 import TitleHeader from "../../../components/Headers/TitleHeader";
 import BackButtonIcon from "../../../components/Button/BackButtonIcon";
-import PrimaryButton from "../../../components/Button/PrimaryButton";
-import { faAdd } from "@fortawesome/free-solid-svg-icons/faAdd";
 import LocationContext from "../../../context/Location/LocationContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,14 +13,17 @@ import { scrollToTop } from "../../../utils/HelperFunc";
 import ConditionalSideNavigation from "../../../components/Navigations/ConditionalSideNavigation";
 import MessageContext from "../../../context/Message/MessageContext";
 import Loading from "../../../components/Loading/Loading";
+import axios from "axios";
+const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
 
-function Category() {
-  const fileInputRef = useRef(null);
+function EditLocation() {
   const navigate = useNavigate();
   let { pk } = useParams();
 
   const {
-    getButtonLoading,
+    getLocations,
+    getSingleItemIsLoading,
+    handleAddLocation,
     seteditItemError,
     seteditItemResponse,
     seteditedFormData,
@@ -36,20 +36,19 @@ function Category() {
   const { setnavigationMessages } = useContext(MessageContext);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [categoryData, setCategoryData] = useState([]);
   const [comfirmationAction, setComfirmationAction] = useState(false);
   const [message, setmessage] = useState("");
   const [messageColor, setmessageColor] = useState("");
   const [buttonLoading, setButtonLoading] = useState(false);
-  const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+  const [locationData, setLocationData] = useState([]);
+  const [addLocationError, setAddLocationError] = useState(false);
 
-  const getCategories = async (url = `${baseUrl}/api/category`) => {
-    setButtonLoading(true);
-
+  const getLocation = async (url = `${baseUrl}/api/location/${pk}`) => {
     try {
       const response = await axios.get(url);
-
-      setCategoryData(response.data.data);
+      console.log("location");
+      console.log(response);
+      setLocationData(response.data.data);
     } catch (error) {
       console.log(error);
       //   setGetItemsError(error);
@@ -59,11 +58,42 @@ function Category() {
   };
 
   useEffect(() => {
-    getCategories();
+    getLocation();
   }, []);
 
+  const updateLocation = async (e) => {
+    e.preventDefault();
+    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+
+    const formData = {
+      title: e.target.title.value,
+      description: e.target.description.value,
+    };
+
+    try {
+      const result = await axios.patch(
+        `${baseUrl}/api/location/${pk}`,
+        formData
+      );
+      // editItemResponse(result.data);
+      setButtonLoading(false);
+      setnavigationMessages("Location updated successful!");
+      navigate(-1);
+    } catch (error) {
+      setAddLocationError(error.response.data.message);
+      console.log(error);
+    } finally {
+      setButtonLoading(false);
+    }
+  };
+
+  const handleEditLocation = (e) => {
+    updateLocation(e);
+    setButtonLoading(true);
+  };
+
   useEffect(() => {
-    if (!getButtonLoading && editItemResponse) {
+    if (!editItemIsLoading && editItemResponse) {
       setnavigationMessages("Edit successful!");
       navigate(-1);
       seteditItemResponse(null);
@@ -71,7 +101,7 @@ function Category() {
   }, [editItemIsLoading, editItemResponse, navigate]);
 
   useEffect(() => {
-    if (!getButtonLoading && editItemError) {
+    if (!editItemIsLoading && editItemError) {
       scrollToTop();
       handleComfirmationPopUps(editItemError, "bg-danger");
       setButtonLoading(false);
@@ -103,15 +133,7 @@ function Category() {
         <Container className="reportContainer">
           <div className="d-flex">
             <BackButtonIcon />
-            <TitleHeader text={"Categories"} />
-          </div>
-          <div className="d-flex justify-content-end mb-3">
-            <PrimaryButton
-              icPrimaryiconon={faAdd}
-              text={"New Category"}
-              Primarystyle={"UserManagementCreateButton"}
-              clickEvent={() => navigate("/addCategory")}
-            />
+            <TitleHeader text={"Add Location"} />
           </div>
           {message
             ? comfirmationAction && (
@@ -121,48 +143,54 @@ function Category() {
                 />
               )
             : null}
-          {buttonLoading ? (
-            <Container className="d-flex justify-content-center align-items-center vh-100">
-              <Loading loading={buttonLoading} />
-            </Container>
-          ) : (
-            <div className="">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <td>SN</td>
-                    <td>category</td>
-                    <td>Description</td>
-                    <td>...</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  {categoryData.map((category, index) => (
-                    <tr key={category.id}>
-                      <td>{index + 1}</td>
-                      <td>{category.name}</td>
-                      <td>{category.description}</td>
-                      <td>
-                        <button
-                          type="button"
-                          className="btn btn-success"
-                          onClick={() =>
-                            navigate("/editcategory/" + category.id)
-                          }
-                        >
-                          edit
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+
+          <Form onSubmit={handleEditLocation}>
+            <Row>
+              <TitleHeader
+                text={"Location "}
+                headerTextStyle={"headerTextStyle"}
+              />
+              <Form.Group className="mb-3">
+                <Row className="mb-3">
+                  <Col lg={12} md={12} xl={12} sm={12} xs={12}>
+                    <Form.Control
+                      type="text"
+                      placeholder="Location Name"
+                      className="UserCreateInput"
+                      name="title"
+                      defaultValue={locationData.title}
+                      required
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col lg={12} md={12} xl={12} sm={12} xs={12}>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      name="description"
+                      placeholder="Description"
+                      defaultValue={locationData.description}
+                      className="UserCreateTextArea"
+                    />
+                  </Col>
+                </Row>
+              </Form.Group>
+            </Row>
+            <Row className="mb-3">
+              <Button variant="success" className="w-100 p-2" type="submit">
+                {buttonLoading ? (
+                  <FontAwesomeIcon icon={faSpinner} spin size="2x" />
+                ) : (
+                  "Update Location"
+                )}
+              </Button>
+            </Row>
+          </Form>
         </Container>
       </div>
     </div>
   );
 }
 
-export default Category;
+export default EditLocation;

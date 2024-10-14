@@ -12,22 +12,14 @@ import ComfirmationPop from "../../../components/ComfirmationPopUp/ComfirmationP
 import { scrollToTop } from "../../../utils/HelperFunc";
 import ConditionalSideNavigation from "../../../components/Navigations/ConditionalSideNavigation";
 import MessageContext from "../../../context/Message/MessageContext";
-import Loading from "../../../components/Loading/Loading";
+import axios from "axios";
 
-function AddLocations() {
-  const fileInputRef = useRef(null);
+function AddLocation() {
   const navigate = useNavigate();
-  let { pk } = useParams();
 
   const {
-    getLocations,
-    getSingleItemIsLoading,
-    handleAddLocation,
-    handleEditLocation,
     seteditItemError,
     seteditItemResponse,
-    seteditedFormData,
-    editedFormData,
     editItemIsLoading,
     editItemError,
     editItemResponse,
@@ -40,10 +32,6 @@ function AddLocations() {
   const [message, setmessage] = useState("");
   const [messageColor, setmessageColor] = useState("");
   const [buttonLoading, setButtonLoading] = useState(false);
-
-  useEffect(() => {
-    getLocations();
-  }, []);
 
   useEffect(() => {
     if (!editItemIsLoading && editItemResponse) {
@@ -62,6 +50,30 @@ function AddLocations() {
     }
   }, [editItemIsLoading, editItemError]);
 
+  const addLocation = async (e) => {
+    e.preventDefault();
+    setButtonLoading(true);
+
+    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+
+    const formData = {
+      title: e.target.title.value,
+      description: e.target.description.value,
+    };
+
+    try {
+      const result = await axios.post(`${baseUrl}/api/location`, formData);
+      setButtonLoading(false);
+      setnavigationMessages("Location created successful!");
+      navigate(-1);
+    } catch (error) {
+      handleComfirmationPopUps(error.response.data.message, "bg-danger");
+      console.log(error);
+    }
+
+    setButtonLoading(false);
+  };
+
   const handleComfirmationPopUps = (messageInfo, messageBgColor) => {
     setmessage(messageInfo);
     setmessageColor(messageBgColor);
@@ -69,42 +81,6 @@ function AddLocations() {
     setTimeout(() => {
       setComfirmationAction(false);
     }, 4000);
-  };
-
-  const handleLoadingClick = () => {
-    if (
-      editItemIsLoading ||
-      (!editItemIsLoading && !editItemError && !editItemResponse)
-    ) {
-      setButtonLoading(true);
-    } else {
-      setButtonLoading(false);
-    }
-  };
-
-  const handleEditSubmit = (e) => {
-    handleEditLocation(e, pk);
-    handleLoadingClick();
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    seteditedFormData({
-      ...editedFormData,
-      [name]: value,
-    });
-  };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    const fileName = file ? file.name : "Choose a file";
-
-    seteditedFormData({
-      ...editedFormData,
-      image: file.name,
-    });
-
-    document.getElementById("fileLabel").innerText = fileName;
   };
 
   const toggleSidebar = () => {
@@ -132,56 +108,51 @@ function AddLocations() {
                 />
               )
             : null}
-          {getSingleItemIsLoading ? (
-            <Container className="d-flex justify-content-center align-items-center vh-100">
-              <Loading loading={getSingleItemIsLoading} />
-            </Container>
-          ) : (
-            <Form onSubmit={handleAddLocation}>
-              <Row>
-                <TitleHeader
-                  text={"Location "}
-                  headerTextStyle={"headerTextStyle"}
-                />
-                <Form.Group className="mb-3">
-                  <Row className="mb-3">
-                    <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-                      <Form.Control
-                        type="text"
-                        placeholder="Location Name"
-                        className="UserCreateInput"
-                        name="title"
-                        required
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-                      <Form.Control
-                        as="textarea"
-                        rows={3}
-                        placeholder="Description"
-                        className="UserCreateTextArea"
-                      />
-                    </Col>
-                  </Row>
-                </Form.Group>
-              </Row>
-              <Row className="mb-3">
-                <Button variant="success" className="w-100 p-2" type="submit">
-                  {buttonLoading ? (
-                    <FontAwesomeIcon icon={faSpinner} spin size="2x" />
-                  ) : (
-                    "Create Location"
-                  )}
-                </Button>
-              </Row>
-            </Form>
-          )}
+          <Form onSubmit={addLocation}>
+            <Row>
+              <TitleHeader
+                text={"Location "}
+                headerTextStyle={"headerTextStyle"}
+              />
+              <Form.Group className="mb-3">
+                <Row className="mb-3">
+                  <Col lg={12} md={12} xl={12} sm={12} xs={12}>
+                    <Form.Control
+                      type="text"
+                      placeholder="Location Name"
+                      className="UserCreateInput"
+                      name="title"
+                      required
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col lg={12} md={12} xl={12} sm={12} xs={12}>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      placeholder="Description"
+                      name="description"
+                      className="UserCreateTextArea"
+                    />
+                  </Col>
+                </Row>
+              </Form.Group>
+            </Row>
+            <Row className="mb-3">
+              <Button variant="success" className="w-100 p-2" type="submit">
+                {buttonLoading ? (
+                  <FontAwesomeIcon icon={faSpinner} spin size="2x" />
+                ) : (
+                  "Create Location"
+                )}
+              </Button>
+            </Row>
+          </Form>
         </Container>
       </div>
     </div>
   );
 }
 
-export default AddLocations;
+export default AddLocation;

@@ -7,6 +7,8 @@ import TitleHeader from "../../../components/Headers/TitleHeader";
 import BackButtonIcon from "../../../components/Button/BackButtonIcon";
 import LocationContext from "../../../context/Location/LocationContext";
 import { useNavigate, useParams } from "react-router-dom";
+import PrimaryButton from "../../../components/Button/PrimaryButton";
+import { faAdd } from "@fortawesome/free-solid-svg-icons/faAdd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import ComfirmationPop from "../../../components/ComfirmationPopUp/ComfirmationPop";
@@ -60,9 +62,6 @@ function Locations() {
     getLocations();
   }, []);
 
-  console.log("all locations");
-  console.log(locationsData);
-
   useEffect(() => {
     if (!getButtonLoading && editItemResponse) {
       setnavigationMessages("Edit successful!");
@@ -106,6 +105,14 @@ function Locations() {
             <BackButtonIcon />
             <TitleHeader text={"Locations"} />
           </div>
+          <div className="d-flex justify-content-end mb-3">
+            <PrimaryButton
+              icPrimaryiconon={faAdd}
+              text={"New Location"}
+              Primarystyle={"UserManagementCreateButton"}
+              clickEvent={() => navigate("/addLocation")}
+            />
+          </div>
           {message
             ? comfirmationAction && (
                 <ComfirmationPop
@@ -131,11 +138,21 @@ function Locations() {
                 </thead>
                 <tbody>
                   {locationsData.map((location, index) => (
-                    <tr>
+                    <tr key={location.id}>
                       <td>{index + 1}</td>
                       <td>{location.title}</td>
                       <td>{location.description}</td>
-                      <td></td>
+                      <td>
+                        <button
+                          type="button"
+                          className="btn btn-success"
+                          onClick={() =>
+                            navigate("/editLocation/" + location.id)
+                          }
+                        >
+                          edit
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

@@ -31,6 +31,8 @@ import WareHouseAddItem from "../../pages/WareHouseStaff/Inventory/WareHouseAddI
 import WareHouseViewItem from "../../pages/WareHouseStaff/Inventory/WareHouseViewItem";
 import WareHouseAddMovement from "../../pages/WareHouseStaff/TrackMaterial/WareHouseAddMovement";
 import Locations from "../../pages/Admin/Location/Locations";
+import AddLocation from "../../pages/Admin/Location/AddLocation";
+import EditLocation from "../../pages/Admin/Location/EditLocation";
 import Category from "../../pages/Admin/Category/Category";
 import HeadTeacherDashboard from "../../pages/HeadTeacher/Dashboard/HeadTeacherDashboard";
 import ForgotPassword from "../../pages/Admin/Authentication/Forgot-Password";
@@ -60,6 +62,7 @@ import EditSchool from "../../pages/Admin/School/EditSchool";
 import EditUser from "../../pages/Admin/User/EditUser";
 import EditItem from "../../pages/Admin/Inventory/EditItem";
 import AddCategory from "../../pages/Admin/Category/AddCategory";
+import EditCategory from "../../pages/Admin/Category/EditCategory";
 import SchoolInventory from "../../pages/Admin/School/SchoolInventory";
 import Forgotemail from "../../pages/Admin/Authentication/Forgotpassword/Forgotemail";
 import ResetPassword from "../../pages/Admin/Authentication/Forgotpassword/Forgetpasswords";
@@ -144,7 +147,10 @@ function NavigationControl() {
               path="/DiscrepancyDetail/:pk"
               element={<DiscrepancyDetail />}
             />
-             <Route path="/addcategory" element={<AddCategory />} />
+            <Route path="/addcategory" element={<AddCategory />} />
+            <Route path="/editcategory/:pk" element={<EditCategory />} />
+            <Route path="/addLocation" element={<AddLocation />} />
+            <Route path="/editLocation/:pk" element={<EditLocation />} />
             <Route path="/CreateNewUser" element={<CreateNewUser />} />
             <Route path="/AddSchool" element={<AddSchool />} />
             <Route path="/GenerateInventory" element={<GenerateInventory />} />

@@ -1,12 +1,10 @@
 import { React, createContext, useState, useContext } from "react";
 import axios from "axios";
-import * as XLSX from "xlsx";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
 
 import GeneralContext from "../General/GeneralContext";
 
 const LocationContext = createContext();
+
 export default LocationContext;
 
 export const LocationProvider = ({ children }) => {
@@ -99,9 +97,11 @@ export const LocationProvider = ({ children }) => {
       title: e.target.title.value,
       description: e.target.description.value,
     };
+    console.log("hey");
+    console.log(formData);
 
     try {
-      const result = await axios.post(`${baseUrl}/api/item`, formData);
+      const result = await axios.post(`${baseUrl}/api/location`, formData);
 
       setAddItemResponse(result.data);
     } catch (error) {

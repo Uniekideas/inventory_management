@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import axios from "axios";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import "../Inventory/Inventory.css";
 import NavigationHeader from "../../../components/Navigations/NavigationHeader";
 import TitleHeader from "../../../components/Headers/TitleHeader";
 import BackButtonIcon from "../../../components/Button/BackButtonIcon";
-import PrimaryButton from "../../../components/Button/PrimaryButton";
-import { faAdd } from "@fortawesome/free-solid-svg-icons/faAdd";
 import LocationContext from "../../../context/Location/LocationContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,18 +13,17 @@ import { scrollToTop } from "../../../utils/HelperFunc";
 import ConditionalSideNavigation from "../../../components/Navigations/ConditionalSideNavigation";
 import MessageContext from "../../../context/Message/MessageContext";
 import Loading from "../../../components/Loading/Loading";
+import axios from "axios";
+const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
 
-function Category() {
-  const fileInputRef = useRef(null);
+function EditCategory() {
   const navigate = useNavigate();
   let { pk } = useParams();
 
   const {
-    getButtonLoading,
+    getLocations,
     seteditItemError,
     seteditItemResponse,
-    seteditedFormData,
-    editedFormData,
     editItemIsLoading,
     editItemError,
     editItemResponse,
@@ -36,16 +32,14 @@ function Category() {
   const { setnavigationMessages } = useContext(MessageContext);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [categoryData, setCategoryData] = useState([]);
   const [comfirmationAction, setComfirmationAction] = useState(false);
   const [message, setmessage] = useState("");
   const [messageColor, setmessageColor] = useState("");
+  const [categoryData, setCategoryData] = useState([]);
   const [buttonLoading, setButtonLoading] = useState(false);
-  const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+  const [addCategoryError, setAddCategoryError] = useState(false);
 
-  const getCategories = async (url = `${baseUrl}/api/category`) => {
-    setButtonLoading(true);
-
+  const getCategory = async (url = `${baseUrl}/api/category/${pk}`) => {
     try {
       const response = await axios.get(url);
 
@@ -59,19 +53,37 @@ function Category() {
   };
 
   useEffect(() => {
-    getCategories();
+    getCategory();
   }, []);
 
-  useEffect(() => {
-    if (!getButtonLoading && editItemResponse) {
-      setnavigationMessages("Edit successful!");
+  const updateCategory = async (e) => {
+    e.preventDefault();
+    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+
+    const formData = {
+      name: e.target.name.value,
+      description: e.target.description.value,
+    };
+
+    try {
+      const result = await axios.patch(
+        `${baseUrl}/api/category/${pk}`,
+        formData
+      );
+      // editItemResponse(result.data);
+      setButtonLoading(false);
+      setnavigationMessages("Category created successful!");
       navigate(-1);
-      seteditItemResponse(null);
+    } catch (error) {
+      setAddCategoryError(error.response.data.message);
+      console.log(error);
+    } finally {
+      setButtonLoading(false);
     }
-  }, [editItemIsLoading, editItemResponse, navigate]);
+  };
 
   useEffect(() => {
-    if (!getButtonLoading && editItemError) {
+    if (!editItemIsLoading && editItemError) {
       scrollToTop();
       handleComfirmationPopUps(editItemError, "bg-danger");
       setButtonLoading(false);
@@ -86,6 +98,11 @@ function Category() {
     setTimeout(() => {
       setComfirmationAction(false);
     }, 4000);
+  };
+
+  const handleEditCategory = (e) => {
+    updateCategory(e);
+    setButtonLoading(true);
   };
 
   const toggleSidebar = () => {
@@ -103,15 +120,7 @@ function Category() {
         <Container className="reportContainer">
           <div className="d-flex">
             <BackButtonIcon />
-            <TitleHeader text={"Categories"} />
-          </div>
-          <div className="d-flex justify-content-end mb-3">
-            <PrimaryButton
-              icPrimaryiconon={faAdd}
-              text={"New Category"}
-              Primarystyle={"UserManagementCreateButton"}
-              clickEvent={() => navigate("/addCategory")}
-            />
+            <TitleHeader text={"Edit Category"} />
           </div>
           {message
             ? comfirmationAction && (
@@ -121,48 +130,54 @@ function Category() {
                 />
               )
             : null}
-          {buttonLoading ? (
-            <Container className="d-flex justify-content-center align-items-center vh-100">
-              <Loading loading={buttonLoading} />
-            </Container>
-          ) : (
-            <div className="">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <td>SN</td>
-                    <td>category</td>
-                    <td>Description</td>
-                    <td>...</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  {categoryData.map((category, index) => (
-                    <tr key={category.id}>
-                      <td>{index + 1}</td>
-                      <td>{category.name}</td>
-                      <td>{category.description}</td>
-                      <td>
-                        <button
-                          type="button"
-                          className="btn btn-success"
-                          onClick={() =>
-                            navigate("/editcategory/" + category.id)
-                          }
-                        >
-                          edit
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+
+          <Form onSubmit={handleEditCategory}>
+            <Row>
+              <TitleHeader
+                text={"Category "}
+                headerTextStyle={"headerTextStyle"}
+              />
+              <Form.Group className="mb-3">
+                <Row className="mb-3">
+                  <Col lg={12} md={12} xl={12} sm={12} xs={12}>
+                    <Form.Control
+                      type="text"
+                      placeholder="Category Name"
+                      className="UserCreateInput"
+                      name="name"
+                      defaultValue={categoryData.name}
+                      required
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col lg={12} md={12} xl={12} sm={12} xs={12}>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      placeholder="Description"
+                      name="description"
+                      defaultValue={categoryData.description}
+                      className="UserCreateTextArea"
+                    />
+                  </Col>
+                </Row>
+              </Form.Group>
+            </Row>
+            <Row className="mb-3">
+              <Button variant="success" className="w-100 p-2" type="submit">
+                {buttonLoading ? (
+                  <FontAwesomeIcon icon={faSpinner} spin size="2x" />
+                ) : (
+                  "Update Category"
+                )}
+              </Button>
+            </Row>
+          </Form>
         </Container>
       </div>
     </div>
   );
 }
 
-export default Category;
+export default EditCategory;

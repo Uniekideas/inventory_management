@@ -13,25 +13,13 @@ import { scrollToTop } from "../../../utils/HelperFunc";
 import ConditionalSideNavigation from "../../../components/Navigations/ConditionalSideNavigation";
 import MessageContext from "../../../context/Message/MessageContext";
 import Loading from "../../../components/Loading/Loading";
+import axios from "axios";
 
 function AddCategory() {
-  const fileInputRef = useRef(null);
   const navigate = useNavigate();
-  let { pk } = useParams();
 
-  const {
-    getLocations,
-    getSingleItemIsLoading,
-    handleAddLocation,
-    handleEditLocation,
-    seteditItemError,
-    seteditItemResponse,
-    seteditedFormData,
-    editedFormData,
-    editItemIsLoading,
-    editItemError,
-    editItemResponse,
-  } = useContext(LocationContext);
+  const { getLocations, seteditItemError, editItemIsLoading, editItemError } =
+    useContext(LocationContext);
 
   const { setnavigationMessages } = useContext(MessageContext);
 
@@ -40,18 +28,30 @@ function AddCategory() {
   const [message, setmessage] = useState("");
   const [messageColor, setmessageColor] = useState("");
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [addCategoryError, setAddCategoryError] = useState(false);
 
-  useEffect(() => {
-    getLocations();
-  }, []);
+  const addCategory = async (e) => {
+    e.preventDefault();
+    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
 
-  useEffect(() => {
-    if (!buttonLoading && editItemResponse) {
-      setnavigationMessages("Edit successful!");
+    const formData = {
+      name: e.target.name.value,
+      description: e.target.description.value,
+    };
+
+    try {
+      const result = await axios.post(`${baseUrl}/api/category`, formData);
+      // editItemResponse(result.data);
+      setButtonLoading(false);
+      setnavigationMessages("Category created successful!");
       navigate(-1);
-      seteditItemResponse(null);
+    } catch (error) {
+      setAddCategoryError(error.response.data.message);
+      console.log(error);
+    } finally {
+      setButtonLoading(false);
     }
-  }, [editItemIsLoading, editItemResponse, navigate]);
+  };
 
   useEffect(() => {
     if (!editItemIsLoading && editItemError) {
@@ -71,28 +71,9 @@ function AddCategory() {
     }, 4000);
   };
 
-  const handleLoadingClick = () => {
-    if (
-      editItemIsLoading ||
-      (!editItemIsLoading && !editItemError && !editItemResponse)
-    ) {
-      setButtonLoading(true);
-    } else {
-      setButtonLoading(false);
-    }
-  };
-
   const handleAddCategory = (e) => {
-    handleEditLocation(e, pk);
-    handleLoadingClick();
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    seteditedFormData({
-      ...editedFormData,
-      [name]: value,
-    });
+    addCategory(e);
+    setButtonLoading(true);
   };
 
   const toggleSidebar = () => {
@@ -120,52 +101,48 @@ function AddCategory() {
                 />
               )
             : null}
-          {buttonLoading ? (
-            <Container className="d-flex justify-content-center align-items-center vh-100">
-              <Loading loading={buttonLoading} />
-            </Container>
-          ) : (
-            <Form onSubmit={handleAddCategory}>
-              <Row>
-                <TitleHeader
-                  text={"Category "}
-                  headerTextStyle={"headerTextStyle"}
-                />
-                <Form.Group className="mb-3">
-                  <Row className="mb-3">
-                    <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-                      <Form.Control
-                        type="text"
-                        placeholder="Category Name"
-                        className="UserCreateInput"
-                        name="name"
-                        required
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-                      <Form.Control
-                        as="textarea"
-                        rows={3}
-                        placeholder="Description"
-                        className="UserCreateTextArea"
-                      />
-                    </Col>
-                  </Row>
-                </Form.Group>
-              </Row>
-              <Row className="mb-3">
-                <Button variant="success" className="w-100 p-2" type="submit">
-                  {buttonLoading ? (
-                    <FontAwesomeIcon icon={faSpinner} spin size="2x" />
-                  ) : (
-                    "Create Category"
-                  )}
-                </Button>
-              </Row>
-            </Form>
-          )}
+
+          <Form onSubmit={handleAddCategory}>
+            <Row>
+              <TitleHeader
+                text={"Category "}
+                headerTextStyle={"headerTextStyle"}
+              />
+              <Form.Group className="mb-3">
+                <Row className="mb-3">
+                  <Col lg={12} md={12} xl={12} sm={12} xs={12}>
+                    <Form.Control
+                      type="text"
+                      placeholder="Category Name"
+                      className="UserCreateInput"
+                      name="name"
+                      required
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col lg={12} md={12} xl={12} sm={12} xs={12}>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      placeholder="Description"
+                      name="description"
+                      className="UserCreateTextArea"
+                    />
+                  </Col>
+                </Row>
+              </Form.Group>
+            </Row>
+            <Row className="mb-3">
+              <Button variant="success" className="w-100 p-2" type="submit">
+                {buttonLoading ? (
+                  <FontAwesomeIcon icon={faSpinner} spin size="2x" />
+                ) : (
+                  "Create Category"
+                )}
+              </Button>
+            </Row>
+          </Form>
         </Container>
       </div>
     </div>
