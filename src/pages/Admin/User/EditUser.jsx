@@ -12,6 +12,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import UserContext from "../../../context/User/UserContext";
+import GeneralContext from "../../../context/General/GeneralContext";
 import ComfirmationPop from "../../../components/ComfirmationPopUp/ComfirmationPop";
 import Loading from "../../../components/Loading/Loading";
 import { scrollToTop } from "../../../utils/HelperFunc";
@@ -36,12 +37,15 @@ function EditUser() {
     seteditUserResponse,
   } = useContext(UserContext);
 
+  const { schoolLevel } = useContext(GeneralContext);
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [comfirmationAction, setComfirmationAction] = useState(false);
   const [message, setmessage] = useState("");
   const [messageColor, setmessageColor] = useState("");
   const [buttonLoading, setButtonLoading] = useState(false);
   const [schools, setSchools] = useState([]);
+  const [locations, setLocations] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
 
   const getSchoolsNew = async () => {
@@ -60,8 +64,25 @@ function EditUser() {
     }
   };
 
+  const getLocations = async () => {
+    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+    try {
+      const response = await axios.get(`${baseUrl}/api/location`);
+
+      setLocations(
+        response.data.data.map((location) => ({
+          id: location.id,
+          title: location.title,
+        }))
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getSchoolsNew();
+    getLocations();
     getSingleUser(pk);
   }, []);
 
@@ -139,7 +160,7 @@ function EditUser() {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
+  console.log(editedFormData);
   return (
     <div>
       <NavigationHeader toggleSidebar={toggleSidebar} />
@@ -248,7 +269,13 @@ function EditUser() {
                         required
                       >
                         <option value="">School Level</option>
-                        <option value="Elementery">Elementery</option>
+                        {schoolLevel.map((slevel) => {
+                          return (
+                            <option key={slevel.pk} value={slevel.type}>
+                              {slevel.type}
+                            </option>
+                          );
+                        })}
                       </Form.Select>
                     </Col>
                   </Row>
@@ -289,7 +316,33 @@ function EditUser() {
                       <option value="qa">QA</option>
                       <option value="admin">Admin</option>
                       <option value="head-teacher">Head Techer</option>
+                      <option value="subeb-user">SUBEB User</option>
                       <option value="warehouse-staff">WareHouse Staff</option>
+                    </Form.Select>
+                  </Col>
+                </Row>
+                <Row className="mb-3">
+                  <Col
+                    className="UserCreateInput d-flex ms-2"
+                    lg={6}
+                    md={6}
+                    xl={6}
+                    sm={12}
+                    xs={12}
+                  >
+                    <label className="my-auto flex-fill">Location</label>
+                    <Form.Select
+                      className="no-border shadow-none w-auto"
+                      name="location"
+                    >
+                      <option value="">Select Location</option>
+                      {locations.map((location) => {
+                        return (
+                          <option key={location.id} value={location.id}>
+                            {location.title}
+                          </option>
+                        );
+                      })}
                     </Form.Select>
                   </Col>
                 </Row>

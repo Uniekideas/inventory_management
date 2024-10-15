@@ -60,6 +60,7 @@ export const UsersProvider = ({ children }) => {
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
     try {
       const response = await axios.get(`${baseUrl}/api/user/${pk}`);
+
       setGetSingleUserData(response.data.user);
       seteditedFormData({
         name: response.data.user.name || "",
@@ -69,9 +70,11 @@ export const UsersProvider = ({ children }) => {
         phone_number: response.data.user.phone_number || "",
         level: response.data.user.level || "",
         image: response.data.user.image || "",
-        role: response.data.user.role_id || "",
+        role: response.data.user.role.id || "",
+        rolename: response.data.user.role.name || "",
         department: response.data.user.department || "",
         school: response.data.user.school_id || "",
+        location: response.data.user.location || "",
       });
     } catch (error) {
       setSingleUserError(error);
@@ -86,8 +89,7 @@ export const UsersProvider = ({ children }) => {
     let fileResponse = null;
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
     // const imageData = e.target.image.files[0];
-    console.log("school");
-    console.log(selectSchool);
+
     // const fileResponse = await handleAddFile(imageData);
     if (e.target.image.files.length) {
       const imageData = e.target.image.files[0];
@@ -106,6 +108,7 @@ export const UsersProvider = ({ children }) => {
       level: e.target.level.value,
       role: e.target.role.value,
       department: e.target.department.value,
+      location: e.target.location.value,
       image: fileResponse ? fileResponse.url : null,
       school: selectSchool,
     };
@@ -143,6 +146,7 @@ export const UsersProvider = ({ children }) => {
       level: editedFormData.level,
       role: editedFormData.role,
       department: editedFormData.department,
+      location: e.target.location.value,
       school: editedFormData.school,
       image:
         fileResponse && fileResponse.success

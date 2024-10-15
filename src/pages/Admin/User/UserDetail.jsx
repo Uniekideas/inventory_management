@@ -147,6 +147,14 @@ function UserDetail() {
                 </Row>
                 <Row className="mb-4 align-items-center">
                   <Col className="itemHeaderText">
+                    Location:{" "}
+                    <b className="itemDetailText mx-2">
+                      {getSingleUserData.location.title}
+                    </b>{" "}
+                  </Col>
+                </Row>
+                <Row className="mb-4 align-items-center">
+                  <Col className="itemHeaderText">
                     School Level:{" "}
                     <b className="itemDetailText mx-2">
                       {getSingleUserData.level}
@@ -171,7 +179,7 @@ function UserDetail() {
                   <Col className="itemHeaderText">
                     User Role:{" "}
                     <b className="itemDetailText mx-2">
-                      {getSingleUserData.role_id}
+                      {getSingleUserData.role.name}
                     </b>{" "}
                   </Col>
                 </Row>

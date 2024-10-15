@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import ComfirmationPop from "../../../components/ComfirmationPopUp/ComfirmationPop";
 import UserContext from "../../../context/User/UserContext";
+import GeneralContext from "../../../context/General/GeneralContext";
 import { scrollToTop } from "../../../utils/HelperFunc";
 import Select from "react-select";
 import axios from "axios";
@@ -30,6 +31,8 @@ function CreateNewUser() {
     setAddUserResponse,
     setSelectSchool,
   } = useContext(UserContext);
+
+  const { schoolLevel } = useContext(GeneralContext);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [comfirmationAction, setComfirmationAction] = useState(false);
@@ -227,7 +230,13 @@ function CreateNewUser() {
                       required
                     >
                       <option value="">Select Level</option>
-                      <option value="Elementery">Elementery</option>
+                      {schoolLevel.map((slevel) => {
+                        return (
+                          <option key={slevel.pk} value={slevel.type}>
+                            {slevel.type}
+                          </option>
+                        );
+                      })}
                     </Form.Select>
                   </Col>
                 </Row>
