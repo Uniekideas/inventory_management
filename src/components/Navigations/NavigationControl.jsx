@@ -16,6 +16,7 @@ import AddSchool from "../../pages/Admin/School/AddSchool";
 import AddNewItem from "../../pages/Admin/Inventory/AddNewItem";
 import GenerateInventory from "../../pages/Admin/Inventory/GenerateInventory";
 import ItemDetail from "../../pages/Admin/Inventory/ItemDetail";
+import AllItemRequests from "../../pages/Admin/ItemRequests/AllItemRequests";
 import ItemDetails from "../../pages/WareHouseStaff/ScanMaterial/ItemDetails";
 import SchoolDetail from "../../pages/Admin/School/SchoolDetail";
 import UserDetail from "../../pages/Admin/User/UserDetail";
@@ -147,6 +148,7 @@ function NavigationControl() {
               path="/DiscrepancyDetail/:pk"
               element={<DiscrepancyDetail />}
             />
+            <Route path="/AllItemRequests" element={<AllItemRequests />} />
             <Route path="/addcategory" element={<AddCategory />} />
             <Route path="/editcategory/:pk" element={<EditCategory />} />
             <Route path="/addLocation" element={<AddLocation />} />

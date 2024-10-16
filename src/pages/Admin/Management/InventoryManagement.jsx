@@ -36,6 +36,7 @@ function InventoryManagement({ Searchstyle, searchText }) {
     getItemsData,
     getItemsPagination,
     getItemsDataCount,
+    getLowStockItemsDataCount,
     getItemsIsLoading,
     handleNextPage,
     handlePrevPage,
@@ -388,7 +389,7 @@ function InventoryManagement({ Searchstyle, searchText }) {
               <PresentaionCard
                 title={"Low Stock Alerts"}
                 image={schoolImage}
-                figure={"46"}
+                figure={getLowStockItemsDataCount}
                 margin={"↓"}
                 marginColor={"red"}
               />

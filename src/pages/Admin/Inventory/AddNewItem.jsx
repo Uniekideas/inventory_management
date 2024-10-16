@@ -22,7 +22,7 @@ function AddNewItem() {
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
   const [success, setSuccess] = useState("");
-  const [schools, setSchools] = useState([]);
+  const [category, setCategory] = useState([]);
   const [csv, setCsv] = useState(null);
 
   const {
@@ -35,25 +35,20 @@ function AddNewItem() {
   } = useContext(InventoryItemContext);
   const [loading, setLoading] = useState(false);
   const { setnavigationMessages } = useContext(MessageContext);
-  // const getSchoolsNew = async () => {
-  //   const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
-  //   try {
-  //     const response = await axios.get(`${baseUrl}/api/school`);
-  //     console.log(response);
-  //     setSchools(
-  //       response.data.schools.map((item) => ({
-  //         id: item.id,
-  //         name: item.name,
-  //       }))
-  //     );
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const categories = async () => {
+    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+    try {
+      const response = await axios.get(`${baseUrl}/api/category`);
 
-  // useEffect(() => {
-  //   getSchoolsNew();
-  // }, []);
+      setCategory(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    categories();
+  }, []);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [comfirmationAction, setComfirmationAction] = useState(false);
@@ -250,12 +245,8 @@ function AddNewItem() {
                 </Row>
                 <Row className="mb-3">
                   <Col lg={6} md={6} xl={6} sm={12} xs={12}>
-                    <Form.Select
-                      className="UserCreateInput"
-                      name="category"
-                      required
-                    >
-                      <option value="">Subject Category</option>
+                    <Form.Select className="UserCreateInput" name="category">
+                      <option value="NA">Subject Category</option>
                       <option value="English">English</option>
                       <option value="Mathematics">Mathematics</option>
                       <option value="Science">Science</option>
@@ -289,17 +280,20 @@ function AddNewItem() {
                 headerTextStyle={"headerTextStyle"}
               />
               <Form.Group className="mb-3" controlId="notificationTitle">
-                {/* <Row className="mb-3">
+                <Row className="mb-3">
                   <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-                    <Form.Control
-                      type="number"
-                      placeholder="Unit Cost"
-                      className="UserCreateInput"
-                      name="unit_cost"
-                      required
-                    />
+                    <Form.Select className="UserCreateInput" name="category">
+                      <option value="">Select Item Category</option>
+                      {category.map((cat) => {
+                        return (
+                          <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                          </option>
+                        );
+                      })}
+                    </Form.Select>
                   </Col>
-                </Row> */}
+                </Row>
                 <Row className="mb-3">
                   <Col lg={12} md={12} xl={12} sm={12} xs={12}>
                     <Form.Control
@@ -327,7 +321,6 @@ function AddNewItem() {
                     <Form.Select
                       className="UserCreateInput"
                       name="distribution"
-                      required
                     >
                       <option value="">Book Distribution</option>
                       <option value="pupil">Pupil</option>
@@ -352,7 +345,6 @@ function AddNewItem() {
                         placeholder="Item Code"
                         className="UserCreateInput"
                         name="item_code"
-                        required
                       />
                     </Col>
                   </Row>

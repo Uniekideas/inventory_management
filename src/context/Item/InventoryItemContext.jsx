@@ -137,7 +137,7 @@ export const InventoryItemProvider = ({ children }) => {
       brand: e.target.brand.value,
       subject_category: e.target.category.value,
       barcode_id: e.target.barcode_id.value,
-      // school: e.target.school.value,
+      category_id: e.target.category.value,
       image: fileResponse,
       // unit_cost: e.target.unit_cost.value,
       quantity: e.target.quantity.value,
@@ -210,9 +210,6 @@ export const InventoryItemProvider = ({ children }) => {
       const response = await axios.get(
         `${baseUrl}/api/item/inventory-report?max=${maximum}&lga=${lga}&schoolType=${schoolType}`
       );
-
-      console.log("response data");
-      console.log(response);
 
       if (formatQuery === "pdf") {
         let doc = new jsPDF();

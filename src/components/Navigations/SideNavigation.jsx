@@ -72,6 +72,17 @@ function SideNavigation({ isOpen, toggleSidebar }) {
         </Nav.Link>
         <Nav.Link
           as={NavLink}
+          to="/AllItemRequests"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
+          <SideNavButton
+            text={"Requests/Distribution"}
+            icon={faLocationDot}
+            hoverStyle={"sideNavPrimaryHoverButton"}
+          />
+        </Nav.Link>
+        <Nav.Link
+          as={NavLink}
           to="/ReportAnalytics"
           className={({ isActive }) => (isActive ? "active" : "")}
         >
@@ -89,6 +100,17 @@ function SideNavigation({ isOpen, toggleSidebar }) {
           <SideNavButton
             text={"Discrepancy"}
             icon={faTachometerAlt}
+            hoverStyle={"sideNavPrimaryHoverButton"}
+          />
+        </Nav.Link>
+        <Nav.Link
+          as={NavLink}
+          to="/category"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
+          <SideNavButton
+            text={"Category"}
+            icon={faLocationDot}
             hoverStyle={"sideNavPrimaryHoverButton"}
           />
         </Nav.Link>
