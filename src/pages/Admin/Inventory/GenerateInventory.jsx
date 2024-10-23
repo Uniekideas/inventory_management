@@ -9,9 +9,7 @@ import Filter from "../../../components/Filter/Filter";
 import { LoadingPropagate } from "../../../components/Loading/Loading";
 import InventoryItemContext from "../../../context/Item/InventoryItemContext";
 import GeneralContext from "../../../context/General/GeneralContext";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
-import * as XLSX from "xlsx";
+import axios from "axios";
 
 function GenerateInventory() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -20,6 +18,7 @@ function GenerateInventory() {
   const [format, setFormat] = useState("");
   const [lga, setLga] = useState("");
   const [schoolType, setSchoolType] = useState("");
+  const [category, setCategory] = useState([]);
 
   const {
     generateReport,
@@ -50,6 +49,21 @@ function GenerateInventory() {
   const filterOptionforLGA = useMemo(() => lgaList, []);
 
   const filterOptionForType = useMemo(() => schoolLevel);
+
+  const categories = async () => {
+    const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
+    try {
+      const response = await axios.get(`${baseUrl}/api/category`);
+
+      setCategory(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    categories();
+  }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -90,7 +104,12 @@ function GenerateInventory() {
       alert("Select a format");
       return;
     }
-    generateReport(format, e.target.maximum.value, lga, schoolType);
+    generateReport(
+      format,
+      e.target.maximum.value,
+      e.target.category.value,
+      schoolType
+    );
     handleLoadingClick();
   };
 
@@ -117,14 +136,13 @@ function GenerateInventory() {
                   className="pushNotificationTitle"
                 />
               </Col> */}
-              <Col lg={12} md={12} xl={12} sm={12} xs={12} className="mb-3">
+              <Col md={4} sm={12} xs={12} className="mb-3">
                 <p style={{ marginLeft: 10 }}>Maximum Quantity</p>
                 <Form.Control
                   name="maximum"
                   type="number"
                   placeholder="Maximum Stock Level"
                   className="pushNotificationTitle"
-                  defaultValue="0"
                 />
               </Col>
               {/* <Col md={4} sm={12} xs={12} className="mb-3">
@@ -137,14 +155,26 @@ function GenerateInventory() {
                 />
               </Col> */}
               <Col md={4} sm={12} xs={12} className="mb-3">
-                <Filter
+                <p style={{ marginLeft: 10 }}>School Type</p>
+                {/* <Filter
                   defult={"All"}
                   optionTitle={"School Type"}
                   options={filterOptionForType}
                   onSelect={(value) => setSchoolType(value)}
-                />
+                /> */}
+                <Form.Select className="UserCreateInput" name="category">
+                  <option value="">Select Item Category</option>
+                  {category.map((cat) => {
+                    return (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </option>
+                    );
+                  })}
+                </Form.Select>
               </Col>
               <Col md={4} sm={12} xs={12} className="mb-3">
+                <p style={{ marginLeft: 10, marginBottom: 5 }}>Report Format</p>
                 <Filter
                   defult={"None"}
                   optionTitle={"Report Format"}

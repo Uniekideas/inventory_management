@@ -1,6 +1,5 @@
 .UserManagementCreateButton,
 .UserManagementCreateButton:hover {
-  width: 190px;
   height: 48px;
   padding: 8px 16px 8px 16px;
   border-radius: 16px;
@@ -60,7 +59,7 @@
   line-height: 19.2px;
   text-align: left;
   word-spacing: 0.4em;
-  }
+}
 
 .ListContainer {
   height: 440px;
@@ -72,6 +71,6 @@
 }
 
 .ListContainer {
-  -ms-overflow-style: none;  
-  scrollbar-width: none;  
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

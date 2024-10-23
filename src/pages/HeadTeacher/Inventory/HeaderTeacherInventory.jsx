@@ -16,6 +16,9 @@ import Loading from "../../../components/Loading/Loading";
 import { convertDate } from "../../../utils/HelperFunc";
 import AnalysisContext from "../../../context/Analysis/AnalysisContext";
 import BackButtonIcon from "../../../components/Button/BackButtonIcon";
+import * as XLSX from "xlsx";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 function HeaderTeacherInventory() {
   const navigate = useNavigate();
@@ -62,11 +65,11 @@ function HeaderTeacherInventory() {
     () => [
       {
         pk: 1,
-        type: "All",
+        type: "pdf",
       },
       {
         pk: 2,
-        type: "office_supplies",
+        type: "excel",
       },
     ],
     []
@@ -119,8 +122,35 @@ function HeaderTeacherInventory() {
   const handleGenerateReport = () => {
     navigate("/HeadTeacherGenerateInventory");
   };
-  const PeriodicReport = () => {
-    navigate("/PeriodicReport");
+
+  const generateReport = async (formatQuery, resultData) => {
+    // setCreateReportIsLoading(true);
+
+    if (formatQuery === "pdf") {
+      let doc = new jsPDF();
+      autoTable(doc, {
+        head: [["SN", "Item Name", "Subject", "Quantity", "stock"]],
+        body: resultData.map((item, index) => [
+          index + 1,
+          item.item_name,
+          item.subject_category,
+          item.quantity,
+          item.quantity > 35
+            ? "In stock"
+            : item.quantity < 1
+            ? "Out of stock"
+            : "Low on stock",
+        ]),
+      });
+      doc.save("edo_leader_subebe_request_report.pdf");
+      //   setCreateReportResponse(response);
+    } else {
+      var wb = XLSX.utils.book_new();
+      var ws = XLSX.utils.json_to_sheet(resultData);
+
+      XLSX.utils.book_append_sheet(wb, ws, "edo_leader_subebe_request_report");
+      XLSX.writeFile(wb, "edo_leader_subebe_request_report.xlsx");
+    }
   };
 
   return (
@@ -139,7 +169,7 @@ function HeaderTeacherInventory() {
               <input
                 type="text"
                 placeholder="Search Inventory"
-                className="seachContentBar"
+                className="seachContentBar px-2"
                 value={searchTerm}
                 onChange={handleSearchChange}
                 style={{ display: "block", width: "100%", borderRadius: 10 }}
@@ -175,39 +205,18 @@ function HeaderTeacherInventory() {
             </Col>
           </Row>
           <Row>
-            <Col className="d-lg-none ">
-              <PrimaryButton
-                text={"Generate Inventory Report"}
-                Primarystyle={"WareHouseGenerateInventoryButton w-100"}
-                clickEvent={() => handleGenerateReport()}
+            <Col className="">
+              <Filter
+                defult={"None"}
+                optionTitle={"Report Format"}
+                options={filterOption}
+                onSelect={(value) => {
+                  generateReport(value, filteredData);
+                }}
               />
             </Col>
-            {/* <Col className="d-lg-none ">
-              <PrimaryButton
-                text={"Periodic Report"}
-                Primarystyle={"InventoryReportButton w-100"}
-                clickEvent={() => PeriodicReport()}
-              />
-            </Col> */}
           </Row>
-          <Row className="d-lg-none ">
-            {/* <Col className="d-flex justify-content-between ms-auto gap-3"> */}
 
-            <Col xl={3}>
-              <PrimaryButton
-                text={"Generate Inventory Report"}
-                Primarystyle={"WareHouseGenerateInventoryButton w-100"}
-                clickEvent={() => handleGenerateReport()}
-              />
-            </Col>
-            {/* <Col xl={2}>
-              <PrimaryButton
-                text={"Periodic Report"}
-                Primarystyle={"InventoryReportButton w-100"}
-                clickEvent={() => PeriodicReport()}
-              />
-            </Col> */}
-          </Row>
           <Container className="ListContainer">
             {!getItemsIsLoading ? (
               filteredData && filteredData.length > 0 ? (
@@ -267,28 +276,7 @@ function HeaderTeacherInventory() {
                       gap: 4,
                       marginBottom: 10,
                     }}
-                  >
-                    <button
-                      type="button"
-                      onClick={(e) =>
-                        handlePrevPage(e, getItemsPagination?.prev_page_url)
-                      }
-                      disabled={getItemsPagination?.prev_page_url === null}
-                      className="btn btn-outline-primary"
-                    >
-                      Previous
-                    </button>
-                    <button
-                      type="button"
-                      onClick={(e) =>
-                        handlePrevPage(e, getItemsPagination?.next_page_url)
-                      }
-                      disabled={getItemsPagination?.next_page_url === null}
-                      className="btn btn-outline-primary"
-                    >
-                      Next
-                    </button>
-                  </div>
+                  ></div>
                 </>
               ) : (
                 <NonAvaliable

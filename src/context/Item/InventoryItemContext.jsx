@@ -203,12 +203,12 @@ export const InventoryItemProvider = ({ children }) => {
     }
   };
 
-  const generateReport = async (formatQuery, maximum, lga, schoolType) => {
+  const generateReport = async (formatQuery, maximum, category, schoolType) => {
     setCreateReportIsLoading(true);
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
     try {
       const response = await axios.get(
-        `${baseUrl}/api/item/inventory-report?max=${maximum}&lga=${lga}&schoolType=${schoolType}`
+        `${baseUrl}/api/item/inventory-report?max=${maximum}&cat=${category}&schoolType=${schoolType}`
       );
 
       if (formatQuery === "pdf") {
