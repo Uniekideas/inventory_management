@@ -121,6 +121,13 @@ export const AuthenticationProvider = ({ children }) => {
     return false;
   };
 
+  const isSubebUser = () => {
+    if (userData && userData.role_id === 5) {
+      return true;
+    }
+    return false;
+  };
+
   let contextData = {
     sigUpResponse: sigUpResponse,
     sigUpError: sigUpError,
@@ -134,6 +141,7 @@ export const AuthenticationProvider = ({ children }) => {
     setUserData: setUserData,
     isAdmin: isAdmin,
     isHeadTeacher: isHeadTeacher,
+    isSubebUser: isSubebUser,
     isWareHouser: isWareHouser,
     isQA: isQA,
     setloginError: setloginError,

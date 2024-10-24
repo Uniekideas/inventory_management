@@ -48,6 +48,7 @@ import PrivateRoute, {
   PrivatteWareHouseRoute,
   PrivatteAdminRoute,
   PrivatteHeadTeacherRoute,
+  PrivateSubebUserRoute,
   PrivatteAuthentactionRoute,
   PrivatteQARoute,
 } from "../../utils/PrivateRoute";
@@ -253,6 +254,32 @@ function NavigationControl() {
             <Route
               path="/HeadTeacherTrackMaterial"
               element={<HeadTeacherTrackMaterial />}
+            />
+          </Route>
+
+          <Route element={<PrivateSubebUserRoute />}>
+            <Route path="/SubebDashboard" element={<HeadTeacherDashboard />} />
+            <Route
+              path="/SubebInventory"
+              element={<HeaderTeacherInventory />}
+            />
+            <Route path="/GenerateInventory" element={<GenerateInventory />} />
+            <Route path="/SubebRequests" element={<HeadTeacherRequests />} />
+            <Route
+              path="/SubebRequestMaterial"
+              element={<HeadTeacherRequestMaterial />}
+            />
+            <Route
+              path="/SubebGenerateInventory"
+              element={<GenerateInventory />}
+            />
+            <Route
+              path="/SubebReportDiscrepancy"
+              element={<HeadTeacherReportDiscrepancy />}
+            />
+            <Route
+              path="/SubebPushNotification"
+              element={<HeadTeacherPushNotification />}
             />
           </Route>
 

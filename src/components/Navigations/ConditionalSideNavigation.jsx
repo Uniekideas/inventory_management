@@ -5,10 +5,9 @@ import WareHouseSideNavigation from "../../pages/WareHouseStaff/Navigation/WareH
 import QualityNavigation from "../../pages/QualityAssurance/QualityNavigation/QualityNavigation";
 import AuthenticationContext from "../../context/Authentication/AuthenticationContext";
 
-function ConditionalSideNavigation({isSidebarOpen, toggleSidebar}) {
-  const { isAdmin, isWareHouser, isHeadTeacher, isQA } = useContext(
-    AuthenticationContext
-  );
+function ConditionalSideNavigation({ isSidebarOpen, toggleSidebar }) {
+  const { isAdmin, isWareHouser, isHeadTeacher, isSubebUser, isQA } =
+    useContext(AuthenticationContext);
   const roleNavigation = () => {
     if (isAdmin()) {
       return (
@@ -21,6 +20,11 @@ function ConditionalSideNavigation({isSidebarOpen, toggleSidebar}) {
           toggleSidebar={toggleSidebar}
         />
       );
+    } else if (isSubebUser()) {
+      <HeadTeacherNavigation
+        isOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+      />;
     } else if (isWareHouser()) {
       return (
         <WareHouseSideNavigation
@@ -37,9 +41,7 @@ function ConditionalSideNavigation({isSidebarOpen, toggleSidebar}) {
       );
     }
   };
-  return (
-    roleNavigation()
-  )
+  return roleNavigation();
 }
 
 export default ConditionalSideNavigation;

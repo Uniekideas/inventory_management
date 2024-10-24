@@ -20,6 +20,7 @@ function Login() {
     setloginError,
     isAdmin,
     isHeadTeacher,
+    isSubebUser,
     isWareHouser,
     isQA,
   } = useContext(AuthenticationContext);
@@ -35,7 +36,7 @@ function Login() {
         ? navigate("/QaDashboard", {
             state: { message: "Login successful!" },
           })
-        : isHeadTeacher()
+        : isHeadTeacher() || isSubebUser()
         ? navigate("/HeadTeacherDashboard", {
             state: { message: "Login successful!" },
           })

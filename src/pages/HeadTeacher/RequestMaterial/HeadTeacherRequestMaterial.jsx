@@ -39,7 +39,7 @@ function HeadTeacherRequestMaterial() {
   const getInventory = async () => {
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
     try {
-      const response = await axios.get(`${baseUrl}/api/item`);
+      const response = await axios.get(`${baseUrl}/api/item/all`);
 
       setInventory(
         response.data.items.map((item) => ({

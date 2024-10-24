@@ -11,6 +11,7 @@ import Filter from "../../../components/Filter/Filter";
 import BackButtonIcon from "../../../components/Button/BackButtonIcon";
 import PrimaryButton from "../../../components/Button/PrimaryButton";
 import { faAdd } from "@fortawesome/free-solid-svg-icons/faAdd";
+import AuthenticationContext from "../../../context/Authentication/AuthenticationContext";
 import axios, { all } from "axios";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
@@ -21,6 +22,8 @@ function HeadTeacherRequests() {
   const [isLoading, setIsLoading] = useState(true);
   const [allRequest, setAllRequest] = useState([]);
   const navigate = useNavigate();
+
+  const { isHeadTeacher, isSubebUser } = useContext(AuthenticationContext);
 
   const getRequest = async () => {
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
@@ -76,7 +79,10 @@ function HeadTeacherRequests() {
   }, []);
 
   const handleCreateItem = () => {
-    navigate("/HeadTeacherRequestMaterial");
+    const link = isSubebUser
+      ? "/SubebRequestMaterial"
+      : "/HeadTeacherRequestMaterial";
+    navigate(link);
   };
 
   const toggleSidebar = () => {
