@@ -1,56 +1,60 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Container, Row, Col, Image, Card, Button } from "react-bootstrap";
+import { Container, Row, Col, Image, Card, Table } from "react-bootstrap";
 import "./QualityDashboard.css";
 import NavigationHeader from "../../../components/Navigations/NavigationHeader";
 import QualityNavigation from "../../../pages/QualityAssurance/QualityNavigation/QualityNavigation";
 import TitleHeader from "../../../components/Headers/TitleHeader";
 import Filter from "../../../components/Filter/Filter";
 import TrackingContext from "../../../context/Tracking/TrackingContext";
-import PrimaryButton from "../../../components/Button/PrimaryButton";
 import { NoImagCard } from "../../../components/Card/PresentaionCard";
-import ComfirmationPop from "../../../components/ComfirmationPopUp/ComfirmationPop";
 import { useLocation, useNavigate } from "react-router-dom";
-import inventoryListImage from "../../../assets/bigIcon/inventoryList.png";
 import NonAvaliable from "../../../components/NonAvaliable/NonAvaliable";
 import Loading from "../../../components/Loading/Loading";
 import axios from "axios";
+import * as XLSX from "xlsx";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 function QualityDashboard() {
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
   const [filterBy, setFilterBy] = useState("");
   const [filteredData, setFilteredData] = useState([]);
+  const [allData, setAllData] = useState([]);
+  const [requestData, setRequestData] = useState([]);
+  const [schoolsData, setSchoolsData] = useState([]);
+  const [locationsData, setLocationsData] = useState([]);
   const [sortBy, setSortBy] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [change, setChange] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [logs, setLogs] = useState([]);
-  const { getTrackings, getTrackingsData, getTrackingsIsLoading } =
-    useContext(TrackingContext);
-  const getLogs = async () => {
+
+  const response = async () => {
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
     try {
-      const response = await axios.get(`${baseUrl}/api/get-logs`);
-
-      setLogs(response.data);
+      const response = await axios.get(`${baseUrl}/api/item-request/qa`);
+      setAllData(response.data.requests);
+      setRequestData(response.data.requests);
+      setSchoolsData(response.data.schools);
+      setLocationsData(response.data.locations);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getLogs();
+    response();
   }, []);
 
   useEffect(() => {
-    getTrackings();
-    setFilteredData(getTrackingsData);
+    setFilteredData(requestData);
   }, [change]);
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
+
   useEffect(() => {
     handleFilterSortSearch();
-  }, [filterBy, sortBy, searchTerm, getTrackingsData]);
+  }, [filterBy, sortBy]);
 
   const handleApprove = async (status, id) => {
     try {
@@ -61,30 +65,57 @@ function QualityDashboard() {
       console.log(error);
     }
   };
+
   const handleFilterSortSearch = () => {
-    let filtered = [...getTrackingsData];
+    let filtered = [...allData];
 
-    if (filterBy && filterBy !== "All") {
-      filtered = filtered.filter((item) => item.status === filterBy);
+    if (filterBy) {
+      filtered =
+        filterBy == "Status"
+          ? requestData
+          : filtered.filter((item) => item.status === filterBy);
     }
 
-    if (sortBy) {
-      filtered.sort((a, b) => {
-        if (sortBy === "ascending") {
-          return a.item_name.localeCompare(b.item_name);
-        } else {
-          return b.item_name.localeCompare(a.item_name);
-        }
+    // if (sortBy) {
+    //   filtered.sort((a, b) => {
+    //     if (sortBy === "ascending") {
+    //       return a.item_name.localeCompare(b.item_name);
+    //     } else {
+    //       return b.item_name.localeCompare(a.item_name);
+    //     }
+    //   });
+    // }
+
+    setRequestData(filtered);
+  };
+
+  const generateReport = async (formatQuery, resultData) => {
+    setIsLoading(true);
+
+    if (formatQuery === "pdf") {
+      let doc = new jsPDF();
+      autoTable(doc, {
+        head: [["SN", "Item Name", "School", "Quantity", "Comment", "Status"]],
+        body: resultData.map((item, index) => [
+          index + 1,
+          item.item.item_name,
+          item.school.name,
+          item.quantity,
+          item.comment,
+          item.status,
+        ]),
       });
+      doc.save("edo_qa_request_report.pdf");
+      //   setCreateReportResponse(response);
+    } else {
+      var wb = XLSX.utils.book_new();
+      var ws = XLSX.utils.json_to_sheet(resultData);
+
+      XLSX.utils.book_append_sheet(wb, ws, "edo_qa_request_report");
+      XLSX.writeFile(wb, "edo_qa_request_report.xlsx");
     }
 
-    if (searchTerm) {
-      filtered = filtered.filter((item) =>
-        item.item_name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    setFilteredData(filtered);
+    setIsLoading(false);
   };
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -102,7 +133,23 @@ function QualityDashboard() {
       type: "descending",
     },
   ];
+
+  const filterOption = [
+    {
+      pk: 1,
+      type: "Excel",
+    },
+    {
+      pk: 2,
+      type: "pdf",
+    },
+  ];
+
   const filterData = [
+    {
+      pk: 0,
+      type: "Status",
+    },
     {
       pk: 1,
       type: "pending",
@@ -242,15 +289,17 @@ function QualityDashboard() {
               headerTextStyle={"headerTextStyle"}
             />
             <div className="d-flex quailtyDashboardDisplaySchoolWrapper">
-              {Array.from({ length: 1 }).map((_, index) => (
-                <NoImagCard
-                  key={index}
-                  title={`Abere Primary School`}
-                  figure={"4,678"}
-                  margin={"↓"}
-                  marginColor="red"
-                />
-              ))}
+              {schoolsData.length
+                ? schoolsData.map((school, index) => (
+                    <NoImagCard
+                      key={index}
+                      title={school.name}
+                      figure={school.newitems.length}
+                      margin=""
+                      marginColor=""
+                    />
+                  ))
+                : ""}
             </div>
           </Row>
           <Row className="d-lg-none mb-2">
@@ -258,27 +307,6 @@ function QualityDashboard() {
               <TitleHeader
                 text={"Approval Queue"}
                 headerTextStyle={"headerTextStyle"}
-              />
-            </Col>
-            <Col
-              xl={6}
-              lg={6}
-              md={12}
-              sm={12}
-              xs={12}
-              className="d-flex justify-content-between ms-auto gap-3"
-            >
-              <Filter
-                optionTitle={"Filter by"}
-                options={filterData}
-                defult={"Ramdom"}
-                onSelect={(value) => setFilterBy(value)}
-              />
-              <Filter
-                optionTitle={"Sort by"}
-                options={filterDataSortBy}
-                defult={"Ramdom"}
-                onSelect={(value) => setSortBy(value)}
               />
             </Col>
           </Row>
@@ -293,99 +321,59 @@ function QualityDashboard() {
                 <Filter
                   optionTitle={"Filter by"}
                   options={filterData}
-                  defult={"Ramdom"}
+                  defult={"Status"}
                   onSelect={(value) => setFilterBy(value)}
                 />
                 <Filter
-                  optionTitle={"Sort by"}
-                  options={filterDataSortBy}
-                  defult={"Ramdom"}
-                  onSelect={(value) => setSortBy(value)}
+                  defult={"None"}
+                  optionTitle={"Report Format"}
+                  options={filterOption}
+                  onSelect={(value) => {
+                    generateReport(value, requestData);
+                  }}
                 />
               </Col>
             </div>
           </Row>
           <Container className="ListContainer mb-5">
-            {!getTrackingsIsLoading ? (
-              filteredData && filterData.length > 0 ? (
-                filteredData.map((item) => (
-                  <Row
-                    key={item.id}
-                    className="UserListRow my-2 py-2 align-items-center"
-                  >
-                    <Col xs={7} md={7} sm={7} lg={7} className="d-flex gap-3">
-                      <Image
-                        src={inventoryListImage}
-                        rounded
-                        width="50"
-                        height="50"
-                      />
-                      <div>
-                        <h6>{item.item.name}</h6>
-                        <h6 className="fs-6">
-                          {" "}
-                          {item.action}
-                          <span className="quailtyDashboardListText">
-                            {" "}
-                            | {item.address} |{" "}
-                            <span
-                              style={{
-                                color:
-                                  item.status == "delivered" ? "green" : "red",
-                              }}
-                            >
-                              {item.status}
-                            </span>
-                            |
-                            <span className="d-none d-lg-inline me">
-                              {item.brand} | {item.created_at}
-                            </span>{" "}
-                          </span>
-                        </h6>
-                      </div>
-                    </Col>
-                    <Col
-                      xs={3}
-                      md={3}
-                      sm={3}
-                      lg={3}
-                      className="d-flex justify-content-end gap-2 d-none d-lg-flex"
-                    >
-                      <PrimaryButton
-                        text={"View"}
-                        Primarystyle={
-                          "quailtyListViewButton rounded rounded-4 px-4 "
-                        }
-                        clickEvent={() => handleApprovalDetail()}
-                      />
-                      <PrimaryButton
-                        text={"Approve"}
-                        Primarystyle={
-                          "bg-success border border-0 rounded rounded-4 px-3 "
-                        }
-                        clickEvent={() => handleApprove("approved", item.id)}
-                      />
-                      <PrimaryButton
-                        text={"Deny"}
-                        Primarystyle={
-                          "bg-danger border border-0 rounded rounded-4 px-3"
-                        }
-                        clickEvent={() => handleApprove("denied", item.id)}
-                      />
-                    </Col>
-                  </Row>
-                ))
-              ) : (
-                <NonAvaliable
-                  textMessage={
-                    "Sorry, there is currently no available item! 😥"
-                  }
-                  imageWidth={"300px"}
-                />
-              )
+            {!isLoading ? (
+              <Table responsive="lg" striped bordered hover className="mt-3">
+                <thead>
+                  <tr>
+                    <th>SN</th>
+                    <th>Item Name</th>
+                    <th>School</th>
+                    <th>Quantity</th>
+                    <th>Comment</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {requestData.map((request, index) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>
+                        <a
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigate("/ApprovalDetail/" + request.id);
+                          }}
+                        >
+                          {request.item.item_name}
+                        </a>
+                      </td>
+                      <td>{request.school.name}</td>
+                      <td>{request.quantity}</td>
+                      <td>{request.comment}</td>
+                      <td>{request.status}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
             ) : (
               <Container className="d-flex justify-content-center align-items-center h-50">
-                <Loading loading={getTrackingsIsLoading} />
+                <Loading loading={isLoading} />
               </Container>
             )}
           </Container>

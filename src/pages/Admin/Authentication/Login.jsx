@@ -36,8 +36,12 @@ function Login() {
         ? navigate("/QaDashboard", {
             state: { message: "Login successful!" },
           })
-        : isHeadTeacher() || isSubebUser()
+        : isHeadTeacher()
         ? navigate("/HeadTeacherDashboard", {
+            state: { message: "Login successful!" },
+          })
+        : isSubebUser()
+        ? navigate("/SubebDashboard", {
             state: { message: "Login successful!" },
           })
         : isAdmin()

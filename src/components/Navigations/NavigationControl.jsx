@@ -285,7 +285,7 @@ function NavigationControl() {
 
           <Route element={<PrivatteQARoute />}>
             <Route path="/QaDashboard" element={<QualityDashboard />} />
-            <Route path="/ApprovalDetail" element={<ApprovalDetail />} />
+            <Route path="/ApprovalDetail/:pk" element={<ApprovalDetail />} />
             <Route
               path="/QualityPushNotification"
               element={<QualityPushNotification />}
