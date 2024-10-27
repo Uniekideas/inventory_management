@@ -75,6 +75,8 @@ import HeaderTeacherGenerateReports from "../../pages/HeadTeacher/Inventory/Head
 import Searchresulting from "../Search/TeachersSearch/SearchResulting";
 import SearchResulted from "../Search/WarehouseSearch/SearchResulted";
 import MovementLog from "../../pages/WareHouseStaff/Inventory/MovementLog";
+import WareHouseRequest from "../../pages/WareHouseStaff/RequestMaterial/WareHouseRequests";
+import WareHouseRequestDetail from "../../pages/WareHouseStaff/RequestMaterial/WarehouseRequestDetail";
 
 function NavigationControl() {
   return (
@@ -192,6 +194,15 @@ function NavigationControl() {
             />
             <Route path="/WareHouseTrack" element={<WareHouseTrack />} />
             <Route path="/TrackMovementLog" element={<MovementLog />} />
+            <Route path="/WareHouseRequest" element={<WareHouseRequest />} />
+            <Route
+              path="/WareHouseDetailRequest"
+              element={<WareHouseRequestDetail />}
+            />
+            <Route
+              path="/WareHouseCompletedRequest"
+              element={<MovementLog />}
+            />
             <Route
               path="/WareHouseGenerateInventory"
               element={<GenerateInventory />}

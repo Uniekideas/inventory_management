@@ -16,14 +16,14 @@ import {
   SideNavAppStore,
 } from "../../../components/Navigations/SideNavComponent";
 import Searchd from "../../../components/Search/WarehouseSearch/Searchd";
- 
-function WareHouseSideNavigation({toggleSidebar, isOpen}) {
+
+function WareHouseSideNavigation({ toggleSidebar, isOpen }) {
   return (
     <div
       className={`d-flex flex-column sidebar ${isOpen ? "open" : ""} fixed-top`}
     >
       {" "}
-      <Searchd Searchstyle={"seachSideBar"} searchText={'Search'}/>
+      <Searchd Searchstyle={"seachSideBar"} searchText={"Search"} />
       <Nav className="flex-column">
         <Nav.Link
           as={NavLink}
@@ -61,11 +61,11 @@ function WareHouseSideNavigation({toggleSidebar, isOpen}) {
         </Nav.Link>
         <Nav.Link
           as={NavLink}
-          to="/WareHouseTrack"
+          to="/WareHouseRequest"
           className={({ isActive }) => (isActive ? "active" : "")}
         >
           <SideNavButton
-            text={"Track Materials"}
+            text={"Material Requests"}
             icon={faUsers}
             hoverStyle={"sideNavPrimaryHoverButton"}
           />

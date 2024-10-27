@@ -76,16 +76,6 @@ function QualityDashboard() {
           : filtered.filter((item) => item.status === filterBy);
     }
 
-    // if (sortBy) {
-    //   filtered.sort((a, b) => {
-    //     if (sortBy === "ascending") {
-    //       return a.item_name.localeCompare(b.item_name);
-    //     } else {
-    //       return b.item_name.localeCompare(a.item_name);
-    //     }
-    //   });
-    // }
-
     setRequestData(filtered);
   };
 
