@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState, useMemo } from "react";
-import { Container, Row, Col, Image } from "react-bootstrap";
+import { Container, Row, Col, Image, Form, Button } from "react-bootstrap";
 import "./WareHouseInventory.css";
 import NavigationHeader from "../../../components/Navigations/NavigationHeader";
 import TitleHeader from "../../../components/Headers/TitleHeader";
 import Filter from "../../../components/Filter/Filter";
 import PrimaryButton from "../../../components/Button/PrimaryButton";
 import { faAdd } from "@fortawesome/free-solid-svg-icons/faAdd";
+import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
+import { LoadingPropagate } from "../../../components/Loading/Loading";
 import PresentaionCard from "../../../components/Card/PresentaionCard";
 import inventoryImage from "../../../assets/schools/schoolchildrens.jpg";
 import schoolImage from "../../../assets/schools/shelves.jpg";
@@ -27,11 +29,21 @@ function WareHouseInventory() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { getInventoryItems, getItemsData, getItemsPagination, getItemsDataCount, getItemsIsLoading, handleNextPage, handlePrevPage } = useContext(InventoryItemContext);
+  const {
+    getInventoryItems,
+    getItemsData,
+    getItemsPagination,
+    getItemsDataCount,
+    getLowStockItemsDataCount,
+    getItemsIsLoading,
+    handleNextPage,
+    handlePrevPage,
+  } = useContext(InventoryItemContext);
 
   const { ProcessAnalysis, itemDataAnalysis } = useContext(AnalysisContext);
 
-  const { navigationMessages, setnavigationMessages } = useContext(MessageContext);
+  const { navigationMessages, setnavigationMessages } =
+    useContext(MessageContext);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [comfirmationAction, setComfirmationAction] = useState(false);
@@ -41,6 +53,8 @@ function WareHouseInventory() {
   const [filterBy, setFilterBy] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [buttonText, setButtonText] = useState("search");
+  const [buttonClick, setButtonClick] = useState(false);
 
   useEffect(() => {
     getInventoryItems();
@@ -61,7 +75,10 @@ function WareHouseInventory() {
     if (location.state?.message || navigationMessages) {
       scrollToTop();
       const redirectMessage = location.state?.message;
-      handleComfirmationPopUps(redirectMessage || navigationMessages, "bg-success");
+      handleComfirmationPopUps(
+        redirectMessage || navigationMessages,
+        "bg-success"
+      );
       navigate(location.pathname, { replace: true, state: {} });
       setnavigationMessages("");
     }
@@ -129,7 +146,9 @@ function WareHouseInventory() {
     }
 
     if (searchTerm) {
-      filtered = filtered.filter((item) => item.item_name.toLowerCase().includes(searchTerm.toLowerCase()));
+      filtered = filtered.filter((item) =>
+        item.item_name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     }
 
     setFilteredData(filtered);
@@ -165,104 +184,184 @@ function WareHouseInventory() {
     <div>
       <NavigationHeader toggleSidebar={toggleSidebar} />
       <div className="d-flex justify-content-between">
-        <WareHouseSideNavigation isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <WareHouseSideNavigation
+          isOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+        />
         <Container className="reportContainer">
-          {message ? comfirmationAction && <ComfirmationPop message={message} ComfirmationContainerStyle={`${messageColor} d-flex mb-2`} /> : null}
+          {message
+            ? comfirmationAction && (
+                <ComfirmationPop
+                  message={message}
+                  ComfirmationContainerStyle={`${messageColor} d-flex mb-2`}
+                />
+              )
+            : null}
           <BackButtonIcon />
           <TitleHeader text={"Inventory Management"} />
-          <Row className="mb-3">
-            <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-              {/* <Search Searchstyle={"seachContentBar"} searchText={'Search Inventory...'} onSearchChange={handleSearchChange}/> */}
-              <input type="text" placeholder="Search Inventory" className="seachContentBar" value={searchTerm} onChange={handleSearchChange} style={{ display: "block", width: "100%", borderRadius: 10 }} />
-            </Col>
-          </Row>
+
           <Row className="mb-3">
             <Col lg={6} md={12} xl={4} sm={12} xs={12} className="mb-2">
-              <PresentaionCard title={"Total Items"} image={schoolImage} figure={getItemsDataCount ? getItemsDataCount : 0} margin={`${trend === "up" ? "↑" : trend === "down" ? "↓" : "~"} ${value}`} marginColor={trend === "up" ? "text-success" : trend === "down" ? "text-danger" : "text-primary"} />
+              <PresentaionCard
+                title={"Total Items"}
+                image={schoolImage}
+                figure={getItemsDataCount}
+                margin={`${
+                  trend === "up" ? "↑" : trend === "down" ? "↓" : "~"
+                } ${value}`}
+                marginColor={
+                  trend === "up"
+                    ? "text-success"
+                    : trend === "down"
+                    ? "text-danger"
+                    : "text-primary"
+                }
+              />
             </Col>
             <Col lg={6} md={12} xl={4} sm={12} xs={12}>
-              <PresentaionCard title={"Low Stock Alerts"} image={inventoryImage} figure={"46"} margin={"↓"} marginColor={"red"} />
+              <PresentaionCard
+                title={"Low Stock Alerts"}
+                image={inventoryImage}
+                figure={getLowStockItemsDataCount}
+                margin={"↓"}
+                marginColor={"red"}
+              />
             </Col>
           </Row>
-          <Row className="d-lg-none mobileCreateButton my-3">
-            <Col className="d-flex justify-content-end">
-              <PrimaryButton Primaryicon={faAdd} text={"Add Item"} Primarystyle={"UserManagementCreateButton"} clickEvent={() => handleAdditem()} />
-            </Col>
-          </Row>
-          <Row className="d-lg-none ">
-            <Col className="d-flex justify-content-between ms-auto gap-3">
-              <Filter Filterstyle={"responsive"} optionTitle={"Filter by"} options={filterOption} defult={"LGA"} onSelect={(value) => setFilterBy(value)} />
-              <Filter Filterstyle={"responsive"} optionTitle={"Filter by"} options={sortOption} defult={"School type"} onSelect={(value) => setSortBy(value)} />
-            </Col>
-          </Row>
-          <Row className="d-none d-lg-flex">
 
-            {/* <Col xl={2}>
-            <Filter
-                optionTitle={"Sort by"}
+          <Row className="mb-5">
+            <Col>
+              <PrimaryButton
+                text={"Inventory Report"}
+                Primarystyle={"WareHouseGenerateInventoryButton"}
+                clickEvent={() => handleGenerateReport()}
+              />{" "}
+              <PrimaryButton
+                Primaryicon={faAdd}
+                text={"Add Item"}
+                Primarystyle={"UserManagementCreateButton"}
+                clickEvent={() => handleAdditem()}
+              />
+            </Col>
+            <Col className="d-flex justify-content-end ms-auto gap-3">
+              <Filter
+                Filterstyle={"responsive"}
+                optionTitle={"Filter by"}
+                options={filterOption}
+                defult={"LGA"}
+                onSelect={(value) => setFilterBy(value)}
+              />
+              <Filter
+                Filterstyle={"responsive"}
+                optionTitle={"Filter by"}
                 options={sortOption}
-                defult={"Ramdom"}
+                defult={"School type"}
                 onSelect={(value) => setSortBy(value)}
               />
-            </Col> */}
-            <Col xl={3}>
-              <PrimaryButton text={"Generate Inventory Report"} Primarystyle={"WareHouseGenerateInventoryButton w-100"} clickEvent={() => handleGenerateReport()} />
             </Col>
-            <Col xl={3}>
-              <PrimaryButton
-                clickEvent={() => handleTrackMovementLog()} // Assuming Item.id is passed to identify the specific item
-                text={"Track MovementLog"}
-                Primarystyle={"UserManagementCreateButton"}
-              />
-            </Col>
-
-            <Col xl={1}>
-              <PrimaryButton Primaryicon={faAdd} text={"Add Item"} Primarystyle={"UserManagementCreateButton"} clickEvent={() => handleAdditem()} />
+          </Row>
+          <Row className="mb-3">
+            <Col lg={12} md={12} xl={12} sm={12} xs={12}>
+              <Form>
+                <div className="d-flex">
+                  <input
+                    type="text"
+                    placeholder="Search Inventory"
+                    className="seachContentBar px-3 me-2 flex-grow-1"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    style={{ display: "block", borderRadius: 10 }}
+                  />
+                  {!buttonClick ? (
+                    <PrimaryButton
+                      Primaryicon={faSearch}
+                      Primarystyle={"UserManagementCreateButton"}
+                      clickEvent={() => handleAdditem()}
+                    />
+                  ) : (
+                    <Button variant="success" className="p-2" type="submit">
+                      <LoadingPropagate loading={buttonClick} />
+                    </Button>
+                  )}
+                </div>
+              </Form>
             </Col>
           </Row>
           <Container className="ListContainer">
             {!getItemsIsLoading ? (
               filteredData && filteredData.length > 0 ? (
                 <>
-                  {filteredData.map((Item) => (
-                    <Row key={Item.id} className="UserListRow my-2 py-2 align-items-center">
-                      <Col xs={9} className="d-flex gap-3">
-                        <Image src={Item.image} rounded width="50" height="50" />
-                        <div>
-                          <h6>{Item.item_name}</h6>
-                          <h6 className="fs-6">
-                            INV-{Item.id}
-                            <span className="text-muted">
-                              | {Item.school} | {""}
-                              <span className="d-none d-lg-inline me">
-                                {/* {Item.brand} | {`$${Item.unit_cost}`} */}| {Item.quantity} {""}
-                                <span className={Item.quantity > 35 ? "text-success" : Item.quantity < 1 ? "text-danger" : "text-warning"}>{Item.quantity > 35 ? "| In stock" : Item.quantity < 1 ? "| Out of stock" : "| Low on stock"}</span> | {""}
-                                {Item.additional_info} | {""}
-                                {Item.item_code} | {""}
-                                <span className={Item.status === "pending" ? "text-danger" : "text-success"}>{Item.subject_category}</span> | {""}
-                                {/* {convertDate(Item.created_at)} */}
-                              </span>
+                  <table className="table rounded mt-5">
+                    <thead>
+                      <tr>
+                        <th>SN</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Subject</th>
+                        <th>Quantity</th>
+                        <th>Stock</th>
+                        <th>....</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredData.map((Item, index) => (
+                        <tr key={Item.id}>
+                          <th>{index + 1}</th>
+                          <td>
+                            <Image
+                              src={Item.image}
+                              rounded
+                              width="50"
+                              height="50"
+                            />
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              className="btn btn-link"
+                              onClick={() => handleItemDetail(Item.item_code)}
+                            >
+                              {Item.item_name}
+                            </button>
+                          </td>
+                          <td>{Item.subject_category}</td>
+                          <td>{Item.quantity}</td>
+                          <td>
+                            <span
+                              className={
+                                Item.quantity > 35
+                                  ? "text-success"
+                                  : Item.quantity < 1
+                                  ? "text-danger"
+                                  : "text-warning"
+                              }
+                            >
+                              {Item.quantity > 35
+                                ? "In stock"
+                                : Item.quantity < 1
+                                ? "Out of stock"
+                                : "Low on stock"}
                             </span>
-                          </h6>
-                        </div>
-                      </Col>
-                      <Col xs={3} className="d-flex justify-content-end gap-2">
-                        <PrimaryButton text={"Edit"} Primarystyle={"UserViewButton d-none d-lg-block"} clickEvent={() => null} />
-                        <PrimaryButton text={"View details"} Primarystyle={"schoolViewButton"} clickEvent={() => handleItemDetail(Item.item_code)} />
-                      </Col>
-                    </Row>
-                  ))}
-                  <div style={{ display: "flex", justifyContent: "center", gap: 4, marginBottom: 10 }}>
-                    <button type="button" onClick={(e) => handlePrevPage(e, getItemsPagination?.prev_page_url)} disabled={getItemsPagination?.prev_page_url === null} className="btn btn-outline-primary">
-                      Previous
-                    </button>
-                    <button type="button" onClick={(e) => handlePrevPage(e, getItemsPagination?.next_page_url)} disabled={getItemsPagination?.next_page_url === null} className="btn btn-outline-primary">
-                      Next
-                    </button>
-                  </div>
+                          </td>
+                          <td>
+                            <PrimaryButton
+                              text={"Edit"}
+                              Primarystyle={"UserViewButton"}
+                              clickEvent={() => null} //handleEditDetail(Item.id)
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </>
               ) : (
-                <NonAvaliable textMessage={"Sorry, there is currently no available item! 😥"} imageWidth={"300px"} />
+                <NonAvaliable
+                  textMessage={
+                    "Sorry, there is currently no available item! 😥"
+                  }
+                  imageWidth={"300px"}
+                />
               )
             ) : (
               <Container className="d-flex justify-content-center align-items-center h-50">

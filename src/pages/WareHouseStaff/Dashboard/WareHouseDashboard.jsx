@@ -335,11 +335,11 @@ function WareHouseDashboard() {
         <Container className="reportContainer">
           <div className="d-flex justify-content-between">
             <TitleHeader text={"Dashboard"} />
-            <Filter
+            {/* <Filter
               optionTitle={"Time"}
               options={filterData}
               defult={"This week"}
-            />
+            /> */}
           </div>
           <Row className="mb-3">
             <Col lg={3} md={3} xl={3} sm={6} xs={6} className="mb-2">
