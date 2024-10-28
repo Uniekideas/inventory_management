@@ -84,7 +84,6 @@ export const DiscrepancyProvider = ({ children }) => {
       description: formData.description,
       date: formData.date,
     };
-    console.log(DiscrepancyData);
 
     try {
       const result = await axios.post(

@@ -196,7 +196,7 @@ function NavigationControl() {
             <Route path="/TrackMovementLog" element={<MovementLog />} />
             <Route path="/WareHouseRequest" element={<WareHouseRequest />} />
             <Route
-              path="/WareHouseDetailRequest"
+              path="/WareHouseRequestDetail/:pk"
               element={<WareHouseRequestDetail />}
             />
             <Route

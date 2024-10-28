@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button, Table } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 // import "./QualityDashboard.css";
+import WareHouseSideNavigation from "../Navigation/WareHouseSideNavigation";
 import NavigationHeader from "../../../components/Navigations/NavigationHeader";
-import QualityNavigation from "../../../pages/QualityAssurance/QualityNavigation/QualityNavigation";
 import TitleHeader from "../../../components/Headers/TitleHeader";
 import BackButtonIcon from "../../../components/Button/BackButtonIcon";
 import Loading from "../../../components/Loading/Loading";
@@ -28,11 +28,17 @@ function WarehouseRequestDetail() {
     }
   };
 
-  const handleApprove = async (id) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleApprove(e);
+  };
+
+  const handleApprove = async (e) => {
+    const quantity = e.target.quantity.value;
     try {
       const res = await axios.patch(
-        `${baseUrl}/api/item-request/status/${id}`,
-        { status: "approved" }
+        `${baseUrl}/api/item-request/warehousestatus/${pk}`,
+        { status: "in-transit", quantity_given: quantity }
       );
       setIsLoading(true);
       getRequest();
@@ -65,14 +71,14 @@ function WarehouseRequestDetail() {
     <div>
       <NavigationHeader toggleSidebar={toggleSidebar} />
       <div className="d-flex justify-content-between">
-        <QualityNavigation
+        <WareHouseSideNavigation
           isOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}
         />
         <Container className="reportContainer">
           <div className="d-flex">
             <BackButtonIcon />
-            <TitleHeader text={"Approval Details"} />
+            <TitleHeader text={"Request Details"} />
           </div>
 
           {!isLoading ? (
@@ -82,7 +88,7 @@ function WarehouseRequestDetail() {
                   <tbody>
                     <tr>
                       <th>Name</th>
-                      <td>{requestData.item.item_name}</td>
+                      <td>{requestData.item.name}</td>
                     </tr>
                     <tr>
                       <th>School</th>
@@ -92,6 +98,12 @@ function WarehouseRequestDetail() {
                       <th>Quantity</th>
                       <td>{requestData.quantity}</td>
                     </tr>
+                    {requestData.status !== "approved" && (
+                      <tr>
+                        <th>Quantity Issued</th>
+                        <td>{requestData.quantity_issued}</td>
+                      </tr>
+                    )}
                     <tr>
                       <th>Comment</th>
                       <td>{requestData.comment}</td>
@@ -103,35 +115,78 @@ function WarehouseRequestDetail() {
                   </tbody>
                 </Table>
               </Row>
-              {requestData.status == "pending" ? (
+              {requestData.status == "approved" ? (
                 <Row>
                   <TitleHeader
-                    text={"Approval Update"}
+                    text={"Warehouse Inventory"}
                     headerTextStyle={"headerTextStyle"}
                   />
 
-                  <Row>
-                    <Col xl={4} lg={4} md={4} sm={12} xs={12} className="mb-2">
-                      <Button
-                        variant="success"
-                        className="w-100 p-2"
-                        onClick={() => handleApprove(requestData.id)}
-                      >
-                        {" "}
-                        Approve{" "}
-                      </Button>
-                    </Col>
-                    <Col xl={4} lg={4} md={4} sm={12} xs={12} className="mb-2">
-                      <Button
-                        variant="danger"
-                        className="w-100 p-2"
-                        onClick={() => handleDecline(requestData.id)}
-                      >
-                        {" "}
-                        Deny{" "}
-                      </Button>
-                    </Col>
-                  </Row>
+                  <Form onSubmit={handleSubmit}>
+                    <Table
+                      responsive="lg"
+                      striped
+                      bordered
+                      hover
+                      className="mt-3"
+                    >
+                      <tbody>
+                        <tr>
+                          <th>Name</th>
+                          <td>{requestData.item.name}</td>
+                        </tr>
+                        <tr>
+                          <th>Code</th>
+                          <td>{requestData.item.code}</td>
+                        </tr>
+                        <tr>
+                          <th>Quantity</th>
+                          <td>{requestData.item.quantity}</td>
+                        </tr>
+                        <tr>
+                          <th>Quantity Sent</th>
+                          <td>
+                            {/* <input
+                              name="quantity"
+                              type="number"
+                              className=""
+                              defaultValue={requestData.quantity}
+                            /> */}
+                            <Form.Control
+                              type="number"
+                              placeholder="Quantity"
+                              className="DiscrepancyInput"
+                              defaultValue={requestData.quantity}
+                              name="quantity"
+                              required
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                    <Row>
+                      <Col md={6} sm={6} xs={6} className="mb-2">
+                        <Button
+                          variant="success"
+                          type="submit"
+                          className="w-100 p-2"
+                        >
+                          {" "}
+                          Approve{" "}
+                        </Button>
+                      </Col>
+                      <Col md={6} sm={6} xs={6} className="mb-2">
+                        <Button
+                          variant="danger"
+                          className="w-100 p-2"
+                          onClick={() => handleDecline(requestData.id)}
+                        >
+                          {" "}
+                          Deny{" "}
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Form>
                 </Row>
               ) : (
                 ""
