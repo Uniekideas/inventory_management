@@ -149,7 +149,7 @@ function UserDetail() {
                   <Col className="itemHeaderText">
                     Location:{" "}
                     <b className="itemDetailText mx-2">
-                      {getSingleUserData.location.title}
+                      
                     </b>{" "}
                   </Col>
                 </Row>
