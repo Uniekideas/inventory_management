@@ -19,6 +19,8 @@ import ItemDetail from "../../pages/Admin/Inventory/ItemDetail";
 import AllItemRequests from "../../pages/Admin/ItemRequests/AllItemRequests";
 import ItemDetails from "../../pages/WareHouseStaff/ScanMaterial/ItemDetails";
 import SchoolDetail from "../../pages/Admin/School/SchoolDetail";
+import SchoolQA from "../../pages/Admin/Qa/SchoolQA";
+import SchoolQADetail from "../../pages/Admin/Qa/SchoolQADetail";
 import UserDetail from "../../pages/Admin/User/UserDetail";
 import WareHouseDashboard from "../../pages/WareHouseStaff/Dashboard/WareHouseDashboard";
 import WareHouseInventory from "../../pages/WareHouseStaff/Inventory/WareHouseInventory";
@@ -164,6 +166,8 @@ function NavigationControl() {
             <Route path="/EditSchool/:pk" element={<EditSchool />} />
             <Route path="/UserDetail/:pk" element={<UserDetail />} />
             <Route path="/EditUser/:pk" element={<EditUser />} />
+            <Route path="/SchoolQA" element={<SchoolQA />} />
+            <Route path="/SchoolQADetail/:pk" element={<SchoolQADetail />} />
 
             {/* <Route path="/WareHouseDashboard" element={<WareHouseDashboard />} />
           <Route path="/WareHouseInventory" element={<WareHouseInventory />} />

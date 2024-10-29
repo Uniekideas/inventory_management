@@ -83,6 +83,17 @@ function SideNavigation({ isOpen, toggleSidebar }) {
         </Nav.Link>
         <Nav.Link
           as={NavLink}
+          to="/SchoolQA"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
+          <SideNavButton
+            text={"Schools QA"}
+            icon={faLocationDot}
+            hoverStyle={"sideNavPrimaryHoverButton"}
+          />
+        </Nav.Link>
+        <Nav.Link
+          as={NavLink}
           to="/ReportAnalytics"
           className={({ isActive }) => (isActive ? "active" : "")}
         >

@@ -211,11 +211,10 @@ function EditUser() {
                         type="text"
                         className="UserCreateInput"
                         placeholder="Username"
-                        value={editedFormData.username}
+                        defaultValue={editedFormData.username}
                         onChange={handleChange}
                         name="username"
                         required
-                        readOnly
                       />
                     </Col>
                   </Row>
@@ -242,7 +241,6 @@ function EditUser() {
                         onChange={handleChange}
                         name="email"
                         required
-                        readOnly
                       />
                     </Col>
                   </Row>
