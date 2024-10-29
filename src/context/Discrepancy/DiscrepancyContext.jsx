@@ -80,7 +80,7 @@ export const DiscrepancyProvider = ({ children }) => {
       supplier: formData.supplier,
       expected_quantity: formData.expected_quantity,
       actual_quantity: formData.actual_quantity,
-      discrepancy_type: formData.discrepancy_type,
+      discrepancy_type: e.target.discrepancy_type.value,
       description: formData.description,
       date: formData.date,
     };
