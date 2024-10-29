@@ -5,6 +5,7 @@ import NavigationHeader from "../../../components/Navigations/NavigationHeader";
 import SideNavigation from "../../../components/Navigations/SideNavigation";
 import TitleHeader from "../../../components/Headers/TitleHeader";
 import BackButtonIcon from "../../../components/Button/BackButtonIcon";
+import NonAvaliable from "../../../components/NonAvaliable/NonAvaliable";
 import axios from "axios";
 import Loading from "../../../components/Loading/Loading";
 const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
@@ -23,6 +24,7 @@ function SchoolQADetail() {
     try {
       const response = await axios.get(`${baseUrl}/api/school/qa/${pk}`);
       setQa(response.data);
+      console.log(Qa);
     } catch (error) {
       console.log(error);
     } finally {
@@ -80,39 +82,18 @@ function SchoolQADetail() {
             <TitleHeader text={"School QA"} />
           </div>
 
-          {/* {!isLoading ? (
-            allQa.length ? (
+          {!isLoading ? (
+            Qa.length ? (
               <Table responsive="lg" striped bordered hover className="mt-3">
-                <thead>
-                  <tr>
-                    <th>SN</th>
-                    <th>Name</th>
-                    <th>Username</th>
-                    <th>School Count</th>
-                    <th>...</th>
-                  </tr>
-                </thead>
                 <tbody>
-                  {allQa.map((qa, index) => (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>{qa.name}</td>
-                      <td>{qa.username}</td>
-                      <td>{qa.schoolqa.length}</td>
-                      <td>
-                        <a
-                          href="#"
-                          className="btn btn-success"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            navigate("/SchoolQADetail/" + qa.id);
-                          }}
-                        >
-                          View
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
+                  <tr>
+                    <th>Name</th>
+                    <td>{Qa.name}</td>
+                  </tr>
+                  <tr>
+                    <td>Username</td>
+                    <td>{Qa.username}</td>
+                  </tr>
                 </tbody>
               </Table>
             ) : (
@@ -125,7 +106,7 @@ function SchoolQADetail() {
             <Container className="d-flex justify-content-center align-items-center h-50">
               <Loading loading={isLoading} />
             </Container>
-          )} */}
+          )}
         </Container>
       </div>
     </>

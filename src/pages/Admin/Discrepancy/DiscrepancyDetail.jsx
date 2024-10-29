@@ -43,9 +43,10 @@ function DiscrepancyDetail() {
         `${baseUrl}/api/discrepancy/status/${pk}`,
         updatedData
       );
-
+      
       setSuccess(result.data.message);
       setStatus(e.target.status.value);
+      getDiscrepancy(pk);
     } catch (error) {
       console.log(error.response.data.message);
     } finally {
@@ -101,7 +102,7 @@ function DiscrepancyDetail() {
                       <td>
                         <span
                           className={
-                            status == "review"
+                            getDiscrepancyData.status == "review"
                               ? "badge text-bg-danger"
                               : "badge text-bg-success"
                           }
@@ -174,8 +175,8 @@ function DiscrepancyDetail() {
                     ></button>
                   </div>
                 )}
-
-                <Row>
+                {getDiscrepancyData.status == "review" && (
+                  <Row>
                   <TitleHeader
                     text={"Update Status"}
                     headerTextStyle={"headerTextStyle"}
@@ -209,6 +210,8 @@ function DiscrepancyDetail() {
                     </Col>
                   </Row>
                 </Row>
+                )}
+                
               </Form>
             </div>
           ) : (

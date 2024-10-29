@@ -137,13 +137,15 @@ export const InventoryItemProvider = ({ children }) => {
       brand: e.target.brand.value,
       subject_category: e.target.category.value,
       barcode_id: e.target.barcode_id.value,
-      category_id: e.target.category.value,
+      category_id: e.target.category_id.value,
       image: fileResponse,
       // unit_cost: e.target.unit_cost.value,
       quantity: e.target.quantity.value,
       // reorder_point: e.target.reorder_point.value,
       distribution: e.target.distribution.value,
     };
+
+    console.log(formData);
 
     try {
       const result = await axios.post(`${baseUrl}/api/item`, formData);

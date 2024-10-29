@@ -72,7 +72,7 @@ function SchoolQA() {
                           className="btn btn-success"
                           onClick={(e) => {
                             e.preventDefault();
-                            navigate("/ApprovalDetail/" + qa.id);
+                            navigate("/SchoolQADetail/" + qa.id);
                           }}
                         >
                           View

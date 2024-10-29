@@ -323,7 +323,19 @@ function DiscrepancyList() {
                           <td>{item.description}</td>
                           <td>{item.discrepancy_type}</td>
                           <td>{item.reporter}</td>
-                          <td>{item.status}</td>
+                          <td>
+                            <span
+                              className={
+                                item.status == "review"
+                                  ? "badge text-bg-danger"
+                                  : "badge text-bg-success"
+                              }
+                            >
+                              {item.status == "review"
+                                ? "Under Review"
+                                : "Resolved"}
+                            </span>
+                          </td>
                           <td>{convertDate(item.created_at)}</td>
                           <td>
                             <PrimaryButton

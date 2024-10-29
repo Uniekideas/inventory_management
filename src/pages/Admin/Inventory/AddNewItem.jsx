@@ -282,7 +282,7 @@ function AddNewItem() {
               <Form.Group className="mb-3" controlId="notificationTitle">
                 <Row className="mb-3">
                   <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-                    <Form.Select className="UserCreateInput" name="category">
+                    <Form.Select className="UserCreateInput" name="category_id">
                       <option value="">Select Item Category</option>
                       {category.map((cat) => {
                         return (
