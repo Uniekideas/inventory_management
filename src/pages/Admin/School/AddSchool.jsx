@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import ComfirmationPop from "../../../components/ComfirmationPopUp/ComfirmationPop";
 import SchoolContext from "../../../context/School/SchoolContext";
+import GeneralContext from "../../../context/General/GeneralContext";
 import { scrollToTop } from "../../../utils/HelperFunc";
 
 function AddSchool() {
@@ -26,6 +27,8 @@ function AddSchool() {
     setAddSchoolError,
     setAddSchoolResponse,
   } = useContext(SchoolContext);
+
+  const { lgaList } = useContext(GeneralContext);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [comfirmationAction, setComfirmationAction] = useState(false);
@@ -124,11 +127,21 @@ function AddSchool() {
                 <Row className="mb-3">
                   <Col lg={12} md={12} xl={12} sm={12} xs={12}>
                     <Form.Control
+                      type="text"
+                      placeholder="School ID/Code"
+                      className="UserCreateInput"
+                      name="school_id"
+                      required
+                    />
+                  </Col>
+                </Row>
+                <Row className="mb-3">
+                  <Col lg={12} md={12} xl={12} sm={12} xs={12}>
+                    <Form.Control
                       type="url"
                       className="UserCreateInput"
                       placeholder="School Website"
                       name="website"
-                      required
                     />
                   </Col>
                 </Row>
@@ -139,7 +152,6 @@ function AddSchool() {
                       placeholder="School Email Address"
                       className="UserCreateInput"
                       name="email"
-                      required
                     />
                   </Col>
                 </Row>
@@ -150,7 +162,6 @@ function AddSchool() {
                       placeholder="School Phone Number"
                       className="UserCreateInput"
                       name="phone_number"
-                      required
                     />
                   </Col>
                 </Row>
@@ -223,24 +234,11 @@ function AddSchool() {
                       required
                     >
                       <option value="">Local Government Area</option>
-                      <option value="Akoko Edo">Akoko Edo</option>
-                      <option value="Egor">Egor</option>
-                      <option value="Esan Central">Esan Central</option>
-                      <option value="Esan North-East">Esan North-East</option>
-                      <option value="Esan South-East">Esan North-East</option>
-                      <option value="Esan West">Esan West</option>
-                      <option value="Etsako Central">Etsako Central</option>
-                      <option value="Etsako East">Etsako East</option>
-                      <option value="Etsako West">Etsako West</option>
-                      <option value="Igueben">Igueben</option>
-                      <option value="Ikpoba Okha">Ikpoba Okha</option>
-                      <option value="Oredo">Oredo</option>
-                      <option value="Orhionmwon">Orhionmwon</option>
-                      <option value="Ovia North East">Ovia North East</option>
-                      <option value="Ovia South Wast">Ovia South Wast</option>
-                      <option value="Owan East">Owan East</option>
-                      <option value="Owan West">Owan West</option>
-                      <option value="Uhunmwode">Uhunmwode</option>
+                      {lgaList.map((lga) => (
+                        <option value={lga.type} key={lgaList.pk}>
+                          {lga.type}
+                        </option>
+                      ))}
                     </Form.Select>
                   </Col>
                 </Row>
@@ -251,7 +249,6 @@ function AddSchool() {
                       className="UserCreateInput"
                       placeholder="Postal Code"
                       name="postal_code"
-                      required
                     />
                   </Col>
                 </Row>
@@ -269,15 +266,6 @@ function AddSchool() {
                       <Form.Control
                         type="text"
                         placeholder="Date Established"
-                        className="UserCreateInput"
-                      />
-                    </Col>
-                  </Row>
-                  <Row className="mb-3">
-                    <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-                      <Form.Control
-                        type="text"
-                        placeholder="Number Of Staff"
                         className="UserCreateInput"
                       />
                     </Col>

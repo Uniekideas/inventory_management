@@ -11,6 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import ComfirmationPop from "../../../components/ComfirmationPopUp/ComfirmationPop";
+import GeneralContext from "../../../context/General/GeneralContext";
 import SchoolContext from "../../../context/School/SchoolContext";
 import Loading from "../../../components/Loading/Loading";
 import { scrollToTop } from "../../../utils/HelperFunc";
@@ -32,6 +33,8 @@ function EditSchool() {
     seteditSchoolError,
     seteditSchoolResponse,
   } = useContext(SchoolContext);
+
+  const { lgaList } = useContext(GeneralContext);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [comfirmationAction, setComfirmationAction] = useState(false);
@@ -156,13 +159,24 @@ function EditSchool() {
                   <Row className="mb-3">
                     <Col lg={12} md={12} xl={12} sm={12} xs={12}>
                       <Form.Control
+                        type="text"
+                        placeholder="School ID/Code"
+                        className="UserCreateInput"
+                        name="school_id"
+                        value={editedFormData.school_id}
+                        required
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="mb-3">
+                    <Col lg={12} md={12} xl={12} sm={12} xs={12}>
+                      <Form.Control
                         type="url"
                         className="UserCreateInput"
                         placeholder="School Website"
                         name="website"
                         value={editedFormData.website}
                         onChange={handleChange}
-                        required
                       />
                     </Col>
                   </Row>
@@ -175,7 +189,6 @@ function EditSchool() {
                         name="email"
                         value={editedFormData.email}
                         onChange={handleChange}
-                        required
                       />
                     </Col>
                   </Row>
@@ -188,7 +201,6 @@ function EditSchool() {
                         name="phone_number"
                         value={editedFormData.phone_number}
                         onChange={handleChange}
-                        required
                       />
                     </Col>
                   </Row>
@@ -269,24 +281,11 @@ function EditSchool() {
                         onChange={handleChange}
                       >
                         <option value="">Local Government Area</option>
-                        <option value="Akoko Edo">Akoko Edo</option>
-                        <option value="Egor">Egor</option>
-                        <option value="Esan Central">Esan Central</option>
-                        <option value="Esan North-East">Esan North-East</option>
-                        <option value="Esan South-East">Esan North-East</option>
-                        <option value="Esan West">Esan West</option>
-                        <option value="Etsako Central">Etsako Central</option>
-                        <option value="Etsako East">Etsako East</option>
-                        <option value="Etsako West">Etsako West</option>
-                        <option value="Igueben">Igueben</option>
-                        <option value="Ikpoba Okha">Ikpoba Okha</option>
-                        <option value="Oredo">Oredo</option>
-                        <option value="Orhionmwon">Orhionmwon</option>
-                        <option value="Ovia North East">Ovia North East</option>
-                        <option value="Ovia South Wast">Ovia South Wast</option>
-                        <option value="Owan East">Owan East</option>
-                        <option value="Owan West">Owan West</option>
-                        <option value="Uhunmwode">Uhunmwode</option>
+                        {lgaList.map((lga) => (
+                          <option value={lga.type} key={lgaList.pk}>
+                            {lga.type}
+                          </option>
+                        ))}
                       </Form.Select>
                     </Col>
                   </Row>
@@ -299,7 +298,6 @@ function EditSchool() {
                         name="postal_code"
                         value={editedFormData.postal_code}
                         onChange={handleChange}
-                        required
                       />
                     </Col>
                   </Row>
@@ -330,15 +328,6 @@ function EditSchool() {
                         />
                       </Col>
                     </Row>
-                    <Row className="mb-3">
-                      <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-                        <Form.Control
-                          type="text"
-                          placeholder="Number Of Staff"
-                          className="UserCreateInput"
-                        />
-                      </Col>
-                    </Row>
                     <Row>
                       <Col lg={12} md={12} xl={12} sm={12} xs={12}>
                         <Form.Control
@@ -354,7 +343,7 @@ function EditSchool() {
                     {buttonLoading ? (
                       <FontAwesomeIcon icon={faSpinner} spin size="2x" />
                     ) : (
-                      "Save Cahanges"
+                      "Save Changes"
                     )}
                   </Button>
                 </Row>

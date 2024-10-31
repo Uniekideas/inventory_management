@@ -6,9 +6,10 @@ import SideNavigation from "../../../components/Navigations/SideNavigation";
 import TitleHeader from "../../../components/Headers/TitleHeader";
 import BackButtonIcon from "../../../components/Button/BackButtonIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faAdd } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
 import NonAvaliable from "../../../components/NonAvaliable/NonAvaliable";
+import AuthenticationContext from "../../../context/Authentication/AuthenticationContext";
 import axios from "axios";
 import Loading from "../../../components/Loading/Loading";
 const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
@@ -18,8 +19,11 @@ function SchoolQADetail() {
   const [isLoading, setIsLoading] = useState(true);
   const [schools, setSchools] = useState([]);
   const [selectSchool, setSelectSchool] = useState(null);
+  const [selectLocation, setSelectLocation] = useState(null);
   const [locations, setLocations] = useState([]);
   const [Qa, setQa] = useState([]);
+
+  const { userData } = useContext(AuthenticationContext);
 
   let { pk } = useParams();
 
@@ -69,10 +73,58 @@ function SchoolQADetail() {
   const assignSchool = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
+    const formData = {
+      school_id: selectSchool,
+      location_id: selectLocation,
+      user_id: pk,
+      assign: 1,
+    };
+    console.log(formData);
+    try {
+      const result = await axios.patch(
+        `${baseUrl}/api/school/qa/${pk}`,
+        formData
+      );
+      console.log(result);
+      getAllQa();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const unassignSchool = async (school_id = null, location_id = null) => {
+    setIsLoading(true);
+
+    const formData = {
+      school_id: school_id,
+      location_id: location_id,
+      user_id: pk,
+      assign: 0,
+    };
+    console.log(formData);
+    try {
+      const result = await axios.patch(
+        `${baseUrl}/api/school/qa/${pk}`,
+        formData
+      );
+      console.log(result);
+      getAllQa();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSchoolChange = (event) => {
     setSelectSchool(event.id);
+  };
+
+  const handleLocationChange = (event) => {
+    setSelectLocation(event.id);
   };
 
   useEffect(() => {
@@ -98,7 +150,7 @@ function SchoolQADetail() {
 
           <Form onSubmit={assignSchool}>
             <Row className="mb-3">
-              <Col className="UserCreateInput d-flex ms-2 mb-3" lg={10} md={10}>
+              <Col className="UserCreateInput d-flex ms-2 mb-3" lg={5} md={5}>
                 <div className="flex-fill">
                   <Select
                     classNames={{
@@ -117,28 +169,30 @@ function SchoolQADetail() {
                   />
                 </div>
               </Col>
-              <Col className="UserCreateInput d-flex ms-2 mb-3" lg={10} md={10}>
-                <Form.Select
-                  className="no-border shadow-none w-auto"
-                  name="location"
-                >
-                  <option value="">All Locations</option>
-                  {locations.map((location) => {
-                    return (
-                      <option key={location.id} value={location.id}>
-                        {location.title}
-                      </option>
-                    );
-                  })}
-                </Form.Select>
-              </Col>
+              {/* <Col className="UserCreateInput d-flex ms-2 mb-3" lg={5} md={5}>
+                <div className="flex-fill">
+                  <Select
+                    classNames={{
+                      control: (state) =>
+                        state.isFocused
+                          ? "border-0 py-2 shadow-none w-100"
+                          : "border-0 py-2 w-100",
+                    }}
+                    name="school"
+                    placeholder="Select Location"
+                    options={locations}
+                    getOptionLabel={(options) => options["title"]}
+                    getOptionValue={(options) => options["id"]}
+                    isSearchable
+                    onChange={handleLocationChange}
+                  />
+                </div> 
+
+              </Col>*/}
 
               <Col className="ms-2">
                 <button className="btn btn-success" type="submit">
-                  <FontAwesomeIcon
-                    icon={faSearch}
-                    className="sideNavSearchIcon"
-                  />
+                  <FontAwesomeIcon icon={faAdd} className="sideNavSearchIcon" />
                 </button>
               </Col>
             </Row>
@@ -178,7 +232,12 @@ function SchoolQADetail() {
                         <td>{school.school_id}</td>
                         <td>{school.name}</td>
                         <td>
-                          <button className="btn btn-danger">remove</button>
+                          <button
+                            className="btn btn-danger"
+                            onClick={() => unassignSchool(school.id, null)}
+                          >
+                            remove
+                          </button>
                         </td>
                       </tr>
                     ))}

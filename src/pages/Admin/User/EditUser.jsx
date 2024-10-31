@@ -124,6 +124,18 @@ function EditUser() {
     }
   };
 
+  const defaultRole = (id) => {
+    const roles = {
+      1: "qa",
+      2: "admin",
+      3: "head-teacher",
+      4: "subeb-user",
+      5: "warehouse-staff",
+    };
+
+    return roles[id];
+  };
+
   const handleEditSubmit = (e) => {
     handleEditUser(e, pk);
     handleLoadingClick();
@@ -262,7 +274,7 @@ function EditUser() {
                       <Form.Select
                         className="UserCreateInput"
                         name="level"
-                        value={editedFormData.level}
+                        defaultValue={editedFormData.level}
                         onChange={handleChange}
                         required
                       >
@@ -306,7 +318,7 @@ function EditUser() {
                     <Form.Select
                       className="UserCreateInput"
                       name="role"
-                      defaultValue={editedFormData.role}
+                      value={defaultRole(editedFormData.role_id)}
                       onChange={handleChange}
                       required
                     >
@@ -384,6 +396,8 @@ function EditUser() {
                     >
                       <option value="">Department</option>
                       <option value="Admin">Admin</option>
+                      <option value="QA">Quality Assurance</option>
+                      <option value="IT">IT</option>
                     </Form.Select>
                   </Col>
                 </Row>

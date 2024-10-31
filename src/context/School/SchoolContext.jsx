@@ -65,6 +65,7 @@ export const SchoolProvider = ({ children }) => {
       setGetSingleSchoolData(response.data.school);
       seteditedFormData({
         name: response.data.school.name,
+        school_id: response.data.school.school_id,
         website: response.data.school.website,
         email: response.data.school.email,
         phone_number: response.data.school.phone_number,
@@ -97,6 +98,7 @@ export const SchoolProvider = ({ children }) => {
 
     const formData = {
       name: e.target.name.value,
+      school_id: e.target.school_id.value,
       website: e.target.website.value,
       email: e.target.email.value,
       phone_number: e.target.phone_number.value,
@@ -126,13 +128,17 @@ export const SchoolProvider = ({ children }) => {
     const baseUrl = process.env.REACT_APP_EDO_SUBEB_BASE_URL;
     let fileResponse;
 
-    if (e.target.school_image.files[0]) {
+    if (e.target.school_image.files.length) {
       const imageData = e.target.school_image.files[0];
       fileResponse = await handleAddFile(imageData);
+      if (fileResponse && fileResponse.success) {
+        setAddSchoolError(addFileError || "File upload failed");
+      }
     }
 
     const updatedData = {
       name: editedFormData.name,
+      school_id: editedFormData.school_id,
       website: editedFormData.website,
       email: editedFormData.email,
       phone_number: editedFormData.phone_number,
