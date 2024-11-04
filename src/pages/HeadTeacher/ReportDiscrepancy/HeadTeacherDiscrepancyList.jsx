@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState, useMemo } from "react";
 import { Container, Row, Col, Badge, Form } from "react-bootstrap";
-import "./Discrepancy.css";
+import "../../Admin/Discrepancy/Discrepancy.css";
 import NavigationHeader from "../../../components/Navigations/NavigationHeader";
 import SideNavigation from "../../../components/Navigations/SideNavigation";
 import TitleHeader from "../../../components/Headers/TitleHeader";
 import Search from "../../../components/Search/Search";
 import Filter from "../../../components/Filter/Filter";
+import { faAdd } from "@fortawesome/free-solid-svg-icons/faAdd";
 import PrimaryButton from "../../../components/Button/PrimaryButton";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons/faTrashCan";
 import { useNavigate } from "react-router-dom";
@@ -15,8 +16,9 @@ import Loading from "../../../components/Loading/Loading";
 import { convertDate } from "../../../utils/HelperFunc";
 import DiscrepancyContext from "../../../context/Discrepancy/DiscrepancyContext";
 import BackButtonIcon from "../../../components/Button/BackButtonIcon";
+import HeadTeacherNavigation from "../Navigation/HeadTeacherNavigation";
 
-function DiscrepancyList() {
+function HeadTeacherDiscrepancyList() {
   const navigate = useNavigate();
 
   const { getDiscrepancys, getDiscrepancysIsLoading, getDiscrepancysData } =
@@ -223,7 +225,10 @@ function DiscrepancyList() {
     <div>
       <NavigationHeader toggleSidebar={toggleSidebar} />
       <div className="d-flex justify-content-between">
-        <SideNavigation isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <HeadTeacherNavigation
+          isOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+        />
         <Container className="reportContainer">
           {message
             ? comfirmationAction && (
@@ -242,9 +247,10 @@ function DiscrepancyList() {
               </div>
               <div className="col text-end">
                 <PrimaryButton
-                  text={"Resolved Discrepancy"}
-                  Primarystyle={"InventoryReportButton"}
-                  clickEvent={() => navigate("/DiscrepancyListResolved")}
+                  Primaryicon={faAdd}
+                  text={"Report Discrepancy"}
+                  Primarystyle={"UserManagementCreateButton"}
+                  clickEvent={() => navigate("/HeadTeacherReportDiscrepancy")}
                 />
               </div>
             </div>
@@ -254,7 +260,7 @@ function DiscrepancyList() {
             <Col className="mb-3 " lg={12} xl={12} md={12} sm={12} xs={12}>
               <input
                 type="text"
-                placeholder="Search Discrepancy Descriptions"
+                placeholder="Search Discrepancies"
                 className="searchContentBar p-2"
                 value={searchTerm}
                 onChange={handleSearchChange}
@@ -313,7 +319,6 @@ function DiscrepancyList() {
                         <th>Reporter</th>
                         <th>Status</th>
                         <th>Created at</th>
-                        <th>....</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -337,13 +342,13 @@ function DiscrepancyList() {
                             </span>
                           </td>
                           <td>{convertDate(item.created_at)}</td>
-                          <td>
+                          {/* <td>
                             <PrimaryButton
                               text={"View"}
                               Primarystyle={"ListButton"}
                               clickEvent={() => handleViewDetail(item.id)}
                             />
-                          </td>
+                          </td> */}
                         </tr>
                       ))}
                     </tbody>
@@ -369,4 +374,4 @@ function DiscrepancyList() {
   );
 }
 
-export default DiscrepancyList;
+export default HeadTeacherDiscrepancyList;

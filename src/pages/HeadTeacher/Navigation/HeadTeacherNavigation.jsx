@@ -123,7 +123,7 @@ function HeadTeacherNavigation({ toggleSidebar, isOpen }) {
               hoverStyle={"sideNavPrimaryHoverButton"}
             />
           </Nav.Link>
-          <Nav.Link
+          {/* <Nav.Link
             as={NavLink}
             to="/HeadTeacherTrackMaterial"
             className={({ isActive }) => (isActive ? "active" : "")}
@@ -133,14 +133,14 @@ function HeadTeacherNavigation({ toggleSidebar, isOpen }) {
               icon={faUsers}
               hoverStyle={"sideNavPrimaryHoverButton"}
             />
-          </Nav.Link>
+          </Nav.Link> */}
           <Nav.Link
             as={NavLink}
-            to="/HeadTeacherReportDiscrepancy"
+            to="/HeadTeacherDiscrepancyList"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             <SideNavButton
-              text={"Report Discrepancy"}
+              text={"Discrepancy"}
               icon={faChartBar}
               hoverStyle={"sideNavPrimaryHoverButton"}
             />

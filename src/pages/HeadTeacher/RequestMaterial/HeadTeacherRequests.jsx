@@ -107,7 +107,7 @@ function HeadTeacherRequests() {
               Primaryicon={faAdd}
               text={"New Request"}
               Primarystyle={"UserManagementCreateButton me-2"}
-              clickEvent={handleCreateItem}
+              clickEvent={() => navigate("/HeadTeacherRequestMaterial")}
             />
             <Filter
               defult={"None"}

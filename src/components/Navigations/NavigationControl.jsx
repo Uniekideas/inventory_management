@@ -43,6 +43,7 @@ import HeaderTeacherInventory from "../../pages/HeadTeacher/Inventory/HeaderTeac
 import HeaderTeacherGenerateReport from "../../pages/HeadTeacher/Inventory/HeaderTeacherGenerateReport";
 import HeadTeacherRequestMaterial from "../../pages/HeadTeacher/RequestMaterial/HeadTeacherRequestMaterial";
 import HeadTeacherRequests from "../../pages/HeadTeacher/RequestMaterial/HeadTeacherRequests";
+import HeadTeacherDiscrepancyList from "../../pages/HeadTeacher/ReportDiscrepancy/HeadTeacherDiscrepancyList";
 import HeadTeacherReportDiscrepancy from "../../pages/HeadTeacher/ReportDiscrepancy/HeadTeacherReportDiscrepancy";
 import HeadTeacherPushNotification from "../../pages/HeadTeacher/PushNotification/HeadTeacherPushNotification";
 import HeadTeacherTrackMaterial from "../../pages/HeadTeacher/TrackMaterial/HeadTeacherTrackMaterial";
@@ -257,6 +258,10 @@ function NavigationControl() {
             <Route
               path="/HeadTeacherGenerateInventory"
               element={<GenerateInventory />}
+            />
+            <Route
+              path="/HeadTeacherDiscrepancyList"
+              element={<HeadTeacherDiscrepancyList />}
             />
             <Route
               path="/HeadTeacherReportDiscrepancy"

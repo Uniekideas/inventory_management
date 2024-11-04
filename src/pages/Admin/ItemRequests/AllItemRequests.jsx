@@ -12,6 +12,7 @@ import BackButtonIcon from "../../../components/Button/BackButtonIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import Loading from "../../../components/Loading/Loading";
+import { convertDate } from "../../../utils/HelperFunc";
 import NonAvaliable from "../../../components/NonAvaliable/NonAvaliable";
 import Select from "react-select";
 import axios from "axios";
@@ -132,6 +133,15 @@ function AllItemRequests() {
   const generateReport = async (formatQuery, resultData) => {
     setCreateReportIsLoading(true);
 
+    const exportData = resultData.map((item, index) => [
+      index + 1,
+      item.item.name,
+      item.school.name,
+      item.quantity,
+      item.comment,
+      item.status,
+    ]);
+
     if (formatQuery === "pdf") {
       let doc = new jsPDF();
       autoTable(doc, {
@@ -145,20 +155,13 @@ function AllItemRequests() {
             "Status",
           ],
         ],
-        body: resultData.map((item, index) => [
-          index + 1,
-          item.item.name,
-          item.school.name,
-          item.quantity,
-          item.comment,
-          item.status,
-        ]),
+        body: exportData,
       });
       doc.save("edo_distribution_report.pdf");
       //   setCreateReportResponse(response);
     } else {
       var wb = XLSX.utils.book_new();
-      var ws = XLSX.utils.json_to_sheet(resultData);
+      var ws = XLSX.utils.json_to_sheet(exportData);
 
       XLSX.utils.book_append_sheet(wb, ws, "edo_distribution_report");
       XLSX.writeFile(wb, "edo_distribution_report.xlsx");
@@ -167,6 +170,11 @@ function AllItemRequests() {
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const showDate = (requestDate) => {
+    const date = new Date(requestDate);
+    return date;
   };
 
   return (
@@ -182,12 +190,12 @@ function AllItemRequests() {
           <Form onSubmit={searchRequest}>
             <Row className="mb-3">
               <Col
-                className="UserCreateInput d-flex ms-2 mb-3"
-                lg={3}
-                md={3}
-                xl={3}
-                sm={12}
-                xs={12}
+                className="UserCreateInput d-flex mb-3"
+                lg={4}
+                md={4}
+                xl={4}
+                sm={6}
+                xs={6}
               >
                 <div className="flex-fill">
                   <Select
@@ -209,11 +217,11 @@ function AllItemRequests() {
               </Col>
               <Col
                 className="UserCreateInput d-flex ms-2 mb-3"
-                lg={2}
+                lg={3}
                 md={3}
-                xl={2}
-                sm={12}
-                xs={12}
+                xl={3}
+                sm={6}
+                xs={6}
               >
                 <Form.Select
                   className="no-border shadow-none w-auto"
@@ -231,11 +239,11 @@ function AllItemRequests() {
               </Col>
               <Col
                 className="UserCreateInput d-flex ms-2 mb-3"
-                lg={2}
+                lg={3}
                 md={3}
-                xl={2}
-                sm={12}
-                xs={12}
+                xl={3}
+                sm={6}
+                xs={6}
               >
                 <Form.Select
                   className="no-border shadow-none w-auto"
@@ -249,12 +257,12 @@ function AllItemRequests() {
                 </Form.Select>
               </Col>
               <Col
-                className="UserCreateInput d-flex ms-2 mb-3"
-                lg={2}
+                className="UserCreateInput d-flexms-2 mb-3"
+                lg={3}
                 md={3}
-                xl={2}
-                sm={12}
-                xs={12}
+                xl={3}
+                sm={6}
+                xs={6}
               >
                 <Form.Control
                   type="date"
@@ -265,11 +273,11 @@ function AllItemRequests() {
               </Col>
               <Col
                 className="UserCreateInput d-flex ms-2 mb-3"
-                lg={2}
+                lg={3}
                 md={3}
-                xl={2}
-                sm={12}
-                xs={12}
+                xl={3}
+                sm={6}
+                xs={6}
               >
                 <Form.Control
                   type="date"
@@ -312,6 +320,7 @@ function AllItemRequests() {
                     <th>Quantity</th>
                     <th>Comment</th>
                     <th>Status</th>
+                    <th>Date Created</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -323,6 +332,7 @@ function AllItemRequests() {
                       <td>{request.quantity}</td>
                       <td>{request.comment}</td>
                       <td>{request.status}</td>
+                      <td>{convertDate(request.created_at)}</td>
                     </tr>
                   ))}
                 </tbody>

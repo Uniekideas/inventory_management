@@ -10,6 +10,7 @@ import { LoadingPropagate } from "../../../components/Loading/Loading";
 import InventoryItemContext from "../../../context/Item/InventoryItemContext";
 import GeneralContext from "../../../context/General/GeneralContext";
 import axios from "axios";
+import Alert from "react-bootstrap/Alert";
 
 function GenerateInventory() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -19,6 +20,8 @@ function GenerateInventory() {
   const [lga, setLga] = useState("");
   const [schoolType, setSchoolType] = useState("");
   const [category, setCategory] = useState([]);
+  const [errorDisplay, setErrorDisplay] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const {
     generateReport,
@@ -72,8 +75,7 @@ function GenerateInventory() {
   useEffect(() => {
     if (!createReportIsLoading && createReportResponse) {
       setButtonClick(false);
-      console.log(createReportResponse);
-      setButtonText("Report Generated →");
+      setButtonText("Report Generated");
       setCreateReportResponse(null);
     }
   }, [createReportIsLoading, createReportResponse]);
@@ -81,8 +83,9 @@ function GenerateInventory() {
   useEffect(() => {
     if (!createReportIsLoading && createReportError) {
       setButtonClick(false);
-      console.log(createReportError);
-      setButtonText("Error X");
+      setButtonText("Generate Report");
+      setErrorDisplay(true);
+      setErrorMessage("No record found");
       setCreateReportError(null);
     }
   }, [createReportIsLoading, createReportError]);
@@ -101,15 +104,19 @@ function GenerateInventory() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!format) {
-      alert("Select a format");
+      setErrorDisplay(true);
+      setErrorMessage("Select a format");
       return;
     }
+
+    setButtonClick(false);
     generateReport(
       format,
       e.target.maximum.value,
       e.target.category.value,
       schoolType
     );
+
     handleLoadingClick();
   };
 
@@ -126,6 +133,26 @@ function GenerateInventory() {
             <BackButtonIcon />
             <TitleHeader text={"Generate Reports"} />
           </div>
+          {errorDisplay && (
+            <Alert
+              variant="danger"
+              onClose={() => setErrorDisplay(false)}
+              dismissible
+            >
+              <strong>Error!</strong> {errorMessage}
+            </Alert>
+          )}
+
+          {createReportResponse && (
+            <Alert
+              variant="success"
+              onClose={() => setErrorDisplay(false)}
+              dismissible
+            >
+              <strong>Error!</strong> Reported Generated
+            </Alert>
+          )}
+
           <Form onSubmit={handleSubmit}>
             <Row className="mb-3">
               {/* <Col lg={6} md={6} xl={6} sm={12} xs={12} className="mb-3">

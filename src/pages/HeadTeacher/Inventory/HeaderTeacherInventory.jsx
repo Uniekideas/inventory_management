@@ -126,30 +126,37 @@ function HeaderTeacherInventory() {
   const generateReport = async (formatQuery, resultData) => {
     // setCreateReportIsLoading(true);
 
+    const exportData = resultData.map((item, index) => [
+      index + 1,
+      item.item_name,
+      item.subject_category,
+      item.quantity,
+      item.quantity > 35
+        ? "In stock"
+        : item.quantity < 1
+        ? "Out of stock"
+        : "Low on stock",
+    ]);
+
     if (formatQuery === "pdf") {
       let doc = new jsPDF();
       autoTable(doc, {
         head: [["SN", "Item Name", "Subject", "Quantity", "stock"]],
-        body: resultData.map((item, index) => [
-          index + 1,
-          item.item_name,
-          item.subject_category,
-          item.quantity,
-          item.quantity > 35
-            ? "In stock"
-            : item.quantity < 1
-            ? "Out of stock"
-            : "Low on stock",
-        ]),
+        body: exportData,
       });
-      doc.save("edo_leader_subebe_request_report.pdf");
+      doc.save("edo_leader_subeb_inventory_report.pdf");
       //   setCreateReportResponse(response);
     } else {
       var wb = XLSX.utils.book_new();
-      var ws = XLSX.utils.json_to_sheet(resultData);
+      var ws = XLSX.utils.json_to_sheet(exportData);
+      XLSX.utils.sheet_add_aoa(
+        ws,
+        [["SN", "Item Name", "Subject", "Quantity", "stock"]],
+        { origin: "A1" }
+      );
 
-      XLSX.utils.book_append_sheet(wb, ws, "edo_leader_subebe_request_report");
-      XLSX.writeFile(wb, "edo_leader_subebe_request_report.xlsx");
+      XLSX.utils.book_append_sheet(wb, ws, "edo_subeb_inventory_report");
+      XLSX.writeFile(wb, "edo_subeb_inventory_report.xlsx");
     }
   };
 
@@ -234,7 +241,7 @@ function HeaderTeacherInventory() {
                     </thead>
                     <tbody>
                       {filteredData.map((Item, index) => (
-                        <tr key={Item.id}>
+                        <tr key={index}>
                           <th>{index + 1}</th>
                           <td>
                             <Image

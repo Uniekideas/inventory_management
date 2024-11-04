@@ -213,28 +213,33 @@ export const InventoryItemProvider = ({ children }) => {
         `${baseUrl}/api/item/inventory-report?max=${maximum}&cat=${category}&schoolType=${schoolType}`
       );
 
-      if (formatQuery === "pdf") {
-        let doc = new jsPDF();
-        autoTable(doc, {
-          head: [["SN", "Name", "Brand", "Category", "Quantity", "Supplier"]],
-          body: response.data.data.map((item, index) => [
-            index + 1,
-            item.item_name,
-            item.brand,
-            item.category,
-            item.quantity,
-            item.supplier,
-          ]),
-        });
-        doc.save("edo-inventory.pdf");
-        setCreateReportResponse(response);
-      } else {
-        var wb = XLSX.utils.book_new();
-        var ws = XLSX.utils.json_to_sheet(response.data.data);
+      if (response.data.length) {
+        const exportData = response.data.map((item, index) => [
+          index + 1,
+          item.item_name,
+          item.brand,
+          item.category,
+          item.quantity,
+          item.supplier,
+        ]);
+        if (formatQuery === "pdf") {
+          let doc = new jsPDF();
+          autoTable(doc, {
+            head: [["SN", "Name", "Brand", "Category", "Quantity", "Supplier"]],
+            body: exportData,
+          });
+          doc.save("edo-inventory.pdf");
+          setCreateReportResponse(response);
+        } else {
+          var wb = XLSX.utils.book_new();
+          var ws = XLSX.utils.json_to_sheet(exportData);
 
-        XLSX.utils.book_append_sheet(wb, ws, "edo_iventory_report");
-        XLSX.writeFile(wb, "edo_inventory_report.xlsx");
-        setCreateReportResponse(response);
+          XLSX.utils.book_append_sheet(wb, ws, "edo_iventory_report");
+          XLSX.writeFile(wb, "edo_inventory_report.xlsx");
+          setCreateReportResponse(response);
+        }
+      } else {
+        setCreateReportError(true);
       }
     } catch (error) {
       setCreateReportError(error);
