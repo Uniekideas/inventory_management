@@ -305,17 +305,6 @@ function AddNewItem() {
                     />
                   </Col>
                 </Row>
-                {/* <Row className="mb-3">
-                  <Col lg={12} md={12} xl={12} sm={12} xs={12}>
-                    <Form.Control
-                      type="number"
-                      className="UserCreateInput"
-                      placeholder="Reorder Point"
-                      name="reorder_point"
-                      required
-                    />
-                  </Col>
-                </Row> */}
                 <Row className="mb-3">
                   <Col lg={6} md={6} xl={6} sm={12} xs={12}>
                     <Form.Select
